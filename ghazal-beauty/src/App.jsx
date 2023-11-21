@@ -1,7 +1,8 @@
 import "./App.css";
+import { CustomerHeader, AdminHeader } from "./Components";
 
 function App() {
-  return <h1 className="text-3xl"> ۱۲۳۴۳۲۲۴۲۴۲ سلام به همگی</h1>;
+  return <AdminHeader />;
 }
 
 export default App;
