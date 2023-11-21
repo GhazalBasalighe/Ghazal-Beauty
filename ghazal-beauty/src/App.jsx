@@ -2,7 +2,7 @@ import "./App.css";
 import { CustomerHeader, AdminHeader } from "./Components";
 
 function App() {
-  return <AdminHeader />;
+  return <CustomerHeader />;
 }
 
 export default App;

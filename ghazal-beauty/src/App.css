@@ -14,7 +14,7 @@
   #root
   {
     font-family: 'Vazirmatn', 'Poppins';
-    padding: 3rem 1.5rem;
+    padding: 1.5rem;
   }
 }
 
@@ -33,5 +33,10 @@
   .admin-panel-back-btn
   {
     @apply text-xl bg-indigo-100 text-fadedBlack py-2 px-4 rounded-full vertical-flex gap-2 hover:bg-indigo-400 hover:text-white duration-500
+  }
+
+  .costumer-header-btn
+  {
+    @apply vertical-flex gap-1 text-gray-700 text-lg cursor-pointer hover:border-solid hover:border-b-2 hover:border-indigo-400
   }
 }
