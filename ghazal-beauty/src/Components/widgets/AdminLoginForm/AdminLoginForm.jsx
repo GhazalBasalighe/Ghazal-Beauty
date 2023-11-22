@@ -1,6 +1,6 @@
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import { useState } from "react";
-import { Button } from "../../base";
+import { Button, BackButton } from "../../base";
 
 export function AdminLoginForm() {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
@@ -62,8 +62,9 @@ export function AdminLoginForm() {
             />
             {visibleIcon}
           </div>
-          <Button>ورود</Button>
+          <Button classes={" self-center"}>ورود</Button>
         </form>
+        <BackButton classes={" self-end absolute bottom-3 left-3"} />
       </div>
     </div>
   );

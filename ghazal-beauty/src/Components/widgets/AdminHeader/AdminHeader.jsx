@@ -1,5 +1,6 @@
 import { Header } from "../../base";
-import { SignOut, ShoppingBag, Tag, Package } from "@phosphor-icons/react";
+import { ShoppingBag, Tag, Package } from "@phosphor-icons/react";
+import { BackButton } from "../../base";
 
 export function AdminHeader() {
   return (
@@ -23,10 +24,7 @@ export function AdminHeader() {
             <span>سفارش‌ها</span>
           </li>
         </ul>
-        <button className="admin-header-back-btn">
-          <SignOut size={25} />
-          <span> بازگشت به سایت</span>
-        </button>
+        <BackButton />
       </div>
     </Header>
   );
