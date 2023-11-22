@@ -1,5 +1,6 @@
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import { useState } from "react";
+import { Button } from "../../base";
 
 export function AdminLoginForm() {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
@@ -61,12 +62,7 @@ export function AdminLoginForm() {
             />
             {visibleIcon}
           </div>
-          <button
-            type="submit"
-            className="text-lg shadow-2xl bg-purple-500 text-white self-center py-1 px-8 rounded-lg hover:bg-purple-600 hover:scale-110 duration-300"
-          >
-            ورود
-          </button>
+          <Button>ورود</Button>
         </form>
       </div>
     </div>

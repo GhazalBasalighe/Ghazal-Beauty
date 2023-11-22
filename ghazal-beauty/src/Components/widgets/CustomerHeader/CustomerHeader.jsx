@@ -1,5 +1,5 @@
 import { ShoppingCart, Fingerprint } from "@phosphor-icons/react";
-import { Header } from "../../Header";
+import { Header } from "../../base";
 
 export function CustomerHeader() {
   return (
@@ -13,7 +13,7 @@ export function CustomerHeader() {
           <Fingerprint size={20} />
           <span>مدیریت</span>
         </span>
-        <span className="vertical-flex gap-1 text-gray-700 text-lg cursor-pointer hover:border-solid hover:border-b-2 hover:border-indigo-400">
+        <span className="costumer-header-btn">
           <ShoppingCart size={20} />
           <span>سبد خرید</span>
         </span>
