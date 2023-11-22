@@ -4,12 +4,14 @@ import {
   AdminHeader,
   ProductContainer,
   AdminLoginForm,
+  UserInfoForm,
 } from "./Components";
 
 function App() {
   return (
     <>
-      <AdminLoginForm />
+      <CustomerHeader />
+      <UserInfoForm />
     </>
   );
 }
