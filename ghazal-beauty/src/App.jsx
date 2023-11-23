@@ -5,13 +5,16 @@ import {
   ProductContainer,
   AdminLoginForm,
   UserInfoForm,
+  ProductDetails,
 } from "./Components";
+
+import { PaymentFailure, PaymentSuccess } from "./pages";
 
 function App() {
   return (
     <>
       <CustomerHeader />
-      <UserInfoForm />
+      <ProductDetails />
     </>
   );
 }

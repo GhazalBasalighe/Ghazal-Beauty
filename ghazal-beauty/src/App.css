@@ -67,6 +67,6 @@
 
   .user-info-input
   {
-    @apply outline-none border-solid border-2 border-purple-500 rounded-xl p-2
+    @apply outline-none border-solid border-2 border-purple-500 rounded-xl p-2 focus:border-none focus:bg-purple-200 focus:placeholder:text-gray-500
   }
 }
