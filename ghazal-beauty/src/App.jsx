@@ -6,6 +6,7 @@ import {
   AdminLoginForm,
   UserInfoForm,
   ProductDetails,
+  Cart,
 } from "./Components";
 
 import { PaymentFailure, PaymentSuccess } from "./pages";
@@ -14,7 +15,7 @@ function App() {
   return (
     <>
       <CustomerHeader />
-      <ProductDetails />
+      <Cart />
     </>
   );
 }

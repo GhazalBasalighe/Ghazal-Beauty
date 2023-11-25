@@ -8,7 +8,8 @@ function useCounter(initialValue = 0) {
   };
 
   const handleQuantityDecrement = () => {
-    if (quantity > 0) setQuantity((quantity) => quantity - 1);
+    if (quantity > 1) setQuantity((quantity) => quantity - 1);
+    else if (quantity === 1) setQuantity(0);
     else return quantity;
   };
 

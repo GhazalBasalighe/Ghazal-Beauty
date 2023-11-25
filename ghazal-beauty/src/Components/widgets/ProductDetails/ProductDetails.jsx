@@ -1,17 +1,9 @@
-import { Button } from "../../base";
-import { Plus, Minus } from "@phosphor-icons/react";
-import useCounter from "../../../hooks/useCounter";
+import { Button, Counter } from "../../base";
 
 export function ProductDetails() {
-  const {
-    quantity,
-    handleQuantityDecrement: decrement,
-    handleQuantityIncrement: increment,
-  } = useCounter();
-
   return (
-    <div className="flex flex-col gap-10">
-      <div className="vertical-flex justify-around">
+    <div className="flex flex-col gap-10  px-20 ">
+      <div className="vertical-flex justify-between ">
         <div className="vertical-flex">
           <img src="src/assets/faceWash.jpg" alt="face wash" width={200} />
           <div className="flex flex-col gap-5">
@@ -27,26 +19,12 @@ export function ProductDetails() {
         </div>
         <div className="flex flex-col gap-10 shadow-lg p-10 rounded-xl border border-solid border-violet-600">
           <span className="font-semibold text-xl">119,880 تومان</span>
-          <div className="vertical-flex bg-violet-100 text-purple-800 rounded-md w-1/2">
-            <Plus
-              size={30}
-              onClick={increment}
-              className="p-1 cursor-pointer"
-              weight="bold"
-            />
-            <span className="p-3 font-bold">{quantity}</span>
-            <Minus
-              size={30}
-              onClick={decrement}
-              className="p-1 cursor-pointer"
-              weight="bold"
-            />
-          </div>
+          <Counter />
           <Button>افزودن به سبد خرید</Button>
         </div>
       </div>
-      <div className="h-[1px] w-11/12 bg-violet-600 self-center"></div>
-      <span className=" px-20 leading-10">
+      <div className="h-[1px] w-full bg-violet-600 self-center"></div>
+      <span className="leading-10">
         ژل شستشو صورت نوتروژینا مدل Sivilce Karciti ظرفیت 200 میلی لیتر در
         جامعه کنونی مراقبت از پوست و اهمیت دادن به کیفیت آن یکی از مهم¬ترین
         ابعاد زیبایی چهره است. به همین علت، پاکسازی و سلامت پوست در صدر
