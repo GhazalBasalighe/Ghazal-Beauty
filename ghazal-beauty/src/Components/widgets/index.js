@@ -4,3 +4,8 @@ export * from "./AdminLoginForm";
 export * from "./UserInfoForm";
 export * from "./ProductDetails";
 export * from "./Cart";
+export * from "./ProductGroupPreview";
+export * from "./ProductsManagement";
+export * from "./StockAndPriceManagement";
+export * from "./OrdersManagement";
+export * from "./Checkbox";

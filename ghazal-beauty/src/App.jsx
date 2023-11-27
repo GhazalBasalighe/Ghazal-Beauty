@@ -7,15 +7,19 @@ import {
   UserInfoForm,
   ProductDetails,
   Cart,
+  ProductGroupPreview,
+  ProductsManagement,
+  StockAndPriceManagement,
+  OrdersManagement,
 } from "./Components";
 
-import { PaymentFailure, PaymentSuccess } from "./pages";
+import { PaymentFailure, PaymentSuccess, Payment } from "./pages";
 
 function App() {
   return (
     <>
-      <CustomerHeader />
-      <Cart />
+      <AdminHeader />
+      <OrdersManagement />
     </>
   );
 }

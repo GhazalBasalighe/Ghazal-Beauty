@@ -69,4 +69,17 @@
   {
     @apply outline-none border-solid border-2 border-purple-500 rounded-xl p-2 focus:border-none focus:bg-purple-200 focus:placeholder:text-gray-500
   }
+
+  /* PRODUCTS GROUP */
+
+  .product-card
+  {
+    @apply flex flex-col gap-2 items-center max-w-xs py-[2vw] px-[1vw] cursor-pointer hover:shadow-2xl duration-300
+  }
+
+  /* ORDERS MANAGEMENT */
+  .orders-category-checkbox
+  {
+    @apply appearance-none w-5 h-5 cursor-pointer outline-none border-2 border-solid border-indigo-500 rounded-full checked:bg-purple-200
+  }
 }
