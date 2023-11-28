@@ -1,23 +1,49 @@
+import toPersianDigits from "../../../helpers/toPersianDigits";
+import { DynamicTable } from "../../base";
 import { Checkbox } from "../Checkbox";
-
 export function OrdersManagement() {
-  const rows = [
-    {
-      stock: "5",
-      productName: "شوینده صورت",
-      price: "200.000",
-    },
-    {
-      stock: "10",
-      productName: "نمیدونم",
-      price: "100.000",
-    },
-    {
-      stock: "1",
-      productName: "شوینده صورت",
-      price: "800.000",
-    },
-  ];
+  const tableData = {
+    titles: [
+      "نام کاربر",
+      "مجموع مبلغ",
+      "زمان ثبت سفارش",
+      "عملیات‌های مربوطه",
+    ],
+    rows: [
+      [
+        "اکبر زمانی",
+        toPersianDigits("200.000"),
+        toPersianDigits("1401/2/04"),
+        <td className="p-3 align-middle underline cursor-pointer text-indigo-500">
+          بررسی سفارش
+        </td>,
+      ],
+      [
+        "اکبر زمانی",
+        toPersianDigits("200.000"),
+        toPersianDigits("1401/2/04"),
+        <td className="p-3 align-middle underline cursor-pointer text-indigo-500">
+          بررسی سفارش
+        </td>,
+      ],
+      [
+        "اکبر زمانی",
+        toPersianDigits("200.000"),
+        toPersianDigits("1401/2/04"),
+        <td className="p-3 align-middle underline cursor-pointer text-indigo-500">
+          بررسی سفارش
+        </td>,
+      ],
+      [
+        "اکبر زمانی",
+        toPersianDigits("200.000"),
+        toPersianDigits("1401/2/04"),
+        <td className="p-3 align-middle underline cursor-pointer text-indigo-500">
+          بررسی سفارش
+        </td>,
+      ],
+    ],
+  };
 
   return (
     <div className="flex flex-col justify-center px-12 py-8 gap-8">
@@ -25,29 +51,7 @@ export function OrdersManagement() {
         <h1 className="text-4xl">مدیریت سفارش‌ها</h1>
         <Checkbox />
       </div>
-      <table className=" overflow-hidden rounded-lg text-center">
-        <thead className="bg-purple-300 font-semibold">
-          <tr>
-            <th className="p-3">کالا</th>
-            <th className="p-3">قیمت</th>
-            <th className="p-3">موجودی</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, index) => (
-            <tr
-              key={index}
-              className={
-                index % 2 === 0 ? "bg-purple-200" : "bg-purple-100"
-              }
-            >
-              <td className="p-3 align-middle">{row.productName}</td>
-              <td className="p-3 align-middle">{row.price}</td>
-              <td className="p-3 align-middle">{row.stock}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <DynamicTable titles={tableData.titles} rows={tableData.rows} />
     </div>
   );
 }

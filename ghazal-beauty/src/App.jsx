@@ -11,15 +11,18 @@ import {
   ProductsManagement,
   StockAndPriceManagement,
   OrdersManagement,
+  Modal,
+  OrdersModal,
+  AddProductModal,
+  TextEditor,
 } from "./Components";
-
 import { PaymentFailure, PaymentSuccess, Payment } from "./pages";
-
 function App() {
   return (
     <>
       <AdminHeader />
       <OrdersManagement />
+      <OrdersModal />
     </>
   );
 }

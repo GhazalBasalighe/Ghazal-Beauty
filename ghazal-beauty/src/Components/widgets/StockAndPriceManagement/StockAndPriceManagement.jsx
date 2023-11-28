@@ -1,23 +1,15 @@
-import { Button } from "../../base";
+import toPersianDigits from "../../../helpers/toPersianDigits";
+import { Button, DynamicTable } from "../../base";
 
 export function StockAndPriceManagement() {
-  const rows = [
-    {
-      stock: "5",
-      productName: "شوینده صورت",
-      price: "200.000",
-    },
-    {
-      stock: "10",
-      productName: "نمیدونم",
-      price: "100.000",
-    },
-    {
-      stock: "1",
-      productName: "شوینده صورت",
-      price: "800.000",
-    },
-  ];
+  const tableData = {
+    titles: ["کالا", "قیمت", "موجودی"],
+    rows: [
+      ["شوینده صورت", toPersianDigits("200.000"), toPersianDigits("5")],
+      ["نمیدونم", toPersianDigits("100.000"), toPersianDigits("10")],
+      ["میدونم", toPersianDigits("800.000"), toPersianDigits("8")],
+    ],
+  };
 
   return (
     <div className="flex flex-col justify-center px-12 py-8 gap-8">
@@ -25,29 +17,7 @@ export function StockAndPriceManagement() {
         <h1 className="text-4xl">مدیریت موجودی و قیمت‌ها</h1>
         <Button>ذخیره</Button>
       </div>
-      <table className="border-separate rounded-2xl text-center">
-        <thead className="bg-purple-300 font-semibold">
-          <tr>
-            <th className="p-3">کالا</th>
-            <th className="p-3">قیمت</th>
-            <th className="p-3">موجودی</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, index) => (
-            <tr
-              key={index}
-              className={
-                index % 2 === 0 ? "bg-purple-200" : "bg-purple-100"
-              }
-            >
-              <td className="p-3 align-middle">{row.productName}</td>
-              <td className="p-3 align-middle">{row.price}</td>
-              <td className="p-3 align-middle">{row.stock}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <DynamicTable titles={tableData.titles} rows={tableData.rows} />
     </div>
   );
 }
