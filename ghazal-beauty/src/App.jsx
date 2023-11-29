@@ -1,30 +1,21 @@
 import "./App.css";
 import {
-  CustomerHeader,
-  AdminHeader,
-  ProductContainer,
-  AdminLoginForm,
-  UserInfoForm,
-  ProductDetails,
-  Cart,
-  ProductGroupPreview,
-  ProductsManagement,
-  StockAndPriceManagement,
-  OrdersManagement,
-  Modal,
-  OrdersModal,
-  AddProductModal,
-  TextEditor,
-} from "./Components";
-import { PaymentFailure, PaymentSuccess, Payment } from "./pages";
+  PaymentFailure,
+  PaymentSuccess,
+  Payment,
+  AdminLogin,
+  CartPage,
+  ProductDetailsPage,
+  ProductManagementPage,
+  StockAndPriceManagementPage,
+  OrdersManagementPage,
+  ProductsPage,
+  SubGroupProductsPage,
+  NotFound,
+} from "./pages";
+
 function App() {
-  return (
-    <>
-      <AdminHeader />
-      <OrdersManagement />
-      <OrdersModal />
-    </>
-  );
+  return <SubGroupProductsPage />;
 }
 
 export default App;

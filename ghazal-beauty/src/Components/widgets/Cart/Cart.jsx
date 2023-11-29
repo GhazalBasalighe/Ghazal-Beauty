@@ -3,7 +3,7 @@ import { Handbag } from "@phosphor-icons/react";
 
 export function Cart() {
   return (
-    <div className="vertical-flex justify-center gap-16">
+    <div className="vertical-flex justify-center gap-16 mt-10">
       {/* RIGHT SIDE , THE CART */}
       <div className="flex flex-col gap-8">
         <div className="vertical-flex justify-between gap-10 border-b border-solid border-gray-500 py-4">

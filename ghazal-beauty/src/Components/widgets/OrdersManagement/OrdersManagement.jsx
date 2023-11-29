@@ -1,6 +1,6 @@
 import toPersianDigits from "../../../helpers/toPersianDigits";
 import { DynamicTable } from "../../base";
-import { Checkbox } from "../Checkbox";
+import { Checkbox } from "./Checkbox";
 export function OrdersManagement() {
   const tableData = {
     titles: [
@@ -46,7 +46,7 @@ export function OrdersManagement() {
   };
 
   return (
-    <div className="flex flex-col justify-center px-12 py-8 gap-8">
+    <div className="flex flex-col justify-center px-20 py-8 gap-8 mt-10">
       <div className="vertical-flex justify-between">
         <h1 className="text-4xl">مدیریت سفارش‌ها</h1>
         <Checkbox />

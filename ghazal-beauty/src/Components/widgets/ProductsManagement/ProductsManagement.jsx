@@ -47,7 +47,7 @@ export function ProductsManagement() {
   };
 
   return (
-    <div className="flex flex-col justify-center px-12 py-8 gap-8">
+    <div className="flex flex-col justify-center px-20 py-8 gap-8 mt-10">
       <div className="vertical-flex justify-between">
         <h1 className="text-4xl">مدیریت کالا</h1>
         <Button>افزودن کالا</Button>

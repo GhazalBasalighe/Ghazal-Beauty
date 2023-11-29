@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import "react-quill/dist/quill.snow.css";
 import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
 import List from "@editorjs/list";

@@ -1,8 +1,9 @@
+import toPersianDigits from "../../../helpers/toPersianDigits";
 import { Button, Counter } from "../../base";
 
 export function ProductDetails() {
   return (
-    <div className="flex flex-col gap-10  px-20 ">
+    <div className="flex flex-col gap-10 px-20 mt-3">
       <div className="vertical-flex justify-between ">
         <div className="vertical-flex">
           <img src="src/assets/faceWash.jpg" alt="face wash" width={200} />
@@ -15,10 +16,13 @@ export function ProductDetails() {
               Neutrogena Sivilce Karciti Face Wash Gel 200 ml
             </span>
             <span>دسته‌ی لوازم آرایشی</span>
+            <span>زیردسته‌ی شوینده صورت</span>
           </div>
         </div>
         <div className="flex flex-col gap-10 shadow-lg p-10 rounded-xl border border-solid border-violet-600">
-          <span className="font-semibold text-xl">119,880 تومان</span>
+          <span className="font-semibold text-xl">
+            {toPersianDigits("119,880")} تومان
+          </span>
           <Counter />
           <Button>افزودن به سبد خرید</Button>
         </div>
