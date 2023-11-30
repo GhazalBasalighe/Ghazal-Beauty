@@ -17,6 +17,8 @@ import { CartPage } from "./pages/Cart";
 import { OrdersManagementPage } from "./pages/OrdersManagementPage";
 import { ProductManagementPage } from "./pages/ProductManagementPage";
 import { StockAndPriceManagementPage } from "./pages/StockAndPriceManagementPage";
+import { ConfirmPurchase } from "./pages/ConfirmPurchase";
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -53,6 +55,17 @@ function App() {
           path: "cart",
           element: <CartPage />,
         },
+        {
+          path: "confirm_purchase",
+          element: <ConfirmPurchase />,
+        },
+      ],
+    },
+    {
+      path: "/admin",
+      element: <PageTemplate />,
+      errorElement: <NotFound />,
+      children: [
         {
           path: "product_manage",
           element: <ProductManagementPage />,
