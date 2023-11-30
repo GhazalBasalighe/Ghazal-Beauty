@@ -1,4 +1,4 @@
-import { CustomerHeader, Cart } from "../../Components";
+import { CustomerHeader, Cart } from "../Components";
 
 export function CartPage() {
   return (

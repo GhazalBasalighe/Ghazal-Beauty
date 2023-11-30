@@ -1,4 +1,4 @@
-import { AdminHeader, ProductsManagement } from "../../Components";
+import { AdminHeader, ProductsManagement } from "../Components";
 
 export function ProductManagementPage() {
   return (

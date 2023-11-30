@@ -1,4 +1,4 @@
-import { AdminHeader, OrdersManagement } from "../../Components";
+import { AdminHeader, OrdersManagement } from "../Components";
 
 export function OrdersManagementPage() {
   return (

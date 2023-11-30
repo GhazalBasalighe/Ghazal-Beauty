@@ -1,4 +1,4 @@
-import { CustomerHeader, SubGroupProducts } from "../../Components";
+import { CustomerHeader, SubGroupProducts } from "../Components";
 export function SubGroupProductsPage() {
   return (
     <div>

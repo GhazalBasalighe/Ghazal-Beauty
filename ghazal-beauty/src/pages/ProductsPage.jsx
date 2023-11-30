@@ -3,7 +3,7 @@ import {
   CustomerHeader,
   NavBar,
   HeroSection,
-} from "../../Components";
+} from "../Components";
 export function ProductsPage() {
   return (
     <div>

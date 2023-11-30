@@ -1,4 +1,4 @@
-import { CustomerHeader, ProductDetails } from "../../Components";
+import { CustomerHeader, ProductDetails } from "../Components";
 
 export function ProductDetailsPage() {
   return (

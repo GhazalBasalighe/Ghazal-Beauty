@@ -1,4 +1,4 @@
-import { AdminLoginForm } from "../../Components";
+import { AdminLoginForm } from "../Components";
 
 export function AdminLogin() {
   return <AdminLoginForm />;

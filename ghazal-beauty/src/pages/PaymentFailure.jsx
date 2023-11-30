@@ -1,4 +1,4 @@
-import { CustomerHeader } from "../../Components";
+import { CustomerHeader } from "../Components";
 import { X } from "@phosphor-icons/react";
 
 export function PaymentFailure() {
