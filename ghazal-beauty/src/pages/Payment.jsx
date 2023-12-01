@@ -1,4 +1,4 @@
-export function Payment() {
+function Payment() {
   return (
     <div className="grid place-items-center">
       <img
@@ -17,3 +17,5 @@ export function Payment() {
     </div>
   );
 }
+
+export default Payment;

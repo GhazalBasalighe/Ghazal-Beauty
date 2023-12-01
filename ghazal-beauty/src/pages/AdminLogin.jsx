@@ -1,5 +1,7 @@
 import { AdminLoginForm } from "../Components";
 
-export function AdminLogin() {
+function AdminLogin() {
   return <AdminLoginForm />;
 }
+
+export default AdminLogin;

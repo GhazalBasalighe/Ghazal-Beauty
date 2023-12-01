@@ -1,10 +1,7 @@
 import { CustomerHeader, ProductDetails } from "../Components";
 
-export function ProductDetailsPage() {
-  return (
-    <>
-      <CustomerHeader />
-      <ProductDetails />
-    </>
-  );
+function ProductDetailsPage() {
+  return <ProductDetails />;
 }
+
+export default ProductDetailsPage;

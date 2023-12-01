@@ -1,10 +1,7 @@
 import { AdminHeader, StockAndPriceManagement } from "../Components";
 
 export function StockAndPriceManagementPage() {
-  return (
-    <>
-      <AdminHeader />
-      <StockAndPriceManagement />
-    </>
-  );
+  return <StockAndPriceManagement />;
 }
+
+export default StockAndPriceManagementPage;

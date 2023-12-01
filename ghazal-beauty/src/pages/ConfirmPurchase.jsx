@@ -1,10 +1,7 @@
 import { CustomerHeader, UserInfoForm } from "../Components";
 
-export function ConfirmPurchase() {
-  return (
-    <>
-      <CustomerHeader />
-      <UserInfoForm />
-    </>
-  );
+function ConfirmPurchase() {
+  return <UserInfoForm />;
 }
+
+export default ConfirmPurchase;

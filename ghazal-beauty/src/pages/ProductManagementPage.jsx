@@ -1,10 +1,7 @@
 import { AdminHeader, ProductsManagement } from "../Components";
 
-export function ProductManagementPage() {
-  return (
-    <div>
-      <AdminHeader />
-      <ProductsManagement />
-    </div>
-  );
+function ProductManagementPage() {
+  return <ProductsManagement />;
 }
+
+export default ProductManagementPage;

@@ -4,13 +4,14 @@ import {
   NavBar,
   HeroSection,
 } from "../Components";
-export function ProductsPage() {
+function ProductsPage() {
   return (
     <div>
-      <CustomerHeader />
       <NavBar />
       <HeroSection />
       <ProductGroupPreview />
     </div>
   );
 }
+
+export default ProductsPage;

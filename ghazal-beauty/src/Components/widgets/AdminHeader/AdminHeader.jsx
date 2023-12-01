@@ -6,7 +6,7 @@ export function AdminHeader() {
   return (
     <Header>
       <div className="vertical-flex gap-5">
-        <img src="src/assets/Logo.png" width={45} />
+        <img src="/src/assets/Logo.png" width={45} />
         <span className="text-3xl">مدیریت فروشگاه غزل بیوتی</span>
       </div>
       <div className="vertical-flex gap-40">

@@ -1,7 +1,7 @@
 import { CustomerHeader } from "../Components";
 import { X } from "@phosphor-icons/react";
 
-export function PaymentFailure() {
+function PaymentFailure() {
   return (
     <>
       <CustomerHeader />
@@ -27,3 +27,5 @@ export function PaymentFailure() {
     </>
   );
 }
+
+export default PaymentFailure;

@@ -1,10 +1,7 @@
 import { CustomerHeader, Cart } from "../Components";
 
-export function CartPage() {
-  return (
-    <>
-      <CustomerHeader />
-      <Cart />
-    </>
-  );
+function CartPage() {
+  return <Cart />;
 }
+
+export default CartPage;

@@ -1,9 +1,6 @@
 import { CustomerHeader, SubGroupProducts } from "../Components";
-export function SubGroupProductsPage() {
-  return (
-    <div>
-      <CustomerHeader />
-      <SubGroupProducts />
-    </div>
-  );
+function SubGroupProductsPage() {
+  return <SubGroupProducts />;
 }
+
+export default SubGroupProductsPage;
