@@ -4,19 +4,12 @@ import { NavLink } from "react-router-dom";
 export function CustomerHeader() {
   return (
     <Header>
-<<<<<<< Updated upstream
-      <div className="vertical-flex gap-5">
-        <img src="src/assets/Logo.png" width={45} />
-        <span className="text-3xl">غزل بیوتی</span>
-      </div>
-=======
       <NavLink to="/">
         <div className="vertical-flex gap-5">
           <img src="src/assets/Logo.png" width={45} />
           <span className="text-3xl">غزل بیوتی</span>
         </div>
       </NavLink>
->>>>>>> Stashed changes
       <div className="vertical-flex gap-10">
         <NavLink to="admin_login">
           <span className="costumer-header-btn">
