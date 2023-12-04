@@ -1,4 +1,4 @@
-export function NotFound() {
+function NotFound() {
   return (
     <div className="grid place-items-center h-screen">
       <p className="font-bold text-xl">
@@ -8,3 +8,5 @@ export function NotFound() {
     </div>
   );
 }
+
+export default NotFound;

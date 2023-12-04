@@ -1,6 +1,6 @@
-import { CustomerHeader } from "../../Components";
+import { CustomerHeader } from "../Components";
 import { CheckFat } from "@phosphor-icons/react";
-export function PaymentSuccess() {
+function PaymentSuccess() {
   return (
     <>
       <CustomerHeader />
@@ -27,3 +27,5 @@ export function PaymentSuccess() {
     </>
   );
 }
+
+export default PaymentSuccess;

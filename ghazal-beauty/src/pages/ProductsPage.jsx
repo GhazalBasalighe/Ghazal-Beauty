@@ -3,14 +3,15 @@ import {
   CustomerHeader,
   NavBar,
   HeroSection,
-} from "../../Components";
-export function ProductsPage() {
+} from "../Components";
+function ProductsPage() {
   return (
     <div>
-      <CustomerHeader />
       <NavBar />
       <HeroSection />
       <ProductGroupPreview />
     </div>
   );
 }
+
+export default ProductsPage;
