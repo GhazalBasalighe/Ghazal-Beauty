@@ -1,15 +1,12 @@
-import toPersianDigits from "../../../helpers/toPersianDigits";
-import { Button, DynamicTable } from "../../base";
+import { Button, DynamicTable, Pagination } from "../../base";
+import usePagination from "../../../hooks/usePagination";
 
 export function StockAndPriceManagement() {
-  const tableData = {
-    titles: ["کالا", "قیمت", "موجودی"],
-    rows: [
-      ["شوینده صورت", toPersianDigits("200.000"), toPersianDigits("5")],
-      ["نمیدونم", toPersianDigits("100.000"), toPersianDigits("10")],
-      ["میدونم", toPersianDigits("800.000"), toPersianDigits("8")],
-    ],
-  };
+  const { tableData, pagination, handlePageChange } = usePagination(
+    1,
+    7,
+    "http://localhost:8000/api/products"
+  );
 
   return (
     <div className="flex flex-col justify-center px-20 py-8 gap-8 mt-10">
@@ -18,6 +15,10 @@ export function StockAndPriceManagement() {
         <Button>ذخیره</Button>
       </div>
       <DynamicTable titles={tableData.titles} rows={tableData.rows} />
+      <Pagination
+        pagination={pagination}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }

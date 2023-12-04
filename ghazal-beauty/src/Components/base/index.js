@@ -5,3 +5,4 @@ export * from "./BackButton";
 export * from "./Counter";
 export * from "./Modal";
 export * from "./DynamicTable";
+export * from "./Pagination";

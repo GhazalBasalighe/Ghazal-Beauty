@@ -6,7 +6,6 @@ import { authenticateAdmin, validationSchema } from "../../../utils";
 import { useFormik } from "formik";
 import toast, { Toaster } from "react-hot-toast";
 import Cookies from "js-cookie";
-
 export function AdminLoginForm() {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
