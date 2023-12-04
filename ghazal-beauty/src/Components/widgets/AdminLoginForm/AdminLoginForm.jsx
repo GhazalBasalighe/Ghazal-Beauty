@@ -1,6 +1,9 @@
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import { useState } from "react";
 import { Button, BackButton } from "../../base";
+import { useNavigate } from "react-router-dom";
+import { authenticateAdmin, validationSchema } from "../../../utils";
+import { useFormik } from "formik";
 
 export function AdminLoginForm() {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
@@ -8,21 +11,38 @@ export function AdminLoginForm() {
   function handlePasswordVisibility() {
     setIsPasswordHidden((isPasswordHidden) => !isPasswordHidden);
   }
-
   //  RENDER APPROPRIATE SVG ACCORDING TO PASSWORD VISIBILITY
-  const visibleIcon = isPasswordHidden ? (
-    <Eye
-      size={24}
-      className="absolute left-2 bottom-2 cursor-pointer"
-      onClick={handlePasswordVisibility}
-    />
-  ) : (
-    <EyeSlash
-      size={24}
-      className="absolute left-2 bottom-2 cursor-pointer"
-      onClick={handlePasswordVisibility}
-    />
+  const visibleIcon = (
+    <div className="absolute left-2 bottom-2 cursor-pointer">
+      {isPasswordHidden ? (
+        <Eye size={24} onClick={handlePasswordVisibility} />
+      ) : (
+        <EyeSlash size={24} onClick={handlePasswordVisibility} />
+      )}
+    </div>
   );
+
+  // HANDLE VALIDATION USING FORMIK
+  const navigate = useNavigate();
+  const formik = useFormik({
+    initialValues: {
+      userName: "",
+      password: "",
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      const { userName, password } = values;
+
+      const isAuthenticated = await authenticateAdmin(userName, password);
+
+      if (isAuthenticated) {
+        console.log("Authentication successful");
+        navigate("/admin/stock_price_manage");
+      } else {
+        console.error("Authentication failed");
+      }
+    },
+  });
 
   return (
     <div className="grid place-items-center h-screen overflow-hidden">
@@ -34,9 +54,12 @@ export function AdminLoginForm() {
       />
       <div className="admin-panel-loginForm">
         <h1 className="admin-panel-title">ورود به پنل مدیریت</h1>
-        <form className="flex flex-col gap-8">
+        <form
+          className="flex flex-col gap-8"
+          onSubmit={formik.handleSubmit}
+        >
           {/* USERNAME SECTION */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 relative">
             <label htmlFor="userNameId" className="font-bold">
               نام کاربری
             </label>
@@ -46,23 +69,39 @@ export function AdminLoginForm() {
               id="userNameId"
               placeholder="نام کاربری خود را وارد نمایید"
               className="admin-panel-username"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.userName}
             />
+            {formik.touched.userName && formik.errors.userName && (
+              <div className="text-red-500">{formik.errors.userName}</div>
+            )}
           </div>
           {/* PASSWORD SECTION */}
           <div className="flex flex-col gap-3 relative">
             <label htmlFor="userNameId" className="font-bold">
               رمز عبور
             </label>
-            <input
-              type={isPasswordHidden ? "password" : "text"}
-              name="password"
-              id="passwordId"
-              placeholder="رمز عبور خود را وارد نمایید"
-              className="admin-panel-password"
-            />
-            {visibleIcon}
+            <div className="relative admin-panel-password">
+              <input
+                type={isPasswordHidden ? "password" : "text"}
+                name="password"
+                id="passwordId"
+                placeholder="رمز عبور خود را وارد نمایید"
+                className="outline-none"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+              />
+              {visibleIcon}
+            </div>
+            {formik.touched.password && formik.errors.password && (
+              <div className="text-red-500">{formik.errors.password}</div>
+            )}
           </div>
-          <Button classes={" self-center"}>ورود</Button>
+          <Button type="submit" classes={" self-center"}>
+            ورود
+          </Button>
         </form>
         <BackButton classes={" self-end absolute bottom-3 left-3"} />
       </div>
