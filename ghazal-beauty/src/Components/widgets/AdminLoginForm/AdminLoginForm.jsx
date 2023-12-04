@@ -4,6 +4,8 @@ import { Button, BackButton } from "../../base";
 import { useNavigate } from "react-router-dom";
 import { authenticateAdmin, validationSchema } from "../../../utils";
 import { useFormik } from "formik";
+import toast, { Toaster } from "react-hot-toast";
+import Cookies from "js-cookie";
 
 export function AdminLoginForm() {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
@@ -36,16 +38,34 @@ export function AdminLoginForm() {
       const isAuthenticated = await authenticateAdmin(userName, password);
 
       if (isAuthenticated) {
-        console.log("Authentication successful");
-        navigate("/admin/stock_price_manage");
+        toast.success("شما با موفقیت احراز هویت شدید", {
+          position: "top-left",
+          style: {
+            padding: "10px",
+            fontWeight: 700,
+          },
+        });
+        setTimeout(() => {
+          navigate("/admin/stock_price_manage");
+        }, 1000);
       } else {
-        console.error("Authentication failed");
+        toast.error("احراز هویت نشده اید", {
+          position: "top-left",
+          style: {
+            padding: "10px",
+            fontWeight: 700,
+          },
+        });
       }
     },
   });
 
+  function handleClick() {
+    Cookies.remove("accessToken", "refreshToken");
+  }
   return (
     <div className="grid place-items-center h-screen overflow-hidden">
+      <Toaster />
       {/* BACKGROUND WAVE SVG */}
       <img
         src="src/assets/bgWave.png"
@@ -103,7 +123,10 @@ export function AdminLoginForm() {
             ورود
           </Button>
         </form>
-        <BackButton classes={" self-end absolute bottom-3 left-3"} />
+        <BackButton
+          classes={" self-end absolute bottom-3 left-3"}
+          onClick={handleClick}
+        />
       </div>
     </div>
   );
