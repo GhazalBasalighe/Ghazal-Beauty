@@ -6,7 +6,6 @@ import { authenticateAdmin, validationSchema } from "../../../utils";
 import { useFormik } from "formik";
 
 export function AdminLoginForm() {
-  console.log("test for conflict");
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
   function handlePasswordVisibility() {
