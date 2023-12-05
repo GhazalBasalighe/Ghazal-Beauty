@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import toPersianDigits from "../helpers/toPersianDigits";
 
-const usePagination = (initialPage, limit, apiEndpoint) => {
+export const usePagination = (
+  initialPage,
+  limit,
+  apiEndpoint,
+  formatRowsCallback,
+  titles
+) => {
   const [tableData, setTableData] = useState({
-    titles: ["کالا", "قیمت", "موجودی"],
+    titles: titles,
     rows: [],
   });
   const [pagination, setPagination] = useState({
@@ -13,18 +18,15 @@ const usePagination = (initialPage, limit, apiEndpoint) => {
   });
 
   useEffect(() => {
+    //GET DATA PAGE BY PAGE
     const fetchData = async () => {
       try {
         const response = await axios.get(
           `${apiEndpoint}?page=${pagination.currentPage}&limit=${limit}`
         );
         const data = response.data.data.products;
-
-        const formattedRows = data.map((item) => [
-          item.name,
-          toPersianDigits(item.price.toFixed(3)),
-          toPersianDigits(item.quantity.toFixed(0)),
-        ]);
+        console.log(data);
+        const formattedRows = data.map(formatRowsCallback);
 
         setTableData((prevTableData) => ({
           ...prevTableData,
@@ -41,7 +43,7 @@ const usePagination = (initialPage, limit, apiEndpoint) => {
     };
 
     fetchData();
-  }, [pagination.currentPage, limit, apiEndpoint]);
+  }, [pagination.currentPage, limit, apiEndpoint, formatRowsCallback]);
 
   const handlePageChange = (newPage) => {
     setPagination((prevPagination) => ({
@@ -56,5 +58,3 @@ const usePagination = (initialPage, limit, apiEndpoint) => {
     handlePageChange,
   };
 };
-
-export default usePagination;
