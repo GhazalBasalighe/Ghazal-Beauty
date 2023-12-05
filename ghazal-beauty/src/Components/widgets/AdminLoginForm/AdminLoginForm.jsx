@@ -1,4 +1,4 @@
-import { Eye, EyeSlash } from "@phosphor-icons/react";
+import { Eye, EyeSlash, HandWaving } from "@phosphor-icons/react";
 import { useState } from "react";
 import { Button, BackButton } from "../../base";
 import { useNavigate } from "react-router-dom";
@@ -37,7 +37,7 @@ export function AdminLoginForm() {
       const isAuthenticated = await authenticateAdmin(userName, password);
 
       if (isAuthenticated) {
-        toast.success("شما با موفقیت احراز هویت شدید", {
+        toast.success(`سلام ${userName} 👋`, {
           position: "top-left",
           style: {
             padding: "10px",
@@ -46,9 +46,9 @@ export function AdminLoginForm() {
         });
         setTimeout(() => {
           navigate("/admin/stock_price_manage");
-        }, 1000);
+        }, 1500);
       } else {
-        toast.error("احراز هویت نشده اید", {
+        toast.error("نام کاربری یا رمز عبور اشتباه است", {
           position: "top-left",
           style: {
             padding: "10px",
