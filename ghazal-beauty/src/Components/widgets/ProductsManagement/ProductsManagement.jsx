@@ -1,4 +1,3 @@
-import axios from "axios";
 import { usePagination } from "../../../hooks/usePagination";
 import { Pagination, Button, DynamicTable } from "../../base";
 

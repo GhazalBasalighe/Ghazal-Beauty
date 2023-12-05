@@ -1,49 +1,47 @@
 import toPersianDigits from "../../../helpers/toPersianDigits";
-import { DynamicTable } from "../../base";
+import { DynamicTable, Pagination } from "../../base";
 import { Checkbox } from "./Checkbox";
+import { usePagination } from "../../../hooks/usePagination";
+
 export function OrdersManagement() {
-  const tableData = {
-    titles: [
+  const apiEndpoint = "http://localhost:8000/api/orders";
+
+  const formatRowsCallback = async (order, user) => {
+    return [
+      user,
+      toPersianDigits(order.totalPrice.toFixed(3).toString()),
+      toPersianDigits(
+        new Date(order.deliveryDate)
+          .toLocaleTimeString("fa-IR", {
+            hour12: false,
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          })
+          .toString()
+      ),
+      <span>
+        {order.deliveryStatus ? "تحویل داده شده" : "در انتظار تحویل"}
+      </span>,
+      <span className="underline cursor-pointer text-indigo-500">
+        بررسی سفارش
+      </span>,
+    ];
+  };
+
+  const { tableData, pagination, handlePageChange } = usePagination(
+    1,
+    4,
+    apiEndpoint,
+    formatRowsCallback,
+    [
       "نام کاربر",
       "مجموع مبلغ",
       "زمان ثبت سفارش",
+      "وضعیت تحویل",
       "عملیات‌های مربوطه",
-    ],
-    rows: [
-      [
-        "اکبر زمانی",
-        toPersianDigits("200.000"),
-        toPersianDigits("1401/2/04"),
-        <td className="p-3 align-middle underline cursor-pointer text-indigo-500">
-          بررسی سفارش
-        </td>,
-      ],
-      [
-        "اکبر زمانی",
-        toPersianDigits("200.000"),
-        toPersianDigits("1401/2/04"),
-        <td className="p-3 align-middle underline cursor-pointer text-indigo-500">
-          بررسی سفارش
-        </td>,
-      ],
-      [
-        "اکبر زمانی",
-        toPersianDigits("200.000"),
-        toPersianDigits("1401/2/04"),
-        <td className="p-3 align-middle underline cursor-pointer text-indigo-500">
-          بررسی سفارش
-        </td>,
-      ],
-      [
-        "اکبر زمانی",
-        toPersianDigits("200.000"),
-        toPersianDigits("1401/2/04"),
-        <td className="p-3 align-middle underline cursor-pointer text-indigo-500">
-          بررسی سفارش
-        </td>,
-      ],
-    ],
-  };
+    ]
+  );
 
   return (
     <div className="flex flex-col justify-center px-20 py-8 gap-8 mt-10">
@@ -52,6 +50,10 @@ export function OrdersManagement() {
         <Checkbox />
       </div>
       <DynamicTable titles={tableData.titles} rows={tableData.rows} />
+      <Pagination
+        pagination={pagination}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }

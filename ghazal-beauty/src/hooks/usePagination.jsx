@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 export const usePagination = (
   initialPage,
@@ -8,6 +9,7 @@ export const usePagination = (
   formatRowsCallback,
   titles
 ) => {
+  const location = useLocation();
   const [tableData, setTableData] = useState({
     titles: titles,
     rows: [],
@@ -16,7 +18,6 @@ export const usePagination = (
     currentPage: initialPage,
     totalPages: 1,
   });
-
   useEffect(() => {
     //GET DATA PAGE BY PAGE
     const fetchData = async () => {
@@ -24,26 +25,36 @@ export const usePagination = (
         const response = await axios.get(
           `${apiEndpoint}?page=${pagination.currentPage}&limit=${limit}`
         );
-        const data = response.data.data.products;
+        let formattedRows;
+        if (location.pathname.includes("orders_manage")) {
+          const data = response.data.data.orders;
+          formattedRows = await Promise.all(
+            data.map(async (item) => {
+              const user = await getInfoById(item.user, "users");
+              return formatRowsCallback(item, user);
+            })
+          );
+        } else {
+          const data = response.data.data.products;
+          formattedRows = await Promise.all(
+            data.map(async (item) => {
+              const category = await getInfoById(
+                item.category,
+                "categories"
+              );
+              const subCategory = await getInfoById(
+                item.subcategory,
+                "subcategories"
+              );
+              return formatRowsCallback(item, category, subCategory);
+            })
+          );
+        }
 
-        const formattedRows = await Promise.all(
-          data.map(async (item) => {
-            const category = await getInfoById(
-              item.category,
-              "categories"
-            );
-            const subCategory = await getInfoById(
-              item.subcategory,
-              "subcategories"
-            );
-            return formatRowsCallback(item, category, subCategory);
-          })
-        );
         setTableData((prevTableData) => ({
           ...prevTableData,
           rows: formattedRows,
         }));
-
         setPagination((prevPagination) => ({
           ...prevPagination,
           totalPages: response.data.total_pages,
@@ -77,7 +88,10 @@ const getInfoById = async (id, apiEndpoint) => {
     );
     const response = name.data.data;
     if (apiEndpoint === "categories") return response.category.name;
-    else return response.subcategory.name;
+    else if (apiEndpoint === "subcategories")
+      return response.subcategory.name;
+    else
+      return [response.user.firstname, response.user.lastname].join(" ");
   } catch (error) {
     console.error("Error fetching category name:", error);
     return "Unknown Category";
