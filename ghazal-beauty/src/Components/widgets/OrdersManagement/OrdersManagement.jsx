@@ -7,26 +7,23 @@ export function OrdersManagement() {
   const apiEndpoint = "http://localhost:8000/api/orders";
 
   const formatRowsCallback = async (order, user) => {
-    return [
-      user,
-      toPersianDigits(order.totalPrice.toFixed(3).toString()),
-      toPersianDigits(
-        new Date(order.deliveryDate)
-          .toLocaleTimeString("fa-IR", {
-            hour12: false,
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          })
-          .toString()
-      ),
+    // format each property separately for better readability
+    const date = toPersianDigits(
+      new Date(order.deliveryDate).toLocaleDateString("fa-IR").toString()
+    );
+    const price = toPersianDigits(order.totalPrice.toFixed(3).toString());
+    const deliveryStatus = (
       <span>
         {order.deliveryStatus ? "تحویل داده شده" : "در انتظار تحویل"}
-      </span>,
+      </span>
+    );
+    const operations = (
       <span className="underline cursor-pointer text-indigo-500">
         بررسی سفارش
-      </span>,
-    ];
+      </span>
+    );
+
+    return [user, price, date, deliveryStatus, operations];
   };
 
   const { tableData, pagination, handlePageChange } = usePagination(
