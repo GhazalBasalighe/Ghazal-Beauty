@@ -1,28 +1,11 @@
-/* NORMAL WEIGHT */
 @font-face
 {
   font-family: "Vazir";
   src: local("Vazir"),
-    url("../public/fonts/Vazir.ttf") format("truetype");
-  font-weight: normal;
-}
-
-/* BOLD WEIGHT */
-@font-face
-{
-  font-family: "Vazir";
-  src: local("Vazir"),
-    url("../public/fonts/Vazir-Bold.ttf") format("truetype");
-  font-weight: bold;
-}
-
-/* LIGHT WEIGHT */
-@font-face
-{
-  font-family: "Vazir";
-  src: local("Vazir"),
+    url("../public/fonts/Vazir.ttf") format("truetype"),
+    url("../public/fonts/Vazir-Bold.ttf") format("truetype"),
     url("../public/fonts/Vazir-Light.ttf") format("truetype");
-  font-weight: lighter;
+  font-weight: normal, bold, lighter;
 }
 
 @tailwind base;
