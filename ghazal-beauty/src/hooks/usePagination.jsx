@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useCheckboxContext } from "../context/checkboxContext";
@@ -20,6 +20,9 @@ export function usePagination(
     currentPage: initialPage,
     totalPages: 1,
   });
+
+  //MEMOIZING THIS FUNCTION PREVENTS FREQUENT REQUESTS TO BACK END
+  const memoizedFormatRowsCallback = useCallback(formatRowsCallback, []);
 
   // REQUESTS FOR PRODUCTS AND ORDERS
   useEffect(() => {
@@ -48,7 +51,7 @@ export function usePagination(
           formattedRows = await Promise.all(
             data.map(async (item) => {
               const user = await getInfoById(item.user, "users");
-              return formatRowsCallback(item, user);
+              return memoizedFormatRowsCallback(item, user);
             })
           );
         } else {
@@ -66,7 +69,11 @@ export function usePagination(
                 item.subcategory,
                 "subcategories"
               );
-              return formatRowsCallback(item, category, subCategory);
+              return memoizedFormatRowsCallback(
+                item,
+                category,
+                subCategory
+              );
             })
           );
         }
@@ -85,7 +92,14 @@ export function usePagination(
     };
 
     fetchData();
-  }, [pagination.currentPage, limit, apiEndpoint, formatRowsCallback]);
+  }, [
+    pagination.currentPage,
+    limit,
+    apiEndpoint,
+    location.pathname,
+    state.pendingChecked,
+    state.deliveredChecked,
+  ]);
 
   const handlePageChange = (newPage) => {
     setPagination((prevPagination) => ({
