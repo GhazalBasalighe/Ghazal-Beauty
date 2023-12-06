@@ -1,5 +1,5 @@
 import { usePagination } from "../../../hooks/usePagination";
-import { Pagination, Button, DynamicTable } from "../../base";
+import { Pagination, Button, DynamicTable, EmptyTable } from "../../base";
 
 export function ProductsManagement() {
   const apiEndpoint = "http://localhost:8000/api/products";
@@ -45,11 +45,17 @@ export function ProductsManagement() {
         <h1 className="text-4xl">مدیریت کالا</h1>
         <Button>افزودن کالا</Button>
       </div>
-      <DynamicTable titles={tableData.titles} rows={tableData.rows} />
-      <Pagination
-        pagination={pagination}
-        onPageChange={handlePageChange}
-      />
+      {tableData.rows.length === 0 ? (
+        <EmptyTable />
+      ) : (
+        <>
+          <DynamicTable titles={tableData.titles} rows={tableData.rows} />
+          <Pagination
+            pagination={pagination}
+            onPageChange={handlePageChange}
+          />
+        </>
+      )}
     </div>
   );
 }

@@ -6,3 +6,4 @@ export * from "./Counter";
 export * from "./Modal";
 export * from "./DynamicTable";
 export * from "./Pagination";
+export * from "./EmptyTable";

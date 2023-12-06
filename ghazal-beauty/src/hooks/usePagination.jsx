@@ -39,7 +39,7 @@ export function usePagination(
             );
           } else if (state.deliveredChecked) {
             response = await axios.get(
-              `${apiEndpoint}?page=${pagination.currentPage}&limit=${limit}&deliveryStatus=true`
+              `${apiEndpoint}?page=${5}&limit=${limit}&deliveryStatus=true`
             );
           }
           const data = response.data.data.orders;
