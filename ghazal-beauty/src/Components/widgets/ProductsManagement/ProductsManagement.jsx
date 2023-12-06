@@ -7,11 +7,15 @@ export function ProductsManagement() {
   const formatRowsCallback = async (item, category, subCategory) => {
     // format each property separately for better readability
     const picture = (
-      <img
-        src={`http://localhost:8000/images/products/images/products-images-default.jpeg`}
-        alt="product image"
-        width={60}
-      />
+      <div className="bg-white p-2 rounded-sm">
+        <img
+          src={`http://localhost:8000/images/products/thumbnails/${item.thumbnail}`}
+          alt="product image"
+          width={100}
+          height={130}
+          className="object-contain"
+        />
+      </div>
     );
     const groupings = (
       <span>
@@ -33,14 +37,14 @@ export function ProductsManagement() {
 
   const { tableData, pagination, handlePageChange } = usePagination(
     1,
-    4,
+    3,
     apiEndpoint,
     formatRowsCallback,
     ["تصویر محصول", "نام محصول", "دسته بندی", "عملیات های مربوطه"]
   );
 
   return (
-    <div className="flex flex-col justify-center px-20 py-8 gap-8 mt-10">
+    <div className="flex flex-col justify-center px-20 py-8 gap-8 mt-4">
       <div className="vertical-flex justify-between">
         <h1 className="text-4xl">مدیریت کالا</h1>
         <Button>افزودن کالا</Button>
