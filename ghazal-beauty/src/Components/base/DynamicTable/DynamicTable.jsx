@@ -17,7 +17,7 @@ export function DynamicTable({ titles, rows }) {
           <tr
             key={rowIndex}
             className={
-              rowIndex % 2 === 0 ? "bg-purple-200" : "bg-purple-100"
+              rowIndex % 2 === 0 ? "bg-zinc-100" : "bg-purple-100"
             }
           >
             {rowData.map((cellData, colIndex) => (

@@ -28,7 +28,7 @@ export function OrdersManagement() {
 
   const { tableData, pagination, handlePageChange } = usePagination(
     1,
-    4,
+    7,
     apiEndpoint,
     formatRowsCallback,
     [
