@@ -1,14 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { useCheckboxContext } from "../context/checkboxContext";
 
-export const usePagination = (
+export function usePagination(
   initialPage,
   limit,
   apiEndpoint,
   formatRowsCallback,
   titles
-) => {
+) {
+  const [state] = useCheckboxContext();
   const location = useLocation();
   const [tableData, setTableData] = useState({
     titles: titles,
@@ -18,24 +20,45 @@ export const usePagination = (
     currentPage: initialPage,
     totalPages: 1,
   });
+
+  //MEMOIZING THIS FUNCTION PREVENTS FREQUENT REQUESTS TO BACK END
+  const memoizedFormatRowsCallback = useCallback(formatRowsCallback, []);
+
+  // REQUESTS FOR PRODUCTS AND ORDERS
   useEffect(() => {
     //GET DATA PAGE BY PAGE
     const fetchData = async () => {
       try {
-        const response = await axios.get(
+        let response = await axios.get(
           `${apiEndpoint}?page=${pagination.currentPage}&limit=${limit}`
         );
         let formattedRows;
+        // table needs to request to orders endpoint
         if (location.pathname.includes("orders_manage")) {
+          // sending different requests based on delivery status
+          if (state.pendingChecked) {
+            response = await axios.get(
+              `${apiEndpoint}?page=${pagination.currentPage}&limit=${limit}&deliveryStatus=false`
+            );
+          } else if (state.deliveredChecked) {
+            response = await axios.get(
+              `${apiEndpoint}?page=${5}&limit=${limit}&deliveryStatus=true`
+            );
+          }
           const data = response.data.data.orders;
+
+          // another req for the user bc the db returns user ID !
           formattedRows = await Promise.all(
             data.map(async (item) => {
               const user = await getInfoById(item.user, "users");
-              return formatRowsCallback(item, user);
+              return memoizedFormatRowsCallback(item, user);
             })
           );
         } else {
+          // table needs to request to products endpoint
           const data = response.data.data.products;
+
+          // another req for the category and subcategory bc the db returns user ID !
           formattedRows = await Promise.all(
             data.map(async (item) => {
               const category = await getInfoById(
@@ -46,7 +69,11 @@ export const usePagination = (
                 item.subcategory,
                 "subcategories"
               );
-              return formatRowsCallback(item, category, subCategory);
+              return memoizedFormatRowsCallback(
+                item,
+                category,
+                subCategory
+              );
             })
           );
         }
@@ -65,7 +92,14 @@ export const usePagination = (
     };
 
     fetchData();
-  }, [pagination.currentPage, limit, apiEndpoint, formatRowsCallback]);
+  }, [
+    pagination.currentPage,
+    limit,
+    apiEndpoint,
+    location.pathname,
+    state.pendingChecked,
+    state.deliveredChecked,
+  ]);
 
   const handlePageChange = (newPage) => {
     setPagination((prevPagination) => ({
@@ -79,7 +113,7 @@ export const usePagination = (
     pagination,
     handlePageChange,
   };
-};
+}
 
 const getInfoById = async (id, apiEndpoint) => {
   try {
@@ -87,9 +121,12 @@ const getInfoById = async (id, apiEndpoint) => {
       `http://localhost:8000/api/${apiEndpoint}/${id}`
     );
     const response = name.data.data;
+    // ---categories---
     if (apiEndpoint === "categories") return response.category.name;
+    // ---subcategories---
     else if (apiEndpoint === "subcategories")
       return response.subcategory.name;
+    // ---firstname/lastname---
     else
       return [response.user.firstname, response.user.lastname].join(" ");
   } catch (error) {

@@ -126,6 +126,12 @@
     @apply py-5 bg-transparent mt-6
   }
 
+  /* EMPTY TABLE WARNING */
+  .empty-table
+  {
+    @apply flex flex-col items-center gap-4 shadow-md p-5 rounded-2xl max-w-screen-md mx-auto
+  }
+
 }
 
 

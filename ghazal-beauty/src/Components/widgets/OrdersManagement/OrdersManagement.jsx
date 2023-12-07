@@ -1,5 +1,5 @@
 import toPersianDigits from "../../../helpers/toPersianDigits";
-import { DynamicTable, Pagination } from "../../base";
+import { DynamicTable, Pagination, EmptyTable } from "../../base";
 import { Checkbox } from "./Checkbox";
 import { usePagination } from "../../../hooks/usePagination";
 
@@ -28,7 +28,7 @@ export function OrdersManagement() {
 
   const { tableData, pagination, handlePageChange } = usePagination(
     1,
-    4,
+    7,
     apiEndpoint,
     formatRowsCallback,
     [
@@ -39,18 +39,23 @@ export function OrdersManagement() {
       "عملیات‌های مربوطه",
     ]
   );
-
   return (
     <div className="flex flex-col justify-center px-20 py-8 gap-8 mt-10">
       <div className="vertical-flex justify-between">
         <h1 className="text-4xl">مدیریت سفارش‌ها</h1>
         <Checkbox />
       </div>
-      <DynamicTable titles={tableData.titles} rows={tableData.rows} />
-      <Pagination
-        pagination={pagination}
-        onPageChange={handlePageChange}
-      />
+      {tableData.rows.length === 0 ? (
+        <EmptyTable />
+      ) : (
+        <>
+          <DynamicTable titles={tableData.titles} rows={tableData.rows} />
+          <Pagination
+            pagination={pagination}
+            onPageChange={handlePageChange}
+          />
+        </>
+      )}
     </div>
   );
 }

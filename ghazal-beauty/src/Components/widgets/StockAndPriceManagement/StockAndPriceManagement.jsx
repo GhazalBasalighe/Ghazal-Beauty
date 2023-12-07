@@ -1,5 +1,5 @@
 import { usePagination } from "../../../hooks/usePagination";
-import { Pagination, Button, DynamicTable } from "../../base";
+import { Pagination, Button, DynamicTable, EmptyTable } from "../../base";
 import toPersianDigits from "../../../helpers/toPersianDigits";
 
 export function StockAndPriceManagement() {
@@ -26,11 +26,17 @@ export function StockAndPriceManagement() {
         <h1 className="text-4xl">مدیریت موجودی و قیمت‌ها</h1>
         <Button>ذخیره</Button>
       </div>
-      <DynamicTable titles={tableData.titles} rows={tableData.rows} />
-      <Pagination
-        pagination={pagination}
-        onPageChange={handlePageChange}
-      />
+      {tableData.rows.length === 0 ? (
+        <EmptyTable />
+      ) : (
+        <>
+          <DynamicTable titles={tableData.titles} rows={tableData.rows} />
+          <Pagination
+            pagination={pagination}
+            onPageChange={handlePageChange}
+          />
+        </>
+      )}
     </div>
   );
 }

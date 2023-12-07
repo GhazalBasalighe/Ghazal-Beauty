@@ -1,39 +1,7 @@
-import { useReducer } from "react";
-
-// INITIAL STATE OF REDUCER
-const initialState = {
-  allChecked: true,
-  pendingChecked: false,
-  deliveredChecked: false,
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "ALL":
-      return {
-        allChecked: true,
-        pendingChecked: false,
-        deliveredChecked: false,
-      };
-    case "PENDING":
-      return {
-        allChecked: false,
-        pendingChecked: true,
-        deliveredChecked: false,
-      };
-    case "DELIVERED":
-      return {
-        allChecked: false,
-        pendingChecked: false,
-        deliveredChecked: true,
-      };
-    default:
-      return state;
-  }
-};
+import { useCheckboxContext } from "../../../../context/checkboxContext";
 
 export function Checkbox() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useCheckboxContext();
 
   const handleCheckboxChange = (type) => {
     dispatch({ type });
