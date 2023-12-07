@@ -59,12 +59,12 @@
   /* ADMIN PANEL */
   .admin-panel-username
   {
-    @apply py-2 px-5 outline-none bg-transparent border-solid border border-violet-400 rounded-md focus:border-none focus:bg-purple-200 focus:placeholder:text-gray-500 text-left placeholder:text-start
+    @apply py-2 px-5 outline-none bg-transparent border-solid border border-violet-400 rounded-md text-left placeholder:text-start
   }
 
   .admin-panel-password
   {
-    @apply py-2 px-5 outline-none bg-transparent border-solid border border-violet-400 rounded-md focus:border-none focus:bg-purple-200 focus:placeholder:text-gray-500
+    @apply py-2 px-5 outline-none bg-transparent border-solid border border-violet-400 rounded-md
   }
 
   .admin-panel-title

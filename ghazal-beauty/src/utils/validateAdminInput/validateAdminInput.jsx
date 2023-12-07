@@ -1,5 +1,11 @@
 import * as Yup from "yup";
 export const validationSchema = Yup.object().shape({
-  userName: Yup.string().required("نام کاربری نمی‌تواند خالی باشد"),
-  password: Yup.string().required("رمز عبور نمی‌تواند خالی باشد"),
+  userName: Yup.string()
+    .min(3, "نام کاربری باید حداقل 3 حرف باشد")
+    .max(20, "نام کاربری نمی‌تواند بیش از 20 حرف باشد")
+    .required("نام کاربری نمی‌تواند خالی باشد"),
+  password: Yup.string()
+    .min(8, "رمز عبور باید حداقل 8 کاراکتر باشد")
+    .max(12, "رمز عبور نمی‌تواند بیش از 12 کاراکتر باشد")
+    .required("رمز عبور نمی‌تواند خالی باشد"),
 });
