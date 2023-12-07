@@ -1,15 +1,24 @@
+import { usePagination } from "../../../hooks/usePagination";
+import { Pagination, Button, DynamicTable, EmptyTable } from "../../base";
 import toPersianDigits from "../../../helpers/toPersianDigits";
-import { Button, DynamicTable } from "../../base";
 
 export function StockAndPriceManagement() {
-  const tableData = {
-    titles: ["کالا", "قیمت", "موجودی"],
-    rows: [
-      ["شوینده صورت", toPersianDigits("200.000"), toPersianDigits("5")],
-      ["نمیدونم", toPersianDigits("100.000"), toPersianDigits("10")],
-      ["میدونم", toPersianDigits("800.000"), toPersianDigits("8")],
-    ],
-  };
+  const apiEndpoint = "http://localhost:8000/api/products";
+
+  const formatRowsCallback = (item) => [
+    item.name,
+    toPersianDigits(item.price.toFixed(3)),
+    toPersianDigits(item.quantity.toFixed(0)),
+  ];
+
+  const { tableData, pagination, handlePageChange } = usePagination(
+    1,
+    7,
+    apiEndpoint,
+    formatRowsCallback,
+    ["کالا", "قیمت", "موجودی"]
+  );
+  console.log(tableData);
 
   return (
     <div className="flex flex-col justify-center px-20 py-8 gap-8 mt-10">
@@ -17,7 +26,17 @@ export function StockAndPriceManagement() {
         <h1 className="text-4xl">مدیریت موجودی و قیمت‌ها</h1>
         <Button>ذخیره</Button>
       </div>
-      <DynamicTable titles={tableData.titles} rows={tableData.rows} />
+      {tableData.rows.length === 0 ? (
+        <EmptyTable />
+      ) : (
+        <>
+          <DynamicTable titles={tableData.titles} rows={tableData.rows} />
+          <Pagination
+            pagination={pagination}
+            onPageChange={handlePageChange}
+          />
+        </>
+      )}
     </div>
   );
 }

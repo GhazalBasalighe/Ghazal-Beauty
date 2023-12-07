@@ -1,20 +1,29 @@
-import { useState } from "react";
+import { useCheckboxContext } from "../../../../context/checkboxContext";
 
 export function Checkbox() {
-  const [pendingChecked, setPendingChecked] = useState(true);
-  const [deliveredChecked, setDeliveredChecked] = useState(false);
+  const [state, dispatch] = useCheckboxContext();
 
-  const handlePendingChange = () => {
-    setPendingChecked(true);
-    setDeliveredChecked(false);
+  const handleCheckboxChange = (type) => {
+    dispatch({ type });
   };
 
-  const handleDeliveredChange = () => {
-    setPendingChecked(false);
-    setDeliveredChecked(true);
-  };
   return (
     <div className="vertical-flex gap-8 text-indigo-500">
+      {/* ALL */}
+      <div className="vertical-flex gap-3 cursor-pointer">
+        <label htmlFor="allOrdersId" className="cursor-pointer">
+          همه سفارشات
+        </label>
+        <input
+          type="radio"
+          name="allOrders"
+          id="allOrdersId"
+          checked={state.allChecked}
+          onChange={() => handleCheckboxChange("ALL")}
+          className="orders-category-checkbox"
+        />
+      </div>
+      {/* PENDING ORDERS */}
       <div className="vertical-flex gap-3 cursor-pointer">
         <label htmlFor="pendingOrderId" className="cursor-pointer">
           سفارش‌های در انتظار
@@ -23,11 +32,12 @@ export function Checkbox() {
           type="radio"
           name="pendingOrder"
           id="pendingOrderId"
-          checked={pendingChecked}
-          onChange={handlePendingChange}
+          checked={state.pendingChecked}
+          onChange={() => handleCheckboxChange("PENDING")}
           className="orders-category-checkbox"
         />
       </div>
+      {/* DELIVERED ORDERS */}
       <div className="vertical-flex gap-3 cursor-pointer">
         <label htmlFor="deliveredOrderId" className="cursor-pointer">
           سفارش‌های تحویل داده شده
@@ -36,8 +46,8 @@ export function Checkbox() {
           type="radio"
           name="deliveredOrder"
           id="deliveredOrderId"
-          checked={deliveredChecked}
-          onChange={handleDeliveredChange}
+          checked={state.deliveredChecked}
+          onChange={() => handleCheckboxChange("DELIVERED")}
           className="orders-category-checkbox"
         />
       </div>

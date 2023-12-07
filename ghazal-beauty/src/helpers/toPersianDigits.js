@@ -9,7 +9,11 @@ export default (number) => {
   const resultString = number
     .split("")
     .map((char) =>
-      translationMap.has(char) ? translationMap.get(char) : char
+      char === "."
+        ? ","
+        : translationMap.has(char)
+        ? translationMap.get(char)
+        : char
     )
     .join("");
 
