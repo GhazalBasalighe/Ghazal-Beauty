@@ -33,7 +33,7 @@ export function usePagination(
           `${apiEndpoint}?page=${pagination.currentPage}&limit=${limit}`
         );
         let formattedRows;
-        // table needs to request to orders endpoint
+        //-----------------REQUESTING FOR ORDERS--------------------
         if (location.pathname.includes("orders_manage")) {
           // sending different requests based on delivery status
           if (state.pendingChecked) {
@@ -46,7 +46,6 @@ export function usePagination(
             );
           }
           const data = response.data.data.orders;
-
           // another req for the user bc the db returns user ID !
           formattedRows = await Promise.all(
             data.map(async (item) => {
@@ -55,9 +54,8 @@ export function usePagination(
             })
           );
         } else {
-          // table needs to request to products endpoint
+          //-----------------REQUESTING FOR PRODUCTS--------------------
           const data = response.data.data.products;
-
           // another req for the category and subcategory bc the db returns user ID !
           formattedRows = await Promise.all(
             data.map(async (item) => {
@@ -77,11 +75,12 @@ export function usePagination(
             })
           );
         }
-
+        // PUT FORMATTED ROWS IN TABLE
         setTableData((prevTableData) => ({
           ...prevTableData,
           rows: formattedRows,
         }));
+        // SET PAGINATION ACCORDING TO THE FETCHED DATA
         setPagination((prevPagination) => ({
           ...prevPagination,
           totalPages: response.data.total_pages,
@@ -101,6 +100,7 @@ export function usePagination(
     state.deliveredChecked,
   ]);
 
+  // THIS IS USED TO BE PASSED THROUGH PROPS TO PAGINATION COMPONENT
   const handlePageChange = (newPage) => {
     setPagination((prevPagination) => ({
       ...prevPagination,
