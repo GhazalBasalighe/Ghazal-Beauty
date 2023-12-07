@@ -59,7 +59,8 @@ export function AdminLoginForm() {
     },
   });
 
-  function handleClick() {
+  // REMOVE COOKIES WHEN LOGGING OUT
+  function handleBackBtnClick() {
     Cookies.remove("accessToken", "refreshToken");
   }
   return (
@@ -124,7 +125,7 @@ export function AdminLoginForm() {
         </form>
         <BackButton
           classes={" self-end absolute bottom-3 left-3"}
-          onClick={handleClick}
+          onClick={handleBackBtnClick}
         />
       </div>
     </div>
