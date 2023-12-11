@@ -32,6 +32,8 @@ router.get("/:id", asyncHandler(getProductById));
 router.patch(
   "/:id",
   uploadProductImages,
+  protect,
+  restrictTo("ADMIN"),
   validator(editProductValidationSchema),
   asyncHandler(editProductById)
 );
