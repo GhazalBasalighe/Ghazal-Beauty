@@ -1,7 +1,7 @@
-import { AdminHeader, StockAndPriceManagement } from "../Components";
+import { StockAndPriceManagement, PrivateRoute } from "../Components";
 
 export function StockAndPriceManagementPage() {
   return <StockAndPriceManagement />;
 }
 
-export default StockAndPriceManagementPage;
+export default PrivateRoute(StockAndPriceManagementPage);

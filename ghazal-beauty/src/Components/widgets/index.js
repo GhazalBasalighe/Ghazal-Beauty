@@ -15,3 +15,4 @@ export * from "./AddProductModal/TextEditor";
 export * from "./NavBar";
 export * from "./HeroSection";
 export * from "./SubGroupProducts";
+export * from "./PrivateRoute";

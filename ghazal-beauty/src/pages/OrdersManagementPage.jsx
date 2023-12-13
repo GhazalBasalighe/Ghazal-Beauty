@@ -1,7 +1,7 @@
-import { AdminHeader, OrdersManagement } from "../Components";
+import { OrdersManagement, PrivateRoute } from "../Components";
 
 function OrdersManagementPage() {
   return <OrdersManagement />;
 }
 
-export default OrdersManagementPage;
+export default PrivateRoute(OrdersManagementPage);
