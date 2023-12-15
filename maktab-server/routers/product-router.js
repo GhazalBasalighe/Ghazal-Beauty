@@ -16,7 +16,12 @@ const {
   editProductValidationSchema,
 } = require("../validations/product-validation");
 
-router.get("/", asyncHandler(getAllProducts));
+router.get(
+  "/",
+  protect,
+  restrictTo("ADMIN"),
+  asyncHandler(getAllProducts)
+);
 
 router.post(
   "/",

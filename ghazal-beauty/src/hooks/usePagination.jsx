@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useCheckboxContext } from "../context/checkboxContext";
-
+import { useSelector } from "react-redux";
+import api from "../config/axiosInstance";
 export function usePagination(
   initialPage,
   limit,
@@ -12,6 +13,8 @@ export function usePagination(
 ) {
   const [state] = useCheckboxContext();
   const location = useLocation();
+  const accessToken = useSelector((state) => state.auth.accessToken);
+
   const [tableData, setTableData] = useState({
     titles: titles,
     rows: [],
@@ -29,11 +32,11 @@ export function usePagination(
     //GET DATA PAGE BY PAGE
     const fetchData = async () => {
       try {
-        let response = await axios.get(
+        let response = await api.get(
           `${apiEndpoint}?page=${pagination.currentPage}&limit=${limit}`,
           {
             headers: {
-              Authorization: `Bearer ${"access token"}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           }
         );
@@ -42,12 +45,12 @@ export function usePagination(
         if (location.pathname.includes("orders_manage")) {
           // sending different requests based on delivery status
           if (state.pendingChecked) {
-            response = await axios.get(
+            response = await api.get(
               `${apiEndpoint}?page=${pagination.currentPage}&limit=${limit}&deliveryStatus=false`
             );
           } else if (state.deliveredChecked) {
-            response = await axios.get(
-              `${apiEndpoint}?page=${5}&limit=${limit}&deliveryStatus=true`
+            response = await api.get(
+              `${apiEndpoint}?page=${pagination.currentPage}&limit=${limit}&deliveryStatus=true`
             );
           }
           const data = response.data.data.orders;

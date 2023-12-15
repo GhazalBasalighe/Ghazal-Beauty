@@ -4,8 +4,6 @@ import { Checkbox } from "./Checkbox";
 import { usePagination } from "../../../hooks/usePagination";
 
 export function OrdersManagement() {
-  const apiEndpoint = "http://localhost:8000/api/orders";
-
   const formatRowsCallback = async (order, user) => {
     // format each property separately for better readability
     const date = toPersianDigits(
@@ -29,7 +27,7 @@ export function OrdersManagement() {
   const { tableData, pagination, handlePageChange } = usePagination(
     1,
     7,
-    apiEndpoint,
+    "/orders",
     formatRowsCallback,
     [
       "نام کاربر",

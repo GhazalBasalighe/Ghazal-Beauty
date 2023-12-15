@@ -5,7 +5,7 @@ import { validationSchema } from "../../../utils";
 import { useFormik } from "formik";
 import toast, { Toaster } from "react-hot-toast";
 import Cookies from "js-cookie";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginUser } from "../../../store/thunk/thunk";
 import { useNavigate } from "react-router-dom";
 

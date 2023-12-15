@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, useRefreshToken } from "../thunk/thunk";
+import { loginUser, sendRefreshToken } from "../thunk/thunk";
 
 const initialState = {
   accessToken: "",
@@ -13,6 +13,9 @@ export const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       (state.accessToken = ""), (state.isLoggedIn = false);
+    },
+    setAccessToken: (state, action) => {
+      state.accessToken = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -32,12 +35,12 @@ export const authSlice = createSlice({
       state.isLoading = false;
     });
     // BUILDERS FOR KEEPING THE USER LOGGED IN WITH THE USE OF REFRESH TOKEN
-    builder.addCase(useRefreshToken.fulfilled, (state, action) => {
+    builder.addCase(sendRefreshToken.fulfilled, (state, action) => {
       if (action.payload.status === "success")
         state.accessToken = action.payload.token.accessToken;
       state.isLoading = false;
     });
-    builder.addCase(useRefreshToken.rejected, (state) => {
+    builder.addCase(sendRefreshToken.rejected, (state) => {
       state.accessToken = "";
       state.isLoggedIn = false;
       state.isLoading = false;
@@ -45,5 +48,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setAccessToken } = authSlice.actions;
 export default authSlice.reducer;

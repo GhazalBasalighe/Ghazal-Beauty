@@ -2,8 +2,6 @@ import { usePagination } from "../../../hooks/usePagination";
 import { Pagination, Button, DynamicTable, EmptyTable } from "../../base";
 
 export function ProductsManagement() {
-  const apiEndpoint = "http://localhost:8000/api/products";
-
   const formatRowsCallback = async (item, category, subCategory) => {
     // format each property separately for better readability
     const picture = (
@@ -35,7 +33,7 @@ export function ProductsManagement() {
   const { tableData, pagination, handlePageChange } = usePagination(
     1,
     4,
-    apiEndpoint,
+    "/products",
     formatRowsCallback,
     ["تصویر محصول", "نام محصول", "دسته بندی", "عملیات های مربوطه"]
   );

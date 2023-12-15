@@ -3,8 +3,6 @@ import { Pagination, Button, DynamicTable, EmptyTable } from "../../base";
 import toPersianDigits from "../../../helpers/toPersianDigits";
 
 export function StockAndPriceManagement() {
-  const apiEndpoint = "http://localhost:8000/api/products";
-
   const formatRowsCallback = (item) => [
     item.name,
     toPersianDigits(item.price.toFixed(3)),
@@ -14,11 +12,10 @@ export function StockAndPriceManagement() {
   const { tableData, pagination, handlePageChange } = usePagination(
     1,
     7,
-    apiEndpoint,
+    "/products",
     formatRowsCallback,
     ["کالا", "قیمت", "موجودی"]
   );
-  console.log(tableData);
 
   return (
     <div className="flex flex-col justify-center px-20 py-8 gap-8 mt-10">
