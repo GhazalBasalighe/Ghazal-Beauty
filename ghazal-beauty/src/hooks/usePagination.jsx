@@ -33,12 +33,7 @@ export function usePagination(
     const fetchData = async () => {
       try {
         let response = await api.get(
-          `${apiEndpoint}?page=${pagination.currentPage}&limit=${limit}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
+          `${apiEndpoint}?page=${pagination.currentPage}&limit=${limit}`
         );
         let formattedRows;
         //-----------------REQUESTING FOR ORDERS--------------------

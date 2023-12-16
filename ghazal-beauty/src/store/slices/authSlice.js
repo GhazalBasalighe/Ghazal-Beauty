@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loginUser, sendRefreshToken } from "../thunk/thunk";
+import Cookies from "js-cookie";
 
 const initialState = {
   accessToken: "",
@@ -13,6 +14,7 @@ export const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       (state.accessToken = ""), (state.isLoggedIn = false);
+      Cookies.remove("refreshToken");
     },
     setAccessToken: (state, action) => {
       state.accessToken = action.payload;
