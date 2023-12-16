@@ -8,7 +8,7 @@ import axios from "axios";
 
 // TRIGGERED BEFORE EACH REQUEST BEING SENT
 api.interceptors.request.use(
-  async (req) => {
+  (req) => {
     console.log("Request Interceptor - Request Config:", req);
     const dispatch = useDispatch();
     console.log("salaaaam");
