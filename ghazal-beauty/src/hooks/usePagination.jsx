@@ -101,6 +101,7 @@ export function usePagination(
     location.pathname,
     state.pendingChecked,
     state.deliveredChecked,
+    accessToken,
   ]);
 
   // THIS IS USED TO BE PASSED THROUGH PROPS TO PAGINATION COMPONENT

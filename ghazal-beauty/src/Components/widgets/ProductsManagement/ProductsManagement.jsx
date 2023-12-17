@@ -1,5 +1,7 @@
+import { useSelector } from "react-redux";
 import { usePagination } from "../../../hooks/usePagination";
 import { Pagination, Button, DynamicTable, EmptyTable } from "../../base";
+import { SyncLoader } from "react-spinners";
 
 export function ProductsManagement() {
   const formatRowsCallback = async (item, category, subCategory) => {
@@ -37,6 +39,7 @@ export function ProductsManagement() {
     formatRowsCallback,
     ["تصویر محصول", "نام محصول", "دسته بندی", "عملیات های مربوطه"]
   );
+  const isLoading = useSelector((state) => state.auth.isLoading);
 
   return (
     <div className="flex flex-col justify-center px-20 py-8 gap-8 mt-4">
@@ -44,7 +47,13 @@ export function ProductsManagement() {
         <h1 className="text-4xl">مدیریت کالا</h1>
         <Button>افزودن کالا</Button>
       </div>
-      {tableData.rows.length === 0 ? (
+      {isLoading && (
+        <SyncLoader
+          color="#a056b9"
+          className="fixed top-1/2 left-1/2 bg-white"
+        />
+      )}
+      {tableData.rows.length === 0 && !isLoading ? (
         <EmptyTable />
       ) : (
         <>
