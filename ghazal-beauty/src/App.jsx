@@ -1,12 +1,11 @@
 import "./App.css";
 import { RouterProvider } from "react-router-dom";
-import React, { Suspense, useCallback } from "react";
+import React, { Suspense } from "react";
 import { router } from "./routes/routes";
 import { SyncLoader } from "react-spinners";
 
 import api from "./config/axiosInstance";
 import { store } from "./store/store";
-import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import { setAccessToken } from "./store/slices/authSlice";
 import { useDispatch } from "react-redux";
@@ -18,16 +17,10 @@ function App() {
       const state = store.getState();
       const accessToken = state.auth.accessToken;
       if (accessToken) {
-        const expiry = jwtDecode(accessToken).exp * 1000;
-        const isExpired = Date.now() - expiry > 0;
-        if (!isExpired) {
-          api.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${accessToken}`;
-        } else {
-        }
+        api.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${accessToken}`;
       }
-
       return req;
     },
     (error) => {
@@ -49,7 +42,6 @@ function App() {
 
           if (response.status === 200) {
             const newAccessToken = response.data.token.accessToken;
-            console.log(newAccessToken);
             dispatch(setAccessToken(newAccessToken));
             api.defaults.headers.common[
               "Authorization"

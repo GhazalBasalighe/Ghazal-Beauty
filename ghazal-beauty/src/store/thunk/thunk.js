@@ -28,23 +28,20 @@ export const loginUser = createAsyncThunk(
 //REFRESH TOKEN THUNK
 export const sendRefreshToken = createAsyncThunk(
   "auth/refresh-token",
-  async (_, thunkAPI) => {
+  async () => {
+    const refreshToken = Cookies.get("refreshToken");
     try {
-      const refreshToken = Cookies.get("refreshToken");
-      console.log(refreshToken);
       const response = await api.post("/auth/token", { refreshToken });
       if (response.status === 200) {
         const newAccessToken = response.data.token.accessToken;
         store.dispatch(setAccessToken(newAccessToken));
+        api.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${newAccessToken}`;
+        return api(originalRequest);
       }
-
-      // If the refresh token request is unsuccessful, consider the user as not logged in
-      store.dispatch(logout());
-      return thunkAPI.rejectWithValue("Refresh token request failed");
-    } catch (error) {
-      console.error("Error refreshing token:", error);
-      store.dispatch(logout());
-      return thunkAPI.rejectWithValue("Error refreshing token");
+    } catch (refreshError) {
+      return Promise.reject(refreshError);
     }
   }
 );
