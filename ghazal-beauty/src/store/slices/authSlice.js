@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, sendRefreshToken } from "../thunk/thunk";
+import { loginUser } from "../thunk/thunk";
 import Cookies from "js-cookie";
 
 const initialState = {
@@ -32,17 +32,6 @@ export const authSlice = createSlice({
       state.isLoggedIn = true;
     });
     builder.addCase(loginUser.rejected, (state) => {
-      state.accessToken = "";
-      state.isLoggedIn = false;
-      state.isLoading = false;
-    });
-    // BUILDERS FOR KEEPING THE USER LOGGED IN WITH THE USE OF REFRESH TOKEN
-    builder.addCase(sendRefreshToken.fulfilled, (state, action) => {
-      if (action.payload.status === "success")
-        state.accessToken = action.payload.token.accessToken;
-      state.isLoading = false;
-    });
-    builder.addCase(sendRefreshToken.rejected, (state) => {
       state.accessToken = "";
       state.isLoggedIn = false;
       state.isLoading = false;

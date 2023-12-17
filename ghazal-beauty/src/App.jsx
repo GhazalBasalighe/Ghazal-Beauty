@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 function App() {
   const dispatch = useDispatch();
   api.interceptors.request.use(
-    async (req) => {
+    (req) => {
       const state = store.getState();
       const accessToken = state.auth.accessToken;
       if (accessToken) {
