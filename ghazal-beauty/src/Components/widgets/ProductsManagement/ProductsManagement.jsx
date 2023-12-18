@@ -2,8 +2,13 @@ import { useSelector } from "react-redux";
 import { usePagination } from "../../../hooks/usePagination";
 import { Pagination, Button, DynamicTable, EmptyTable } from "../../base";
 import { SyncLoader } from "react-spinners";
+import { useModal } from "../../../hooks/useModal";
+import { createPortal } from "react-dom";
+import { AddProductModal } from "../AddProductModal";
 
 export function ProductsManagement() {
+  const { isModalOpen, openModal, closeModal } = useModal();
+
   const formatRowsCallback = async (item, category, subCategory) => {
     // format each property separately for better readability
     const picture = (
@@ -45,7 +50,7 @@ export function ProductsManagement() {
     <div className="flex flex-col justify-center px-20 py-8 gap-8 mt-4">
       <div className="vertical-flex justify-between">
         <h1 className="text-4xl">مدیریت کالا</h1>
-        <Button>افزودن کالا</Button>
+        <Button onClick={openModal}>افزودن کالا</Button>
       </div>
       {isLoading && (
         <SyncLoader
@@ -64,6 +69,11 @@ export function ProductsManagement() {
           />
         </>
       )}
+      {isModalOpen &&
+        createPortal(
+          <AddProductModal closeModal={closeModal} />,
+          document.body
+        )}
     </div>
   );
 }

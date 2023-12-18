@@ -1,9 +1,9 @@
 import { Modal, Button } from "../../base";
 import { TextEditor } from "./TextEditor";
 import { FileInputField } from "./FileInputField";
-export function AddProductModal() {
+export function AddProductModal({ closeModal }) {
   return (
-    <Modal title={"افزودن / ویرایش کالا"}>
+    <Modal title={"افزودن / ویرایش کالا"} closeModal={closeModal}>
       <div className="flex flex-col gap-5 my-5">
         {/* PRODUCT NAME SECTION */}
         <div className="flex flex-col gap-2">
