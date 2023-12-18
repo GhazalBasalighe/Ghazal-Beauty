@@ -5,7 +5,7 @@ import List from "@editorjs/list";
 import Quote from "@editorjs/quote";
 import LinkTool from "@editorjs/link";
 
-export function TextEditor() {
+export function TextEditor({ description }) {
   const ejInstance = useRef();
   const isReady = useRef(false);
   useEffect(() => {
@@ -39,6 +39,9 @@ export function TextEditor() {
           onReady: () => {
             ejInstance.current = editor;
           },
+        },
+        data: {
+          //should add initial value with the same format that editor js saved
         },
       };
 

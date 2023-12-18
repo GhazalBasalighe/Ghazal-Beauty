@@ -10,7 +10,8 @@ import { useState } from "react";
 export function ProductsManagement() {
   const { isModalOpen, openModal, closeModal } = useModal();
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const handleEditClick = () => {
+  const handleEditClick = (product) => {
+    setSelectedProduct(product._id);
     openModal("edit");
   };
 
@@ -37,7 +38,7 @@ export function ProductsManagement() {
       <>
         <span
           className="underline cursor-pointer text-indigo-500"
-          onClick={handleEditClick}
+          onClick={() => handleEditClick(item)}
         >
           ویرایش
         </span>
@@ -84,16 +85,27 @@ export function ProductsManagement() {
           />
         </>
       )}
+      {/* ADD PRODUCT MODAL */}
       {isModalOpen("add") &&
         createPortal(
           <AddProductModal closeModal={() => closeModal("add")} />,
           document.body
         )}
+      {/* DELETE PRODUCT MODAL */}
       {isModalOpen("delete") &&
         createPortal(
           <DeleteProductModal
             closeModal={() => closeModal("delete")}
             productInfo={selectedProduct}
+          />,
+          document.body
+        )}
+      {/* EDIT MODAL PRODUCT */}
+      {isModalOpen("edit") &&
+        createPortal(
+          <AddProductModal
+            closeModal={() => closeModal("edit")}
+            productId={selectedProduct}
           />,
           document.body
         )}
