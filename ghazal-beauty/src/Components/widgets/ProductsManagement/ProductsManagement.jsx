@@ -5,10 +5,19 @@ import { SyncLoader } from "react-spinners";
 import { useModal } from "../../../hooks/useModal";
 import { createPortal } from "react-dom";
 import { AddProductModal } from "../AddProductModal";
-
+import { DeleteProductModal } from "../DeleteProductModal";
+import { useState } from "react";
 export function ProductsManagement() {
   const { isModalOpen, openModal, closeModal } = useModal();
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const handleEditClick = () => {
+    openModal("edit");
+  };
 
+  const handleDeleteClick = (product) => {
+    setSelectedProduct(product);
+    openModal("delete");
+  };
   const formatRowsCallback = async (item, category, subCategory) => {
     // format each property separately for better readability
     const picture = (
@@ -26,10 +35,16 @@ export function ProductsManagement() {
     );
     const operations = (
       <>
-        <span className="underline cursor-pointer text-indigo-500">
+        <span
+          className="underline cursor-pointer text-indigo-500"
+          onClick={handleEditClick}
+        >
           ویرایش
         </span>
-        <span className="underline cursor-pointer text-indigo-500">
+        <span
+          className="underline cursor-pointer text-indigo-500"
+          onClick={() => handleDeleteClick(item)}
+        >
           حذف
         </span>
       </>
@@ -50,7 +65,7 @@ export function ProductsManagement() {
     <div className="flex flex-col justify-center px-20 py-8 gap-8 mt-4">
       <div className="vertical-flex justify-between">
         <h1 className="text-4xl">مدیریت کالا</h1>
-        <Button onClick={openModal}>افزودن کالا</Button>
+        <Button onClick={() => openModal("add")}>افزودن کالا</Button>
       </div>
       {isLoading && (
         <SyncLoader
@@ -69,9 +84,17 @@ export function ProductsManagement() {
           />
         </>
       )}
-      {isModalOpen &&
+      {isModalOpen("add") &&
         createPortal(
-          <AddProductModal closeModal={closeModal} />,
+          <AddProductModal closeModal={() => closeModal("add")} />,
+          document.body
+        )}
+      {isModalOpen("delete") &&
+        createPortal(
+          <DeleteProductModal
+            closeModal={() => closeModal("delete")}
+            productInfo={selectedProduct}
+          />,
           document.body
         )}
     </div>

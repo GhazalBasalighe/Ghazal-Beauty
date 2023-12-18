@@ -1,30 +1,37 @@
-import { useEffect, useState } from "react";
+// useModal.js
+import { useState, useEffect } from "react";
 
 export function useModal() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalStates, setModalStates] = useState({});
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openModal = (modalName) => {
+    setModalStates((prev) => ({ ...prev, [modalName]: true }));
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeModal = (modalName) => {
+    setModalStates((prev) => ({ ...prev, [modalName]: false }));
   };
+
+  const isModalOpen = (modalName) => modalStates[modalName] || false;
 
   useEffect(() => {
     const handleEscKey = (event) => {
       if (event.key === "Escape") {
-        closeModal();
+        //close the currently open modal
+        for (const modalName in modalStates) {
+          if (modalStates[modalName]) {
+            closeModal(modalName);
+          }
+        }
       }
     };
-    if (isModalOpen) {
-      window.addEventListener("keydown", handleEscKey);
-    }
-    // Remove event listener when the modal is closed
+
+    document.addEventListener("keydown", handleEscKey);
+
     return () => {
-      window.removeEventListener("keydown", handleEscKey);
+      document.removeEventListener("keydown", handleEscKey);
     };
-  }, [isModalOpen, closeModal]);
+  }, [modalStates, closeModal]);
 
   return {
     isModalOpen,
