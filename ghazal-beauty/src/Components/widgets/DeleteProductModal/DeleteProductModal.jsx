@@ -14,7 +14,7 @@ export function DeleteProductModal({ closeModal, productInfo }) {
           <span>{productInfo.name}</span>
         </div>
 
-        <div className="vertical-flex self-center gap-6 w-[70%]">
+        <div className="vertical-flex self-center gap-6 w-1/2">
           <button
             className="bg-violet-500 text-white w-2/3 p-3 rounded-lg text-center hover:scale-105 duration-200"
             onClick={() => closeModal("delete")}

@@ -40,8 +40,6 @@ export function AddProductModal({ closeModal, productId }) {
 
     fetchCategories();
   }, [productId]);
-  console.log(product);
-  console.log(categories, subCategories);
 
   return (
     <Modal
@@ -119,7 +117,9 @@ export function AddProductModal({ closeModal, productId }) {
         </div>
         {/* UPLOAD PRODUCT PIC SECTION */}
         <FileInputField />
-        <Button classes=" self-center">ذخیره</Button>
+        <Button classes=" self-center">
+          {isEditing ? "ذخیره" : "افزودن"}
+        </Button>
       </div>
     </Modal>
   );

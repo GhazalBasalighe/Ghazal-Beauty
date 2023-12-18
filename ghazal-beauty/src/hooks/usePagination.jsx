@@ -8,7 +8,7 @@ export function usePagination(
   initialPage,
   limit,
   apiEndpoint,
-  formatRowsCallback,
+  callbackFunc,
   titles
 ) {
   const [state] = useCheckboxContext();
@@ -25,8 +25,7 @@ export function usePagination(
   });
 
   //MEMOIZING THIS FUNCTION PREVENTS FREQUENT REQUESTS TO BACK END
-  const memoizedFormatRowsCallback = useCallback(formatRowsCallback, []);
-
+  const memoizedFormatRowsCallback = useCallback(callbackFunc, []);
   // REQUESTS FOR PRODUCTS AND ORDERS
   useEffect(() => {
     //GET DATA PAGE BY PAGE
