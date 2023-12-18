@@ -1,12 +1,18 @@
-import { Eye, EyeSlash, HandWaving } from "@phosphor-icons/react";
+import { Eye, EyeSlash } from "@phosphor-icons/react";
 import { useState } from "react";
 import { Button, BackButton } from "../../base";
-import { useNavigate } from "react-router-dom";
-import { authenticateAdmin, validationSchema } from "../../../utils";
+import { validationSchema } from "../../../utils";
 import { useFormik } from "formik";
 import toast, { Toaster } from "react-hot-toast";
 import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../../store/thunk/thunk";
+import { useNavigate } from "react-router-dom";
+
 export function AdminLoginForm() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
   function handlePasswordVisibility() {
@@ -24,7 +30,6 @@ export function AdminLoginForm() {
   );
 
   // HANDLE VALIDATION USING FORMIK
-  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       userName: "",
@@ -32,22 +37,25 @@ export function AdminLoginForm() {
     },
     validationSchema,
     onSubmit: async (values) => {
-      const { userName, password } = values;
-
-      const isAuthenticated = await authenticateAdmin(userName, password);
-
-      if (isAuthenticated) {
-        toast.success(`سلام ${userName} 👋`, {
-          position: "top-left",
-          style: {
-            padding: "10px",
-            fontWeight: 700,
-          },
-        });
+      try {
+        const { userName, password } = values;
+        const response = await dispatch(
+          loginUser({ username: userName, password })
+        );
+        if (response.payload.status === "success") {
+          toast.success(`سلام ${userName} 👋`, {
+            position: "top-left",
+            style: {
+              padding: "10px",
+              fontWeight: 700,
+            },
+          });
+        }
+        // Redirect or perform other actions as needed
         setTimeout(() => {
           navigate("/admin/stock_price_manage");
         }, 1500);
-      } else {
+      } catch (error) {
         toast.error("نام کاربری یا رمز عبور اشتباه است", {
           position: "top-left",
           style: {
@@ -61,7 +69,7 @@ export function AdminLoginForm() {
 
   // REMOVE COOKIES WHEN LOGGING OUT
   function handleBackBtnClick() {
-    Cookies.remove("accessToken", "refreshToken");
+    Cookies.remove("refreshToken");
   }
   return (
     <div className="grid place-items-center h-screen overflow-hidden">

@@ -2,10 +2,10 @@ import toPersianDigits from "../../../helpers/toPersianDigits";
 import { DynamicTable, Pagination, EmptyTable } from "../../base";
 import { Checkbox } from "./Checkbox";
 import { usePagination } from "../../../hooks/usePagination";
+import { SyncLoader } from "react-spinners";
+import { useSelector } from "react-redux";
 
 export function OrdersManagement() {
-  const apiEndpoint = "http://localhost:8000/api/orders";
-
   const formatRowsCallback = async (order, user) => {
     // format each property separately for better readability
     const date = toPersianDigits(
@@ -29,7 +29,7 @@ export function OrdersManagement() {
   const { tableData, pagination, handlePageChange } = usePagination(
     1,
     7,
-    apiEndpoint,
+    "/orders",
     formatRowsCallback,
     [
       "نام کاربر",
@@ -39,13 +39,21 @@ export function OrdersManagement() {
       "عملیات‌های مربوطه",
     ]
   );
+  const isLoading = useSelector((state) => state.auth.isLoading);
+
   return (
     <div className="flex flex-col justify-center px-20 py-8 gap-8 mt-10">
       <div className="vertical-flex justify-between">
         <h1 className="text-4xl">مدیریت سفارش‌ها</h1>
         <Checkbox />
       </div>
-      {tableData.rows.length === 0 ? (
+      {isLoading && (
+        <SyncLoader
+          color="#a056b9"
+          className="fixed top-1/2 left-1/2 bg-white"
+        />
+      )}
+      {tableData.rows.length === 0 && !isLoading ? (
         <EmptyTable />
       ) : (
         <>
