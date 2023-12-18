@@ -15,7 +15,10 @@ export function DeleteProductModal({ closeModal, productInfo }) {
         </div>
 
         <div className="vertical-flex self-center gap-6 w-[70%]">
-          <button className="bg-violet-500 text-white w-2/3 p-3 rounded-lg text-center hover:scale-105 duration-200">
+          <button
+            className="bg-violet-500 text-white w-2/3 p-3 rounded-lg text-center hover:scale-105 duration-200"
+            onClick={() => closeModal("delete")}
+          >
             نه
           </button>
           <button className="bg-violet-300 text-white w-1/3 p-3 rounded-lg text-center hover:scale-105 duration-200">
