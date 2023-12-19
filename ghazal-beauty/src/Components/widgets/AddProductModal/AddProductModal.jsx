@@ -4,6 +4,8 @@ import { FileInputField } from "./FileInputField";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../../config/axiosInstance";
+import { useFormik } from "formik";
+import { addProductValidationSchema } from "../../../utils";
 
 export function AddProductModal({ closeModal, productId }) {
   const isEditing = !!productId;
@@ -15,6 +17,22 @@ export function AddProductModal({ closeModal, productId }) {
     subcategory: "",
     description: "",
   });
+
+  const formik = useFormik({
+    initialValues: {
+      productName: product.name,
+      productCategory: product.category,
+      productSubCategory: product.subcategory,
+      productDescription: product.description,
+      productImg: null,
+      productThumbnail: null,
+    },
+    validationSchema: addProductValidationSchema,
+    onSubmit: () => {
+      console.log("come onnn please submit :/");
+    },
+  });
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -46,81 +64,92 @@ export function AddProductModal({ closeModal, productId }) {
       title={isEditing ? "ویرایش کالا" : "افزودن کالا"}
       closeModal={closeModal}
     >
-      <div className="flex flex-col gap-5 my-5">
-        {/* PRODUCT NAME SECTION */}
-        <div className="flex flex-col gap-2">
-          <label htmlFor="productNameId">نام محصول:</label>
-          <input
-            type="text"
-            name="productName"
-            id="productNameId"
-            required
-            className="add-product-modal-input"
-            value={product.name}
-          />
-        </div>
-        <div className="vertical-flex gap-8">
-          {/* PRODUCT CATEGORY SELECT SECTION */}
-          <div className="flex flex-col gap-2 w-1/2">
-            <label htmlFor="">دسته بندی کالا:</label>
-            <select
-              name="productCategory"
-              id="productCategoryId"
-              className="add-product-modal-select"
-              value={product.category.name}
-            >
-              <option selected disabled hidden value="selectPlease">
-                گروه را انتخاب کنید 👇
-              </option>
-              {categories.map((item) => (
-                <option
-                  key={item._id}
-                  value={item.name}
-                  style={{ fontFamily: "'Vazir', 'Poppins'" }}
-                  className=" bg-purple-100"
-                >
-                  محصولات {item.name}
-                </option>
-              ))}
-            </select>
+      <form onSubmit={formik.handleSubmit}>
+        <div className="flex flex-col gap-5 my-5">
+          {/* PRODUCT NAME SECTION */}
+          <div className="flex flex-col gap-2">
+            <label htmlFor="productNameId">نام محصول:</label>
+            <input
+              type="text"
+              name="productName"
+              id="productNameId"
+              required
+              className="add-product-modal-input"
+              value={formik.values.productName}
+              onChange={formik.handleChange}
+            />
           </div>
-          {/* PRODUCT SUBCATEGORY SELECT SECTION */}
-          <div className="flex flex-col gap-2 w-1/2">
-            <label htmlFor="">زیر دسته بندی کالا:</label>
-            <select
-              name="productSubCategory"
-              id="productSubCategoryId"
-              className="add-product-modal-select"
-              value={product.subcategory.name}
-            >
-              <option selected disabled hidden value="selectPlease">
-                زیر گروه را انتخاب کنید 👇
-              </option>
-              {subCategories.map((item) => (
-                <option
-                  key={item._id}
-                  value={item.name}
-                  style={{ fontFamily: "'Vazir', 'Poppins'" }}
-                  className=" bg-purple-100"
-                >
-                  {item.name}
-                </option>
-              ))}
-            </select>
+          <div className="vertical-flex gap-8">
+            {/* PRODUCT CATEGORY SELECT SECTION */}
+            <div className="flex flex-col gap-2 w-1/2">
+              <label htmlFor="">دسته بندی کالا:</label>
+              <select
+                name="productCategory"
+                id="productCategoryId"
+                className="add-product-modal-select"
+                value={formik.values.productCategory}
+                onChange={formik.handleChange}
+              >
+                {categories.map((item) => (
+                  <option
+                    key={item._id}
+                    value={item.name}
+                    style={{ fontFamily: "'Vazir', 'Poppins'" }}
+                    className=" bg-purple-100"
+                  >
+                    محصولات {item.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {/* PRODUCT SUBCATEGORY SELECT SECTION */}
+            <div className="flex flex-col gap-2 w-1/2">
+              <label htmlFor="">زیر دسته بندی کالا:</label>
+              <select
+                name="productSubCategory"
+                id="productSubCategoryId"
+                className="add-product-modal-select"
+                value={formik.values.productSubCategory}
+                onChange={formik.handleChange}
+              >
+                {subCategories.map((item) => (
+                  <option
+                    key={item._id}
+                    value={item.name}
+                    style={{ fontFamily: "'Vazir', 'Poppins'" }}
+                    className=" bg-purple-100"
+                  >
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-        </div>
 
-        {/* PRODUCT DESCRIPTION */}
-        <div className="flex flex-col gap-2">
-          <label htmlFor="">توضیحات:</label>
-          <TextEditor description={product.description} />
+          {/* PRODUCT DESCRIPTION */}
+          <div className="flex flex-col gap-2">
+            <label htmlFor="">توضیحات:</label>
+            <TextEditor
+              description={product.description}
+              onChange={(value) =>
+                formik.setFieldValue("productDescription", value)
+              }
+            />
+          </div>
+          {/* UPLOAD PRODUCT PIC SECTION */}
+          <FileInputField
+            onChange={(event) =>
+              formik.setFieldValue(
+                "productThumbnail",
+                event.target.files[0]
+              )
+            }
+          />
+          <Button classes=" self-center">
+            {isEditing ? "ذخیره" : "افزودن"}
+          </Button>
         </div>
-        {/* UPLOAD PRODUCT PIC SECTION */}
-        <FileInputField />
-        <Button classes=" self-center">
-          {isEditing ? "ذخیره" : "افزودن"}
-        </Button>
-      </div>
+      </form>
     </Modal>
   );
 }

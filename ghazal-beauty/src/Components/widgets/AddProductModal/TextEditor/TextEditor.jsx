@@ -5,7 +5,7 @@ import List from "@editorjs/list";
 import Quote from "@editorjs/quote";
 import LinkTool from "@editorjs/link";
 
-export function TextEditor({ description }) {
+export function TextEditor({ onChange }) {
   const ejInstance = useRef();
   const isReady = useRef(false);
   useEffect(() => {
@@ -40,6 +40,21 @@ export function TextEditor({ description }) {
             ejInstance.current = editor;
           },
         },
+        onReady: {
+          class: function OnReadyTool() {
+            this.constructable = function () {
+              return {
+                render: () => {
+                  // Your onReady logic here
+                  console.log("Editor is ready!");
+                },
+              };
+            };
+          },
+        },
+        instanceReady: (editor) => {
+          ejInstance.current = editor;
+        },
         data: {
           //should add initial value with the same format that editor js saved
         },
@@ -52,7 +67,11 @@ export function TextEditor({ description }) {
 
   return (
     <>
-      <div className="add-product-modal-textEditor" id="editorjs"></div>
+      <div
+        className="add-product-modal-textEditor"
+        id="editorjs"
+        onChange={onChange}
+      ></div>
     </>
   );
 }
