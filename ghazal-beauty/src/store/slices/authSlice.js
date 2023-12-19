@@ -19,6 +19,9 @@ export const authSlice = createSlice({
     setAccessToken: (state, action) => {
       state.accessToken = action.payload;
     },
+    setIsLoading: (state, action) => {
+      state.isLoading = action.payload;
+    },
   },
   extraReducers: (builder) => {
     // BUILDERS FOR LOGGING THE USER IN WITH ACCESS TOKEN
@@ -39,5 +42,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout, setAccessToken } = authSlice.actions;
+export const { logout, setAccessToken, setIsLoading } = authSlice.actions;
 export default authSlice.reducer;

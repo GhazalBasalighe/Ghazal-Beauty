@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { useCheckboxContext } from "../context/checkboxContext";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import api from "../config/axiosInstance";
 import { getInfoById } from "../helpers/getInfoById";
+import { setIsLoading } from "../store/slices/authSlice";
 export function usePagination(
   initialPage,
   limit,
@@ -14,6 +15,7 @@ export function usePagination(
   const [state] = useCheckboxContext();
   const location = useLocation();
   const accessToken = useSelector((state) => state.auth.accessToken);
+  const dispatch = useDispatch();
 
   const [tableData, setTableData] = useState({
     titles: titles,
@@ -31,6 +33,7 @@ export function usePagination(
     //GET DATA PAGE BY PAGE
     const fetchData = async () => {
       try {
+        dispatch(setIsLoading(true));
         let response = await api.get(
           `${apiEndpoint}?page=${pagination.currentPage}&limit=${limit}`
         );
@@ -87,8 +90,10 @@ export function usePagination(
           ...prevPagination,
           totalPages: response.data.total_pages,
         }));
+        dispatch(setIsLoading(false));
       } catch (error) {
         console.error("Error fetching data:", error);
+        dispatch(setIsLoading(false));
       }
     };
 
