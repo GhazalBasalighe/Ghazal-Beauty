@@ -1,9 +1,4 @@
-import {
-  ProductGroupPreview,
-  CustomerHeader,
-  NavBar,
-  HeroSection,
-} from "../Components";
+import { ProductGroupPreview, NavBar, HeroSection } from "../Components";
 function ProductsPage() {
   return (
     <div>
