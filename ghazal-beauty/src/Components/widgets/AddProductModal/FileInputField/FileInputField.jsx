@@ -22,7 +22,7 @@ export function FileInputField() {
       </label>
       <input
         type="file"
-        name="productPic"
+        name="productImg"
         id="productPicId"
         className="hidden"
         accept="image/png, image/jpeg, image/svg, image/jpg"

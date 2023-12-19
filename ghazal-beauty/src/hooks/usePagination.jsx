@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
-import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { useCheckboxContext } from "../context/checkboxContext";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import api from "../config/axiosInstance";
+import { getInfoById } from "../helpers/getInfoById";
+import { setIsLoading } from "../store/slices/authSlice";
 export function usePagination(
   initialPage,
   limit,
@@ -14,6 +15,7 @@ export function usePagination(
   const [state] = useCheckboxContext();
   const location = useLocation();
   const accessToken = useSelector((state) => state.auth.accessToken);
+  const dispatch = useDispatch();
 
   const [tableData, setTableData] = useState({
     titles: titles,
@@ -26,12 +28,12 @@ export function usePagination(
 
   //MEMOIZING THIS FUNCTION PREVENTS FREQUENT REQUESTS TO BACK END
   const memoizedFormatRowsCallback = useCallback(formatRowsCallback, []);
-
   // REQUESTS FOR PRODUCTS AND ORDERS
   useEffect(() => {
     //GET DATA PAGE BY PAGE
     const fetchData = async () => {
       try {
+        dispatch(setIsLoading(true));
         let response = await api.get(
           `${apiEndpoint}?page=${pagination.currentPage}&limit=${limit}`
         );
@@ -88,8 +90,10 @@ export function usePagination(
           ...prevPagination,
           totalPages: response.data.total_pages,
         }));
+        dispatch(setIsLoading(false));
       } catch (error) {
         console.error("Error fetching data:", error);
+        dispatch(setIsLoading(false));
       }
     };
 
@@ -118,23 +122,3 @@ export function usePagination(
     handlePageChange,
   };
 }
-
-const getInfoById = async (id, apiEndpoint) => {
-  try {
-    const name = await axios.get(
-      `http://localhost:8000/api/${apiEndpoint}/${id}`
-    );
-    const response = name.data.data;
-    // ---categories---
-    if (apiEndpoint === "categories") return response.category.name;
-    // ---subcategories---
-    else if (apiEndpoint === "subcategories")
-      return response.subcategory.name;
-    // ---firstname/lastname---
-    else
-      return [response.user.firstname, response.user.lastname].join(" ");
-  } catch (error) {
-    console.error("Error fetching category name:", error);
-    return "Unknown Category";
-  }
-};
