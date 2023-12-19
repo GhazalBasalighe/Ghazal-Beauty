@@ -20,10 +20,10 @@ export function AddProductModal({ closeModal, productId }) {
 
   const formik = useFormik({
     initialValues: {
-      productName: product.name,
-      productCategory: product.category,
-      productSubCategory: product.subcategory,
-      productDescription: product.description,
+      productName: "",
+      productCategory: "",
+      productSubCategory: "",
+      productDescription: "",
       productImg: null,
       productThumbnail: null,
     },
@@ -47,6 +47,15 @@ export function AddProductModal({ closeModal, productId }) {
         if (productId) {
           const productReq = await api.get(`/products/${productId}`);
           setProduct(productReq.data.data.product);
+          formik.setValues({
+            productName: productReq.data.data.product.name,
+            productCategory: productReq.data.data.product.category.name,
+            productSubCategory:
+              productReq.data.data.product.subcategory.name,
+            productDescription: productReq.data.data.product.description,
+            productImg: null, // Assuming you don't want to change the image on edit
+            productThumbnail: null, // Same assumption as above
+          });
         }
       } catch (error) {
         console.error(
