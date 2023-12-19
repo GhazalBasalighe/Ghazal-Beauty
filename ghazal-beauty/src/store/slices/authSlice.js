@@ -6,6 +6,7 @@ const initialState = {
   accessToken: "",
   isLoggedIn: false,
   isLoading: false,
+  productUpdateSignal: false,
 };
 
 export const authSlice = createSlice({
@@ -21,6 +22,9 @@ export const authSlice = createSlice({
     },
     setIsLoading: (state, action) => {
       state.isLoading = action.payload;
+    },
+    setProductUpdateSignal: (state, action) => {
+      state.productUpdateSignal = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -42,5 +46,10 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout, setAccessToken, setIsLoading } = authSlice.actions;
+export const {
+  logout,
+  setAccessToken,
+  setIsLoading,
+  setProductUpdateSignal,
+} = authSlice.actions;
 export default authSlice.reducer;

@@ -15,6 +15,9 @@ export function usePagination(
   const [state] = useCheckboxContext();
   const location = useLocation();
   const accessToken = useSelector((state) => state.auth.accessToken);
+  const updateSignal = useSelector(
+    (state) => state.auth.productUpdateSignal
+  );
   const dispatch = useDispatch();
 
   const [tableData, setTableData] = useState({
@@ -106,6 +109,7 @@ export function usePagination(
     state.pendingChecked,
     state.deliveredChecked,
     accessToken,
+    updateSignal,
   ]);
 
   // THIS IS USED TO BE PASSED THROUGH PROPS TO PAGINATION COMPONENT

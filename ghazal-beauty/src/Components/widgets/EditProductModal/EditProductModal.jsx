@@ -3,7 +3,10 @@ import { Modal, Button } from "../../base";
 import api from "../../../config/axiosInstance";
 import { useFormik } from "formik";
 import { priceValidationSchema } from "../../../utils";
+import { setProductUpdateSignal } from "../../../store/slices/authSlice";
+import { useDispatch } from "react-redux";
 export function EditProductModal({ closeModal, productInfo }) {
+  const dispatch = useDispatch();
   const handleSaveChanges = async () => {
     try {
       const updatedProduct = {
@@ -11,6 +14,7 @@ export function EditProductModal({ closeModal, productInfo }) {
         price: formik.values.price,
       };
       await api.patch(`/products/${productInfo._id}`, updatedProduct);
+      dispatch(setProductUpdateSignal((state) => !state));
       closeModal("editPrice");
     } catch (error) {
       console.error("Error updating product:", error);

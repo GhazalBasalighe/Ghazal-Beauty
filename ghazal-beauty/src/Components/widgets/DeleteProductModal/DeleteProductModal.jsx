@@ -1,10 +1,14 @@
+import { useDispatch, useSelector } from "react-redux";
 import api from "../../../config/axiosInstance";
 import { Modal } from "../../base";
+import { setProductUpdateSignal } from "../../../store/slices/authSlice";
 
 export function DeleteProductModal({ closeModal, productInfo }) {
+  const dispatch = useDispatch();
   async function handleDelete() {
     try {
       await api.delete(`/products/${productInfo._id}`);
+      dispatch(setProductUpdateSignal((state) => !state));
       closeModal("delete");
     } catch (error) {
       console.error("Error deleting product:", error);
