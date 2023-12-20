@@ -1,11 +1,10 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { ProductContainer } from "../../base";
+import { ProductCard, ProductContainer } from "../../base";
 import { NextArrow, PrevArrow } from "../../../utils";
 import { useState, useEffect } from "react";
 import api from "../../../config/axiosInstance";
-import toPersianDigits from "../../../helpers/toPersianDigits";
 import { Link } from "react-router-dom";
 
 export function ProductGroupPreview() {
@@ -67,7 +66,7 @@ export function ProductGroupPreview() {
   return (
     <ProductContainer>
       {categories.map((category) => (
-        <div key={category.id} className="px-8 py-5">
+        <div key={category.id + "view"} className="px-8 py-5">
           {/* TITLE */}
           <div className="vertical-flex gap-3 font-bold text-xl border-b-2 border-solid border-violet-400 pb-2">
             <img
@@ -86,28 +85,10 @@ export function ProductGroupPreview() {
           <div>
             <Slider {...settings} className="my-2 text-right">
               {categoryProducts[category._id]?.map((product) => (
-                <div dir="rtl" key={product.id}>
-                  <div className="product-card">
-                    <Link to={`/products/details/${product._id}`}>
-                      <img
-                        src={`http://localhost:8000/images/products/thumbnails/${product.thumbnail}`}
-                        alt={product.name}
-                        width={100}
-                      />
-                    </Link>
-                    <div className="flex flex-col gap-4 items-center">
-                      <span className="text-xs w-[200px] break-words line-clamp-2">
-                        {product.name}
-                      </span>
-                      <span className="text-sm self-end vertical-flex gap-1">
-                        {toPersianDigits(product.price.toFixed(3))}
-                        <span className="text-xs text-gray-500">
-                          تومان
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <ProductCard
+                  key={product._id + "view"}
+                  product={product}
+                />
               ))}
             </Slider>
           </div>
