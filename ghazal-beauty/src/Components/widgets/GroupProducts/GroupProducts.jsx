@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import api from "../../../config/axiosInstance";
 import { ProductCard } from "../../base";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { ArrowUp } from "@phosphor-icons/react";
 
 export function GroupProducts() {
   const { groupId } = useParams();
@@ -40,6 +41,14 @@ export function GroupProducts() {
     fetchData();
   }, [groupId, page]);
 
+  // SCROLL UP FUNCTION USED BY INFINITE SCROLL
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <>
       <NavBar />
@@ -52,9 +61,14 @@ export function GroupProducts() {
           next={handleFetchData}
           hasMore={hasMore}
           endMessage={
-            <span className="font-bold text-3xl text-violet-500 absolute left-1/2 -translate-x-1/2 my-4">
-              به انتها رسیدید
-            </span>
+            <div
+              className="vertical-flex gap-3 cursor-pointer font-bold text-3xl text-violet-500 absolute left-1/2 -translate-x-1/2 my-4"
+              onClick={scrollToTop}
+            >
+              <ArrowUp weight="bold" />
+              <span>برگشت به بالا </span>
+              <ArrowUp weight="bold" />
+            </div>
           }
         >
           <div className="grid grid-cols-5 py-4 px-10 gap-y-4">
