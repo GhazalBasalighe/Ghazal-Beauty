@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import api from "../../../config/axiosInstance";
 import { ProductCard } from "../../base";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { SyncLoader } from "react-spinners";
 
 export function GroupProducts() {
   const { groupId } = useParams();
@@ -25,7 +24,9 @@ export function GroupProducts() {
       if (newProducts.length === 0) {
         setHasMore(false);
       }
-      setProducts((prevProducts) => [...prevProducts, ...newProducts]);
+      setProducts((prevProducts) =>
+        page === 1 ? newProducts : [...prevProducts, ...newProducts]
+      );
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -50,12 +51,6 @@ export function GroupProducts() {
           dataLength={products.length}
           next={handleFetchData}
           hasMore={hasMore}
-          loader={
-            <SyncLoader
-              color="#a056b9"
-              className="fixed top-1/2 left-1/2"
-            />
-          }
           endMessage={
             <span className="font-bold text-3xl text-violet-500 absolute left-1/2 -translate-x-1/2 my-4">
               به انتها رسیدید
