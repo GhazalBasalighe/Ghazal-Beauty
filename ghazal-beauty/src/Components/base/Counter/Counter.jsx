@@ -1,13 +1,12 @@
 import { Plus, Minus, Trash } from "@phosphor-icons/react";
 import useCounter from "../../../hooks/useCounter";
 import toPersianDigits from "../../../helpers/toPersianDigits";
-export function Counter({ initialVal }) {
+export function Counter({ initialVal, max }) {
   const {
     quantity,
     handleQuantityDecrement: decrement,
     handleQuantityIncrement: increment,
-  } = useCounter(initialVal);
-
+  } = useCounter(initialVal, max);
   // CHOOSE THE ICON TO DISPLAY BASED ON THE QUANTITY
   const decrementIcon =
     quantity !== 1 ? (

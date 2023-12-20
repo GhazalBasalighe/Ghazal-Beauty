@@ -10,6 +10,8 @@ export const getInfoById = async (id, apiEndpoint) => {
     // ---subcategories---
     else if (apiEndpoint === "subcategories")
       return response.subcategory.name;
+    // ---products---
+    else if (apiEndpoint === "products") return response.product;
     // ---firstname/lastname---
     else
       return [response.user.firstname, response.user.lastname].join(" ");

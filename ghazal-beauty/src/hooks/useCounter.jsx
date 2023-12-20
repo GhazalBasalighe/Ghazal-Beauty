@@ -1,10 +1,12 @@
 import { useState } from "react";
 
-function useCounter(initialValue = 0) {
+function useCounter(initialValue = 0, max = 10) {
   const [quantity, setQuantity] = useState(initialValue);
 
   const handleQuantityIncrement = () => {
-    setQuantity((quantity) => quantity + 1);
+    if (quantity < max) {
+      setQuantity((quantity) => quantity + 1);
+    } else return quantity;
   };
 
   const handleQuantityDecrement = () => {
