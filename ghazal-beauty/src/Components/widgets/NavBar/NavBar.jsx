@@ -8,11 +8,8 @@ export function NavBar() {
   useEffect(() => {
     const getSubCategories = async () => {
       try {
-        const subcategoriesResponse = await api.get(
-          "http://localhost:8000/api/subcategories"
-        );
+        const subcategoriesResponse = await api.get("/subcategories");
         setSubCategories(subcategoriesResponse.data.data.subcategories);
-        console.log(subCategories);
       } catch (error) {
         console.error("Error fetching subcategories:", error);
       }
