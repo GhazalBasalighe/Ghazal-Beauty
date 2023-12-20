@@ -31,7 +31,7 @@ const resizeProductImages = async (productId, files) => {
       }.jpeg`;
 
       await sharp(image.buffer)
-        .resize(2000, 1300)
+        .resize(2000, null)
         .toFormat("jpeg")
         .jpeg({ quality: 95 })
         .toFile(

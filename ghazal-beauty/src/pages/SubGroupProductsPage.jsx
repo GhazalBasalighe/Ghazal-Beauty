@@ -1,4 +1,4 @@
-import { CustomerHeader, SubGroupProducts } from "../Components";
+import { SubGroupProducts } from "../Components";
 function SubGroupProductsPage() {
   return <SubGroupProducts />;
 }

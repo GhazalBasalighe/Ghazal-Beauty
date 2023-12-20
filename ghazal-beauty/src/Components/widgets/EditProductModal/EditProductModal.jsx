@@ -4,9 +4,15 @@ import api from "../../../config/axiosInstance";
 import { useFormik } from "formik";
 import { priceValidationSchema } from "../../../utils";
 import { setProductUpdateSignal } from "../../../store/slices/authSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 export function EditProductModal({ closeModal, productInfo }) {
   const dispatch = useDispatch();
+  const productUpdateSignal = useSelector(
+    (state) => state.auth.productUpdateSignal
+  );
+
+  // SAVE CHANGES AFTER SUBMIT
   const handleSaveChanges = async () => {
     try {
       const updatedProduct = {
@@ -14,13 +20,14 @@ export function EditProductModal({ closeModal, productInfo }) {
         price: formik.values.price,
       };
       await api.patch(`/products/${productInfo._id}`, updatedProduct);
-      dispatch(setProductUpdateSignal((state) => !state));
+      dispatch(setProductUpdateSignal(!productUpdateSignal));
       closeModal("editPrice");
     } catch (error) {
       console.error("Error updating product:", error);
     }
   };
 
+  // FORMIK VALIDATION
   const formik = useFormik({
     initialValues: {
       quantity: productInfo.quantity,
