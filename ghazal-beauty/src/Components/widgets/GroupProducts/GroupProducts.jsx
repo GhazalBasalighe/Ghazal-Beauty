@@ -73,7 +73,7 @@ export function GroupProducts() {
         >
           <div className="grid grid-cols-5 py-4 px-10 gap-y-4">
             {products.map((product) => (
-              <ProductCard key={product._id} product={product} />
+              <ProductCard key={product.slugname} product={product} />
             ))}
           </div>
         </InfiniteScroll>
