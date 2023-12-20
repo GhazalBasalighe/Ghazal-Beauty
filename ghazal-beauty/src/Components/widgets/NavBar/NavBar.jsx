@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../../../config/axiosInstance";
 
 export function NavBar() {
+  const navigate = useNavigate();
   const [subCategories, setSubCategories] = useState([]);
   useEffect(() => {
     const getSubCategories = async () => {
@@ -10,6 +12,7 @@ export function NavBar() {
           "http://localhost:8000/api/subcategories"
         );
         setSubCategories(subcategoriesResponse.data.data.subcategories);
+        console.log(subCategories);
       } catch (error) {
         console.error("Error fetching subcategories:", error);
       }
@@ -17,6 +20,11 @@ export function NavBar() {
 
     getSubCategories();
   }, []);
+
+  const handleSubcategoryClick = (subgroupId) => {
+    navigate(`/products/subgroup/${subgroupId}`);
+  };
+
   return (
     <div className="navbar">
       <ul className="vertical-flex justify-center gap-10">
@@ -24,6 +32,7 @@ export function NavBar() {
           <li
             className="cursor-pointer font-semibold hover:text-purple-500 duration-300"
             key={subcat._id}
+            onClick={() => handleSubcategoryClick(subcat._id)}
           >
             {subcat.name}
           </li>

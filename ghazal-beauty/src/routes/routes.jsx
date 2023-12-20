@@ -49,11 +49,11 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <ProductsPage /> },
       {
-        path: "products/:subgroup",
+        path: "products/subgroup/:subgroupId",
         element: <SubGroupProductsPage />,
       },
       {
-        path: "products/:productId",
+        path: "products/details/:productId",
         element: <ProductDetailsPage />,
       },
       {
