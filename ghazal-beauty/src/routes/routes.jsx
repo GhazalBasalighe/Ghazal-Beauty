@@ -15,6 +15,9 @@ const NotFound = React.lazy(() => import("../pages/NotFound"));
 const SubGroupProductsPage = React.lazy(() =>
   import("../pages/SubGroupProductsPage")
 );
+const GroupProductsPage = React.lazy(() =>
+  import("../pages/GroupProductsPage")
+);
 const ProductDetailsPage = React.lazy(() =>
   import("../pages/ProductDetailsPage")
 );
@@ -51,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "products/subgroup/:subgroupId",
         element: <SubGroupProductsPage />,
+      },
+      {
+        path: "products/group/:groupId",
+        element: <GroupProductsPage />,
       },
       {
         path: "products/details/:productId",

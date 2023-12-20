@@ -75,10 +75,12 @@ export function ProductGroupPreview() {
               alt={`${category.name} group`}
               width={45}
             />
-            <span className="vertical-flex gap-1">
-              محصولات
-              <span className=" text-violet-500">{category.name}</span>
-            </span>
+            <Link to={`/products/group/${category._id}`}>
+              <span className="vertical-flex gap-1">
+                محصولات
+                <span className=" text-violet-500">{category.name}</span>
+              </span>
+            </Link>
           </div>
           {/* PRODUCT GROUP PREVIEW */}
           <div>
