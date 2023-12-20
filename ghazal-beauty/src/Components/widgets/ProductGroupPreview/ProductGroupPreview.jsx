@@ -6,6 +6,7 @@ import { NextArrow, PrevArrow } from "../../../utils";
 import { useState, useEffect } from "react";
 import api from "../../../config/axiosInstance";
 import toPersianDigits from "../../../helpers/toPersianDigits";
+import { Link } from "react-router-dom";
 
 export function ProductGroupPreview() {
   const [categories, setCategories] = useState([]);
@@ -85,16 +86,18 @@ export function ProductGroupPreview() {
               {categoryProducts[category._id]?.map((product) => (
                 <div dir="rtl" key={product.id}>
                   <div className="product-card">
-                    <img
-                      src={`http://localhost:8000/images/products/thumbnails/${product.thumbnail}`}
-                      alt={product.name}
-                      width={100}
-                    />
+                    <Link to={`/products/details/${product._id}`}>
+                      <img
+                        src={`http://localhost:8000/images/products/thumbnails/${product.thumbnail}`}
+                        alt={product.name}
+                        width={100}
+                      />
+                    </Link>
                     <div className="flex flex-col gap-4 items-center">
                       <span className="text-xs w-[200px] break-words line-clamp-2">
                         {product.name}
                       </span>
-                      <span className="text-sm self-end">
+                      <span className="text-sm self-end vertical-flex gap-1">
                         {toPersianDigits(product.price.toFixed(3))}
                         <span className="text-xs text-gray-500">
                           تومان
