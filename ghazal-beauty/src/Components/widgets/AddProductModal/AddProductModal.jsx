@@ -15,15 +15,10 @@ export function AddProductModal({ closeModal, productId }) {
   const isEditing = !!productId;
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
-  const [product, setProduct] = useState({
-    name: "",
-    category: "",
-    subcategory: "",
-    description: "",
-  });
 
   const ejInstance = useRef();
   const isReady = useRef(false);
+
   // EDITOR JS INSTANCE
   useEffect(() => {
     if (!isReady.current) {
@@ -101,12 +96,12 @@ export function AddProductModal({ closeModal, productId }) {
       productSubCategory: "",
       productQuantity: "",
       productPrice: "",
-      // productImg: null,
+      productImg: null,
       // productThumbnail: null,
     },
     validationSchema: addProductValidationSchema,
     onSubmit: async (values) => {
-      handleSave();
+      await handleSave();
       try {
         const formData = new FormData();
         formData.append("name", values.productName);
@@ -116,12 +111,13 @@ export function AddProductModal({ closeModal, productId }) {
         formData.append("quantity", values.productQuantity);
         formData.append("price", values.productPrice);
         formData.append("description", values.productDescription);
-        // formData.append("images", values.productImg);
+        formData.append("images", values.productImg);
+        // formData.append("thumbnail", values.productThumbnail);
 
         console.log(formData);
-        // const response = await api.post("/products", formData);
+        const response = await api.post("/products", formData);
 
-        // console.log("Item added successfully:", response.data);
+        console.log("Item added successfully:", response.data);
 
         // Close the modal or perform other actions as needed
         // closeModal();
@@ -144,17 +140,16 @@ export function AddProductModal({ closeModal, productId }) {
         setSubCategories(subcategoriesResponse.data.data.subcategories);
         if (productId) {
           const productReq = await api.get(`/products/${productId}`);
-          setProduct(productReq.data.data.product);
           const productData = productReq.data.data;
           formik.setValues({
             productName: productData.product.name,
             productBrand: productData.product.brand,
-            productCategory: productData.product.category.name,
-            productSubCategory: productData.product.subcategory.name,
+            productCategory: productData.product.category._id,
+            productSubCategory: productData.product.subcategory._id,
             productQuantity: productData.product.quantity,
             productPrice: productData.product.price,
             productDescription: productData.product.description,
-            // productImg: null,
+            productImg: productData.product.images,
             // productThumbnail: null,
           });
         }
@@ -218,7 +213,7 @@ export function AddProductModal({ closeModal, productId }) {
                   {categories.map((item) => (
                     <option
                       key={item._id}
-                      value={item.name}
+                      value={item._id}
                       style={{ fontFamily: "'Vazir', 'Poppins'" }}
                       className=" bg-purple-100"
                     >
@@ -244,7 +239,7 @@ export function AddProductModal({ closeModal, productId }) {
                   {subCategories.map((item) => (
                     <option
                       key={item._id}
-                      value={item.name}
+                      value={item._id}
                       style={{ fontFamily: "'Vazir', 'Poppins'" }}
                       className=" bg-purple-100"
                     >
@@ -294,11 +289,11 @@ export function AddProductModal({ closeModal, productId }) {
               ></div>
             </div>
             {/* UPLOAD PRODUCT PIC SECTION */}
-            {/* <FileInputField
+            <FileInputField
               onChange={(event) =>
                 formik.setFieldValue("productImg", event.target.files[0])
               }
-            /> */}
+            />
             <Button type="submit" classes=" self-center">
               {isEditing ? "ذخیره" : "افزودن"}
             </Button>
