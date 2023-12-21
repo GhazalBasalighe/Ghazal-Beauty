@@ -12,6 +12,7 @@ export function TextEditor({ onChange }) {
     if (!isReady.current) {
       const editorConfig = {
         holder: "editorjs",
+        placeholder: "توضیحات خود را بنویسید",
         tools: {
           header: {
             class: Header,
@@ -36,22 +37,21 @@ export function TextEditor({ onChange }) {
           link: {
             class: LinkTool,
           },
-          onReady: () => {
-            ejInstance.current = editor;
-          },
-        },
-        onReady: {
-          class: function OnReadyTool() {
-            this.constructable = function () {
-              return {
-                render: () => {
-                  // Your onReady logic here
-                  console.log("Editor is ready!");
-                },
+          onReady: {
+            class: function OnReadyTool() {
+              ejInstance.current = editor;
+              this.constructable = function () {
+                return {
+                  render: () => {
+                    // Your onReady logic here
+                    console.log("Editor is ready!");
+                  },
+                };
               };
-            };
+            },
           },
         },
+
         instanceReady: (editor) => {
           ejInstance.current = editor;
         },
