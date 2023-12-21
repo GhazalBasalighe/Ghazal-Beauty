@@ -1,12 +1,9 @@
 import { Upload } from "@phosphor-icons/react";
 
-export function FileInputField() {
+export function FileInputField({ onChange }) {
   return (
     <div className="flex flex-col items-center">
-      <label
-        htmlFor="productPicId"
-        className="add-product-modal-file-field"
-      >
+      <label htmlFor="productImg" className="add-product-modal-file-field">
         <div className=" vertical-flex justify-center gap-2">
           <span className="font-bold text-xl">
             تصویر محصول را بارگذاری کنید
@@ -23,10 +20,11 @@ export function FileInputField() {
       <input
         type="file"
         name="productImg"
-        id="productPicId"
+        id="productImg"
         className="hidden"
         accept="image/png, image/jpeg, image/svg, image/jpg"
         multiple
+        onChange={onChange}
       />
     </div>
   );
