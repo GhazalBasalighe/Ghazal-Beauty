@@ -16,3 +16,6 @@ export * from "./NavBar";
 export * from "./HeroSection";
 export * from "./SubGroupProducts";
 export * from "./PrivateRoute";
+export * from "./DeleteProductModal";
+export * from "./EditProductModal";
+export * from "./GroupProducts";

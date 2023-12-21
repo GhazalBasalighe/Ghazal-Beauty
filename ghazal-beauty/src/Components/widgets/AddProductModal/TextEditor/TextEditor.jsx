@@ -5,13 +5,14 @@ import List from "@editorjs/list";
 import Quote from "@editorjs/quote";
 import LinkTool from "@editorjs/link";
 
-export function TextEditor() {
+export function TextEditor({ onChange, onSave }) {
   const ejInstance = useRef();
   const isReady = useRef(false);
   useEffect(() => {
     if (!isReady.current) {
       const editorConfig = {
         holder: "editorjs",
+        placeholder: "توضیحات خود را بنویسید",
         tools: {
           header: {
             class: Header,
@@ -36,10 +37,25 @@ export function TextEditor() {
           link: {
             class: LinkTool,
           },
-          onReady: () => {
-            ejInstance.current = editor;
+          onReady: {
+            class: function OnReadyTool() {
+              ejInstance.current = editor;
+              this.constructable = function () {
+                return {
+                  render: () => {
+                    // Your onReady logic here
+                    console.log("Editor is ready!");
+                  },
+                };
+              };
+            },
           },
         },
+
+        instanceReady: (editor) => {
+          ejInstance.current = editor;
+        },
+        data: {},
       };
 
       const editor = new EditorJS(editorConfig);
@@ -47,9 +63,21 @@ export function TextEditor() {
     }
   }, []);
 
+  const handleSave = async () => {
+    try {
+      const outputData = await ejInstance.current.save();
+      console.log("EditorJS Output:", outputData.blocks);
+      onChange(outputData);
+      onSave(outputData);
+    } catch (error) {
+      console.error("Error saving EditorJS output:", error);
+    }
+  };
+
   return (
     <>
       <div className="add-product-modal-textEditor" id="editorjs"></div>
+      <button onClick={handleSave}>Save EditorJS Output</button>
     </>
   );
 }

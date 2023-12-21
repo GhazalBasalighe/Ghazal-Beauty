@@ -1,52 +1,107 @@
+import { useParams } from "react-router-dom";
 import toPersianDigits from "../../../helpers/toPersianDigits";
 import { Button, Counter } from "../../base";
+import { getInfoById } from "../../../helpers/getInfoById";
+import { useState, useEffect } from "react";
+import { CaretLeft } from "@phosphor-icons/react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { NextArrow, PrevArrow } from "../../../utils";
+
+// SLIDER SETTINGS
+const settings = {
+  dots: true,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  arrows: true,
+  rtl: true,
+  nextArrow: <NextArrow />,
+  prevArrow: <PrevArrow />,
+};
 
 export function ProductDetails() {
+  const { productId } = useParams();
+  const [product, setProduct] = useState({
+    name: "",
+    quantity: "",
+    price: 0,
+    brand: "",
+    category: "",
+    subcategory: "",
+    images: [],
+    description: "",
+    slugname: "",
+  });
+
+  const fetchData = async () => {
+    try {
+      const productRes = await getInfoById(productId, "products");
+      setProduct(productRes);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [productId]);
+
+  const productQuantityMessage =
+    product.quantity < 10 ? (
+      <span className="text-gray-700 font-semibold text-sm">
+        فقط {product.quantity} عدد در انبار باقی مانده
+      </span>
+    ) : (
+      <span className="text-gray-700 font-semibold text-sm">
+        موجود در انبار
+      </span>
+    );
+
   return (
     <div className="flex flex-col gap-10 px-20 mt-3">
       <div className="vertical-flex justify-between ">
-        <div className="vertical-flex">
-          <img src="src/assets/faceWash.jpg" alt="face wash" width={200} />
+        <div className="vertical-flex justify-center gap-10">
+          <Slider {...settings} rtl className="w-[300px]">
+            {product.images.map((image, index) => (
+              <img
+                src={`http://localhost:8000/images/products/images/${image}`}
+                alt={product.slugname}
+                key={index}
+              />
+            ))}
+          </Slider>
           <div className="flex flex-col gap-5">
-            <span className="font-semibold text-xl">
-              ژل شستشو صورت نوتروژینا مدل Sivilce Karciti ظرفیت 200 میلی
-              لیتر
-            </span>
+            <span className="font-semibold text-xl">{product.name}</span>
             <span className="text-gray-500 text-sm">
               Neutrogena Sivilce Karciti Face Wash Gel 200 ml
             </span>
-            <span>دسته‌ی لوازم آرایشی</span>
-            <span>زیردسته‌ی شوینده صورت</span>
+            <div className="vertical-flex gap-2">
+              <span>{product.category.name}</span>
+              <CaretLeft />
+              <span> {product.subcategory.name} </span>
+            </div>
+            <div className="vertical-flex gap-2">
+              <span> برند</span>
+              <span className="text-lg font-bold">
+                {product.brand.toUpperCase()}
+              </span>
+            </div>
           </div>
         </div>
         <div className="flex flex-col gap-10 shadow-lg p-10 rounded-xl border border-solid border-violet-600">
           <span className="font-semibold text-xl">
-            {toPersianDigits("119,880")} تومان
+            {toPersianDigits(product.price.toFixed(3))} تومان
           </span>
-          <Counter />
-          <Button>افزودن به سبد خرید</Button>
+          <Counter max={product.quantity} />
+          <div className="flex flex-col gap-4">
+            {productQuantityMessage}
+            <Button>افزودن به سبد خرید</Button>
+          </div>
         </div>
       </div>
       <div className="h-[1px] w-full bg-violet-600 self-center"></div>
-      <span className="leading-10">
-        ژل شستشو صورت نوتروژینا مدل Sivilce Karciti ظرفیت 200 میلی لیتر در
-        جامعه کنونی مراقبت از پوست و اهمیت دادن به کیفیت آن یکی از مهم¬ترین
-        ابعاد زیبایی چهره است. به همین علت، پاکسازی و سلامت پوست در صدر
-        لیست مراقبت از آن قرار می¬گیرد. لذا شناخت محصولات شوینده پوست از
-        جمله ژل شستشوی صورت نوتروژینا در جایگاه یک پاک کننده قوی و مطلوب،
-        خالی از لطف نیست. همان¬طور که می‌دانید، جنس پوست هر شخص با شخص دیگر
-        متفاوت است و خوب بودن یک محصول مراقب پوستی برای یک فرد دال بر این
-        نیست که آن محصول برای همه افراد بهترین عملکرد را داشته باشد. درصد
-        زیادی از افراد دارای پوست چرب و مستعد آکنه و جوش هستند؛ برای همین
-        هم پیدا کردن یک شوینده مناسب پوست چرب برای این دسته از افراد در
-        اولویت قرار دارد. ژل شستشوی صورت نوتروژینا دقیقا همان انتخاب
-        فوق¬العاده¬ای است که می¬تواند تمام دغدغه¬های یک فرد با پوست چرب را
-        رفع کرده و حداکثر میزان پاک کنندگی را داشته باشد. ژل شستشوی
-        نوتروژینا نارنجی رنگ در سه مدل ارائه می¬شود که هر سه مدل می¬تواند
-        بسته به نوع پوست فرد، بهترین گزینه برای شستشوی پوست شما باشد. از
-        این رو قصد داریم در ادامه این مطلب به نقد و معرفی ژل شستشوی صورت
-        نوتروژینا به عنوان یک پاک کننده بی نظیر و عالی بپردازیم.
-      </span>
+      <span className="leading-10">{product.description}</span>
     </div>
   );
 }

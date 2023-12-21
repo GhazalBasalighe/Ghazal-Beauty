@@ -2,8 +2,23 @@ import { useSelector } from "react-redux";
 import { usePagination } from "../../../hooks/usePagination";
 import { Pagination, Button, DynamicTable, EmptyTable } from "../../base";
 import { SyncLoader } from "react-spinners";
-
+import { useModal } from "../../../hooks/useModal";
+import { createPortal } from "react-dom";
+import { AddProductModal } from "../AddProductModal";
+import { DeleteProductModal } from "../DeleteProductModal";
+import { useState } from "react";
 export function ProductsManagement() {
+  const { isModalOpen, openModal, closeModal } = useModal();
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const handleEditClick = (product) => {
+    setSelectedProduct(product._id);
+    openModal("edit");
+  };
+
+  const handleDeleteClick = (product) => {
+    setSelectedProduct(product);
+    openModal("delete");
+  };
   const formatRowsCallback = async (item, category, subCategory) => {
     // format each property separately for better readability
     const picture = (
@@ -21,10 +36,16 @@ export function ProductsManagement() {
     );
     const operations = (
       <>
-        <span className="underline cursor-pointer text-indigo-500">
+        <span
+          className="underline cursor-pointer text-indigo-500"
+          onClick={() => handleEditClick(item)}
+        >
           ویرایش
         </span>
-        <span className="underline cursor-pointer text-indigo-500">
+        <span
+          className="underline cursor-pointer text-indigo-500"
+          onClick={() => handleDeleteClick(item)}
+        >
           حذف
         </span>
       </>
@@ -45,7 +66,7 @@ export function ProductsManagement() {
     <div className="flex flex-col justify-center px-20 py-8 gap-8 mt-4">
       <div className="vertical-flex justify-between">
         <h1 className="text-4xl">مدیریت کالا</h1>
-        <Button>افزودن کالا</Button>
+        <Button onClick={() => openModal("add")}>افزودن کالا</Button>
       </div>
       {isLoading && (
         <SyncLoader
@@ -64,6 +85,30 @@ export function ProductsManagement() {
           />
         </>
       )}
+      {/* ADD PRODUCT MODAL */}
+      {isModalOpen("add") &&
+        createPortal(
+          <AddProductModal closeModal={() => closeModal("add")} />,
+          document.body
+        )}
+      {/* DELETE PRODUCT MODAL */}
+      {isModalOpen("delete") &&
+        createPortal(
+          <DeleteProductModal
+            closeModal={() => closeModal("delete")}
+            productInfo={selectedProduct}
+          />,
+          document.body
+        )}
+      {/* EDIT MODAL PRODUCT */}
+      {isModalOpen("edit") &&
+        createPortal(
+          <AddProductModal
+            closeModal={() => closeModal("edit")}
+            productId={selectedProduct}
+          />,
+          document.body
+        )}
     </div>
   );
 }
