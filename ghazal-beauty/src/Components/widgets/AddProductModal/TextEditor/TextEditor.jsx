@@ -5,7 +5,7 @@ import List from "@editorjs/list";
 import Quote from "@editorjs/quote";
 import LinkTool from "@editorjs/link";
 
-export function TextEditor({ onChange }) {
+export function TextEditor({ onChange, onSave }) {
   const ejInstance = useRef();
   const isReady = useRef(false);
   useEffect(() => {
@@ -55,9 +55,7 @@ export function TextEditor({ onChange }) {
         instanceReady: (editor) => {
           ejInstance.current = editor;
         },
-        data: {
-          //should add initial value with the same format that editor js saved
-        },
+        data: {},
       };
 
       const editor = new EditorJS(editorConfig);
@@ -65,13 +63,21 @@ export function TextEditor({ onChange }) {
     }
   }, []);
 
+  const handleSave = async () => {
+    try {
+      const outputData = await ejInstance.current.save();
+      console.log("EditorJS Output:", outputData.blocks);
+      onChange(outputData);
+      onSave(outputData);
+    } catch (error) {
+      console.error("Error saving EditorJS output:", error);
+    }
+  };
+
   return (
     <>
-      <div
-        className="add-product-modal-textEditor"
-        id="editorjs"
-        onChange={onChange}
-      ></div>
+      <div className="add-product-modal-textEditor" id="editorjs"></div>
+      <button onClick={handleSave}>Save EditorJS Output</button>
     </>
   );
 }

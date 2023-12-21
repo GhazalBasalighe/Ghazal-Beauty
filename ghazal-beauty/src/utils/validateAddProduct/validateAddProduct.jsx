@@ -13,7 +13,7 @@ export const addProductValidationSchema = Yup.object().shape({
   ),
   productQuantity: Yup.number().typeError().min(1).required(),
   productPrice: Yup.number().typeError().required(),
-  // productDescription: Yup.string("نام محصول نباید عدد باشد").required(
+  // productDescription: Yup.mixed().required(
   //   "توضیحات محصول نمی‌تواند خالی باشد"
   // ),
   // productImg: Yup.mixed().required("تصویر محصول نمی‌تواند خالی باشد"),

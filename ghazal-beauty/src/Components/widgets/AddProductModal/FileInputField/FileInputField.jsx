@@ -1,6 +1,6 @@
 import { Upload } from "@phosphor-icons/react";
 
-export function FileInputField() {
+export function FileInputField({ onChange }) {
   return (
     <div className="flex flex-col items-center">
       <label
@@ -27,6 +27,7 @@ export function FileInputField() {
         className="hidden"
         accept="image/png, image/jpeg, image/svg, image/jpg"
         multiple
+        onChange={onChange}
       />
     </div>
   );

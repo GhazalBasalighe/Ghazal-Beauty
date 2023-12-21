@@ -1,11 +1,15 @@
 import { Modal, Button } from "../../base";
-import { TextEditor } from "./TextEditor";
 import { FileInputField } from "./FileInputField";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import api from "../../../config/axiosInstance";
 import { useFormik, Field, FormikProvider } from "formik";
 import { addProductValidationSchema } from "../../../utils";
+import EditorJS from "@editorjs/editorjs";
+import Header from "@editorjs/header";
+import List from "@editorjs/list";
+import Quote from "@editorjs/quote";
+import LinkTool from "@editorjs/link";
 
 export function AddProductModal({ closeModal, productId }) {
   const isEditing = !!productId;
@@ -18,6 +22,77 @@ export function AddProductModal({ closeModal, productId }) {
     description: "",
   });
 
+  const ejInstance = useRef();
+  const isReady = useRef(false);
+  // EDITOR JS INSTANCE
+  useEffect(() => {
+    if (!isReady.current) {
+      const editorConfig = {
+        holder: "textEditor",
+        placeholder: "توضیحات خود را بنویسید",
+        tools: {
+          header: {
+            class: Header,
+            config: {
+              levels: [1, 2, 3, 4, 5, 6],
+              defaultLevel: 2,
+            },
+          },
+          list: {
+            class: List,
+            inlineToolbar: true,
+          },
+          quote: {
+            class: Quote,
+            inlineToolbar: true,
+            shortcut: "CMD+SHIFT+O",
+            config: {
+              quotePlaceholder: "نقل و قول...",
+              captionPlaceholder: "از ...",
+            },
+          },
+          link: {
+            class: LinkTool,
+          },
+          onReady: {
+            class: function OnReadyTool() {
+              ejInstance.current = editor;
+              this.constructable = function () {
+                return {
+                  render: () => {
+                    // Your onReady logic here
+                    console.log("Editor is ready!");
+                  },
+                };
+              };
+            },
+          },
+        },
+
+        instanceReady: (editor) => {
+          ejInstance.current = editor;
+          isReady.current = true;
+        },
+        data: {},
+      };
+
+      const editor = new EditorJS(editorConfig);
+      isReady.current = true;
+    }
+  }, []);
+
+  //SAVE EDITOR JS OUTPUT
+  const handleSave = async () => {
+    try {
+      const outputData = await ejInstance.current.save();
+      const description = JSON.stringify(outputData.blocks);
+      console.log(description);
+      formik.setFieldValue("productDescription", description);
+    } catch (error) {
+      console.error("Error saving EditorJS output:", error);
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       productName: "",
@@ -26,13 +101,33 @@ export function AddProductModal({ closeModal, productId }) {
       productSubCategory: "",
       productQuantity: "",
       productPrice: "",
-      // productDescription: "",
       // productImg: null,
       // productThumbnail: null,
     },
     validationSchema: addProductValidationSchema,
-    onSubmit: () => {
-      console.log("come onnn please submit :/");
+    onSubmit: async (values) => {
+      handleSave();
+      try {
+        const formData = new FormData();
+        formData.append("name", values.productName);
+        formData.append("brand", values.productBrand);
+        formData.append("category", values.productCategory);
+        formData.append("subcategory", values.productSubCategory);
+        formData.append("quantity", values.productQuantity);
+        formData.append("price", values.productPrice);
+        formData.append("description", values.productDescription);
+        // formData.append("images", values.productImg);
+
+        console.log(formData);
+        // const response = await api.post("/products", formData);
+
+        // console.log("Item added successfully:", response.data);
+
+        // Close the modal or perform other actions as needed
+        // closeModal();
+      } catch (error) {
+        console.error("Error adding item:", error);
+      }
     },
   });
 
@@ -81,10 +176,10 @@ export function AddProductModal({ closeModal, productId }) {
         closeModal={closeModal}
       >
         <form onSubmit={formik.handleSubmit}>
-          <div className="flex flex-col gap-5 my-5">
+          <div className="flex flex-col gap-4 my-5">
             <div className="vertical-flex gap-4">
               {/* PRODUCT NAME SECTION */}
-              <div className="flex flex-col gap-2 w-1/2">
+              <div className="flex flex-col gap-2 w-3/4">
                 <label htmlFor="productName">نام محصول:</label>
                 <input
                   type="text"
@@ -97,7 +192,7 @@ export function AddProductModal({ closeModal, productId }) {
                 />
               </div>
               {/* PRODUCT BRAND SECTION */}
-              <div className="flex flex-col gap-2 w-1/2">
+              <div className="flex flex-col gap-2 w-1/4">
                 <label htmlFor="productBrand">نام برند:</label>
                 <input
                   type="text"
@@ -193,23 +288,17 @@ export function AddProductModal({ closeModal, productId }) {
             {/* PRODUCT DESCRIPTION */}
             <div className="flex flex-col gap-2">
               <label htmlFor="textEditor">توضیحات:</label>
-              <TextEditor
+              <div
+                className="add-product-modal-textEditor"
                 id="textEditor"
-                description={product.description}
-                onChange={(value) =>
-                  formik.setFieldValue("productDescription", value)
-                }
-              />
+              ></div>
             </div>
             {/* UPLOAD PRODUCT PIC SECTION */}
-            <FileInputField
+            {/* <FileInputField
               onChange={(event) =>
-                formik.setFieldValue(
-                  "productThumbnail",
-                  event.target.files[0]
-                )
+                formik.setFieldValue("productImg", event.target.files[0])
               }
-            />
+            /> */}
             <Button type="submit" classes=" self-center">
               {isEditing ? "ذخیره" : "افزودن"}
             </Button>
