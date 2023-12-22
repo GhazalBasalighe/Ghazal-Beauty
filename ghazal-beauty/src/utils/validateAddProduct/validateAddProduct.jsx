@@ -11,13 +11,14 @@ export const addProductValidationSchema = Yup.object().shape({
   productSubCategory: Yup.string().required(
     "زیر دسته بندی محصول را انتخاب کنید"
   ),
-  productQuantity: Yup.number().typeError().min(1).required(),
-  productPrice: Yup.number().typeError().required(),
-  // productDescription: Yup.mixed().required(
-  //   "توضیحات محصول نمی‌تواند خالی باشد"
-  // ),
-  // productImg: Yup.mixed().required("تصویر محصول نمی‌تواند خالی باشد"),
-  // productThumbnail: Yup.mixed().required(
-  //   "پیش نمایش محصول نمی‌تواند خالی باشد"
-  // ),
+  productQuantity: Yup.number("تعداد باید عدد باشد")
+    .typeError()
+    .required("تعداد محصول مشخص نیست"),
+  productPrice: Yup.number("قیمت باید عدد باشد")
+    .typeError()
+    .required("قیمت محصول نمی‌تواند خالی باشد"),
+  productDescription: Yup.mixed().required(
+    "توضیحات محصول نمی‌تواند خالی باشد"
+  ),
+  productImg: Yup.mixed().required("تصویر محصول نمی‌تواند خالی باشد"),
 });

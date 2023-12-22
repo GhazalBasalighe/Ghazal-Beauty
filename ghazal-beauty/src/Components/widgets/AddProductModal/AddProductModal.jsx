@@ -97,7 +97,7 @@ export function AddProductModal({ closeModal, productId }) {
       productQuantity: "",
       productPrice: "",
       productImg: [],
-      // productThumbnail: null,
+      productThumbnail: null,
     },
     validationSchema: addProductValidationSchema,
     onSubmit: async (values) => {
@@ -111,23 +111,17 @@ export function AddProductModal({ closeModal, productId }) {
         formData.append("quantity", values.productQuantity);
         formData.append("price", values.productPrice);
         formData.append("description", values.productDescription);
-        formData.append("images", values.productImg);
-
-        // formData.append("thumbnail", values.productThumbnail);
-
-        console.log(formData);
+        for (let i = 0; i < values.productImg.length; i++) {
+          formData.append("images", values.productImg[i]);
+        }
         const response = await api.post("/products", formData);
-
         console.log("Item added successfully:", response.data);
-
-        // Close the modal or perform other actions as needed
-        // closeModal();
+        closeModal("add");
       } catch (error) {
-        console.error("Error adding item:", error);
+        console.error(error);
       }
     },
   });
-  console.log(formik.errors);
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -185,8 +179,16 @@ export function AddProductModal({ closeModal, productId }) {
                   className="add-product-modal-input"
                   value={formik.values.productName}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
+                {formik.touched.productName &&
+                  formik.errors.productName && (
+                    <div className="text-red-500 text-sm">
+                      {formik.errors.productName}
+                    </div>
+                  )}
               </div>
+
               {/* PRODUCT BRAND SECTION */}
               <div className="flex flex-col gap-2 w-1/4">
                 <label htmlFor="productBrand">نام برند:</label>
@@ -198,7 +200,14 @@ export function AddProductModal({ closeModal, productId }) {
                   className="add-product-modal-input"
                   value={formik.values.productBrand}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
+                {formik.touched.productBrand &&
+                  formik.errors.productBrand && (
+                    <div className="text-red-500 text-sm">
+                      {formik.errors.productBrand}
+                    </div>
+                  )}
               </div>
             </div>
             <div className="vertical-flex gap-8">
@@ -210,6 +219,8 @@ export function AddProductModal({ closeModal, productId }) {
                   name="productCategory"
                   id="productCategory"
                   className="add-product-modal-select"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 >
                   {categories.map((item) => (
                     <option
@@ -222,6 +233,12 @@ export function AddProductModal({ closeModal, productId }) {
                     </option>
                   ))}
                 </Field>
+                {formik.touched.productCategory &&
+                  formik.errors.productCategory && (
+                    <div className="text-red-500 text-sm">
+                      {formik.errors.productCategory}
+                    </div>
+                  )}
               </div>
 
               {/* PRODUCT SUBCATEGORY SELECT SECTION */}
@@ -236,6 +253,7 @@ export function AddProductModal({ closeModal, productId }) {
                   className="add-product-modal-select"
                   value={formik.values.productSubCategory}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 >
                   {subCategories.map((item) => (
                     <option
@@ -248,6 +266,12 @@ export function AddProductModal({ closeModal, productId }) {
                     </option>
                   ))}
                 </Field>
+                {formik.touched.productSubCategory &&
+                  formik.errors.productSubCategory && (
+                    <div className="text-red-500 text-sm">
+                      {formik.errors.productSubCategory}
+                    </div>
+                  )}
               </div>
             </div>
             <div className="vertical-flex gap-4">
@@ -262,7 +286,14 @@ export function AddProductModal({ closeModal, productId }) {
                   className="add-product-modal-input"
                   value={formik.values.productQuantity}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
+                {formik.touched.productQuantity &&
+                  formik.errors.productQuantity && (
+                    <div className="text-red-500 text-sm">
+                      {formik.errors.productQuantity}
+                    </div>
+                  )}
               </div>
               {/* PRODUCT PRICE SECTION */}
               <div className="flex flex-col gap-2 w-1/2">
@@ -278,7 +309,14 @@ export function AddProductModal({ closeModal, productId }) {
                   className="add-product-modal-input"
                   value={formik.values.productPrice}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
+                {formik.touched.productPrice &&
+                  formik.errors.productPrice && (
+                    <div className="text-red-500 text-sm">
+                      {formik.errors.productPrice}
+                    </div>
+                  )}
               </div>
             </div>
             {/* PRODUCT DESCRIPTION */}
@@ -287,12 +325,20 @@ export function AddProductModal({ closeModal, productId }) {
               <div
                 className="add-product-modal-textEditor"
                 id="textEditor"
+                name="textEditor"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               ></div>
+              {formik.touched.textEditor && formik.errors.textEditor && (
+                <div className="text-red-500 text-sm">
+                  {formik.errors.textEditor}
+                </div>
+              )}
             </div>
             {/* UPLOAD PRODUCT PIC SECTION */}
             <FileInputField
               onChange={(event) =>
-                formik.setFieldValue("productImg", event.target.files[0])
+                formik.setFieldValue("productImg", event.target.files)
               }
             />
             <Button type="submit" classes=" self-center">
