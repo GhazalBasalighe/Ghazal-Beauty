@@ -96,7 +96,7 @@ export function AddProductModal({ closeModal, productId }) {
       productSubCategory: "",
       productQuantity: "",
       productPrice: "",
-      productImg: null,
+      productImg: [],
       // productThumbnail: null,
     },
     validationSchema: addProductValidationSchema,
@@ -112,6 +112,7 @@ export function AddProductModal({ closeModal, productId }) {
         formData.append("price", values.productPrice);
         formData.append("description", values.productDescription);
         formData.append("images", values.productImg);
+
         // formData.append("thumbnail", values.productThumbnail);
 
         console.log(formData);
@@ -126,7 +127,7 @@ export function AddProductModal({ closeModal, productId }) {
       }
     },
   });
-
+  console.log(formik.errors);
   useEffect(() => {
     const fetchCategories = async () => {
       try {
