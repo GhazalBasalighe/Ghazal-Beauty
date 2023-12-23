@@ -11,6 +11,8 @@ export function AddProductModal({ closeModal, productId }) {
   const isEditing = !!productId;
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
+  const [initialProductDescription, setInitialProductDescription] =
+    useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -66,8 +68,10 @@ export function AddProductModal({ closeModal, productId }) {
             productCategory: productData.category._id,
             productSubCategory: productData.subcategory._id,
             productImg: productData.images,
+
             // productThumbnail: null,
           });
+          setInitialProductDescription(productData.description);
         }
       } catch (error) {
         console.error(
@@ -248,7 +252,10 @@ export function AddProductModal({ closeModal, productId }) {
                 توضیحات: (پر کردن این فیلد الزامی می‌باشد)
               </label>
               <QuillEditor
-                value={formik.values.productDescription}
+                value={
+                  formik.values.productDescription ||
+                  initialProductDescription
+                }
                 onChange={(value) =>
                   formik.setFieldValue("productDescription", value)
                 }

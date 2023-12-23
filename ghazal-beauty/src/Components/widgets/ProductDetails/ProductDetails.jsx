@@ -101,7 +101,10 @@ export function ProductDetails() {
         </div>
       </div>
       <div className="h-[1px] w-full bg-violet-600 self-center"></div>
-      <span className="leading-10">{product.description}</span>
+      <div
+        className="leading-10"
+        dangerouslySetInnerHTML={{ __html: product.description }}
+      />
     </div>
   );
 }
