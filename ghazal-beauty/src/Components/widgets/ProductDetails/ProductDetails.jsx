@@ -47,16 +47,15 @@ export function ProductDetails() {
     fetchData();
   }, [productId]);
 
-  const productQuantityMessage =
-    product.quantity < 10 ? (
-      <span className="text-gray-700 font-semibold text-sm">
-        فقط {product.quantity} عدد در انبار باقی مانده
-      </span>
-    ) : (
-      <span className="text-gray-700 font-semibold text-sm">
-        موجود در انبار
-      </span>
-    );
+  const productQuantityMessage = (
+    <span className="text-gray-700 font-semibold text-base">
+      {product.quantity === 0
+        ? "ناموجود"
+        : product.quantity < 10
+        ? `فقط ${product.quantity} عدد در انبار باقی مانده`
+        : "موجود در انبار"}
+    </span>
+  );
 
   return (
     <div className="flex flex-col gap-10 px-20 mt-3">
