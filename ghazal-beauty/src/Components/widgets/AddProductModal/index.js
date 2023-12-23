@@ -1,3 +1,3 @@
 export * from "./AddProductModal";
-export * from "./TextEditor";
 export * from "./FileInputField";
+export * from "./QuillEditor";

@@ -11,7 +11,6 @@ export * from "./OrdersManagement";
 export * from "./OrdersManagement/Checkbox";
 export * from "./OrdersModal";
 export * from "./AddProductModal";
-export * from "./AddProductModal/TextEditor";
 export * from "./NavBar";
 export * from "./HeroSection";
 export * from "./SubGroupProducts";

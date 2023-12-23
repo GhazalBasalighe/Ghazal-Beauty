@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useCheckboxContext } from "../context/checkboxContext";
 import { useDispatch, useSelector } from "react-redux";
 import api from "../config/axiosInstance";
@@ -14,6 +14,7 @@ export function usePagination(
 ) {
   const [state] = useCheckboxContext();
   const location = useLocation();
+  const navigate = useNavigate();
   const accessToken = useSelector((state) => state.auth.accessToken);
   const updateSignal = useSelector(
     (state) => state.auth.productUpdateSignal
@@ -94,6 +95,7 @@ export function usePagination(
           totalPages: response.data.total_pages,
         }));
         dispatch(setIsLoading(false));
+        navigate(`${location.pathname}?page=${pagination.currentPage}`);
       } catch (error) {
         console.error("Error fetching data:", error);
         dispatch(setIsLoading(false));

@@ -88,7 +88,7 @@
 
   .product-card
   {
-    @apply flex flex-col gap-2 items-center max-w-xs py-[2vw] px-[1vw] cursor-pointer hover:shadow-2xl duration-300
+    @apply flex flex-col gap-2 items-center max-w-xs py-[2vw] px-[1vw] cursor-pointer hover:shadow-xl duration-200
   }
 
   /* ORDERS MANAGEMENT */
@@ -110,12 +110,12 @@
 
   .add-product-modal-file-field
   {
-    @apply bg-purple-200 rounded-md px-10 py-4 flex flex-col items-center gap-4 cursor-pointer hover:bg-purple-300 ease-in-out duration-300
+    @apply bg-purple-200 rounded-md px-8 py-2 flex flex-col items-center gap-4 cursor-pointer hover:bg-purple-300 ease-in-out duration-300
   }
 
   .add-product-modal-textEditor
   {
-    @apply outline-none border-solid border-2 border-purple-500 rounded-xl p-1 focus:border-none focus:bg-purple-200 focus:placeholder:text-gray-500 h-[80px] overflow-y-scroll overflow-x-hidden
+    @apply outline-none border-solid border-2 border-purple-500 rounded-xl p-1 h-[180px] overflow-y-scroll overflow-x-hidden
   }
 
   .navbar
@@ -136,44 +136,8 @@
 
 
 /* TEXT EDITOR STYLES OVERRIDE */
-h1.ce-header
+.ql-container .ql-editor
 {
-  @apply text-3xl font-bold
-}
-
-h2.ce-header
-{
-  @apply text-2xl font-semibold
-}
-
-h3.ce-header
-{
-  @apply text-xl font-semibold
-}
-
-h4.ce-header
-{
-  @apply text-lg font-semibold
-}
-
-h5.ce-header
-{
-  @apply text-base font-semibold
-}
-
-h6.ce-header
-{
-  @apply text-base font-semibold
-}
-
-.codex-editor .codex-editor__redactor
-{
-  padding-bottom: 0 !important;
-}
-
-.ce-inline-toolbar.ce-inline-toolbar--showed
-{
-  left: 570px !important;
-  top: 3px !important;
-  scale: 0.9 !important;
+  text-align: right;
+  direction: rtl;
 }

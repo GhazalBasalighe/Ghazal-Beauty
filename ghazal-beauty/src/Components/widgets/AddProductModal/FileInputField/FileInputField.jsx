@@ -5,10 +5,10 @@ export function FileInputField({ onChange }) {
     <div className="flex flex-col items-center">
       <label htmlFor="productImg" className="add-product-modal-file-field">
         <div className=" vertical-flex justify-center gap-2">
-          <span className="font-bold text-xl">
+          <span className="font-bold text-lg">
             تصویر محصول را بارگذاری کنید
           </span>
-          <Upload size={40} />
+          <Upload size={30} />
         </div>
         <div className="flex flex-col gap-1 items-center">
           <span className="text-sm">
