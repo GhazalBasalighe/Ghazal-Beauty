@@ -2,10 +2,11 @@ import { QuillEditor } from "./QuillEditor/QuillEditor";
 import { Modal, Button } from "../../base";
 import { FileInputField } from "./FileInputField";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import api from "../../../config/axiosInstance";
 import { useFormik, Field, FormikProvider } from "formik";
 import { addProductValidationSchema } from "../../../utils";
+import { setProductUpdateSignal } from "../../../store/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export function AddProductModal({ closeModal, productId }) {
   const isEditing = !!productId;
@@ -13,6 +14,11 @@ export function AddProductModal({ closeModal, productId }) {
   const [subCategories, setSubCategories] = useState([]);
   const [initialProductDescription, setInitialProductDescription] =
     useState("");
+
+  const dispatch = useDispatch();
+  const productUpdateSignal = useSelector(
+    (state) => state.auth.productUpdateSignal
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -23,10 +29,10 @@ export function AddProductModal({ closeModal, productId }) {
       productQuantity: "",
       productPrice: "",
       productImg: [],
-      productThumbnail: null,
+      productThumbnail: "",
       productDescription: "",
     },
-    validationSchema: addProductValidationSchema,
+    validationSchema: addProductValidationSchema(isEditing),
     onSubmit: async (values) => {
       try {
         const formData = new FormData();
@@ -34,14 +40,29 @@ export function AddProductModal({ closeModal, productId }) {
         formData.append("brand", values.productBrand);
         formData.append("category", values.productCategory);
         formData.append("subcategory", values.productSubCategory);
-        formData.append("quantity", values.productQuantity);
-        formData.append("price", values.productPrice);
         formData.append("description", values.productDescription);
-        for (let i = 0; i < values.productImg.length; i++) {
-          formData.append("images", values.productImg[i]);
+
+        if (isEditing && values.productThumbnail) {
+          formData.append("thumbnail", values.productThumbnail);
+        } else if (!isEditing) {
+          for (let i = 0; i < values.productImg.length; i++) {
+            formData.append("images", values.productImg[i]);
+          }
+          formData.append("quantity", values.productQuantity);
+          formData.append("price", values.productPrice);
         }
-        const response = await api.post("/products", formData);
-        console.log("Item added successfully:", response.data);
+        console.log(formData);
+        const endpoint = isEditing
+          ? `/products/${productId}`
+          : "/products";
+        if (isEditing) {
+          await api.patch(endpoint, formData);
+        } else {
+          await api.post(endpoint, formData);
+        }
+
+        dispatch(setProductUpdateSignal(!productUpdateSignal));
+
         closeModal("add");
       } catch (error) {
         console.error(error);
@@ -51,13 +72,9 @@ export function AddProductModal({ closeModal, productId }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const categoriesResponse = await axios.get(
-          "http://localhost:8000/api/categories"
-        );
+        const categoriesResponse = await api.get("/categories");
         setCategories(categoriesResponse.data.data.categories);
-        const subcategoriesResponse = await axios.get(
-          "http://localhost:8000/api/subcategories"
-        );
+        const subcategoriesResponse = await api.get("/subcategories");
         setSubCategories(subcategoriesResponse.data.data.subcategories);
         if (productId) {
           const productReq = await api.get(`/products/${productId}`);
@@ -68,8 +85,6 @@ export function AddProductModal({ closeModal, productId }) {
             productCategory: productData.category._id,
             productSubCategory: productData.subcategory._id,
             productImg: productData.images,
-
-            // productThumbnail: null,
           });
           setInitialProductDescription(productData.description);
         }
@@ -89,6 +104,11 @@ export function AddProductModal({ closeModal, productId }) {
         title={isEditing ? "ویرایش کالا" : "افزودن کالا"}
         closeModal={closeModal}
       >
+        {isEditing && (
+          <span className="text-red-500">
+            برای ویرایش قیمت و موجودی به جدول مربوطه مراجعه شود
+          </span>
+        )}
         <form onSubmit={formik.handleSubmit}>
           <div className="flex flex-col gap-4 my-5">
             <div className="vertical-flex gap-4">
@@ -263,9 +283,17 @@ export function AddProductModal({ closeModal, productId }) {
             </div>
             {/* UPLOAD PRODUCT PIC SECTION */}
             <FileInputField
-              onChange={(event) =>
-                formik.setFieldValue("productImg", event.target.files)
-              }
+              onChange={(event) => {
+                if (isEditing) {
+                  formik.setFieldValue(
+                    "productThumbnail",
+                    event.target.files[0]
+                  );
+                } else {
+                  formik.setFieldValue("productImg", event.target.files);
+                }
+              }}
+              isEditing={isEditing}
             />
             <Button type="submit" classes=" self-center">
               {isEditing ? "ذخیره" : "افزودن"}

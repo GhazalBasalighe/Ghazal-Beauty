@@ -5,10 +5,13 @@ import { setProductUpdateSignal } from "../../../store/slices/authSlice";
 
 export function DeleteProductModal({ closeModal, productInfo }) {
   const dispatch = useDispatch();
+  const productUpdateSignal = useSelector(
+    (state) => state.auth.productUpdateSignal
+  );
   async function handleDelete() {
     try {
       await api.delete(`/products/${productInfo._id}`);
-      dispatch(setProductUpdateSignal((state) => !state));
+      dispatch(setProductUpdateSignal(!productUpdateSignal));
       closeModal("delete");
     } catch (error) {
       console.error("Error deleting product:", error);
