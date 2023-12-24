@@ -72,7 +72,10 @@ const resizeProductThumbnail = async (productId, files) => {
 //** Controllers
 //? done
 const getAllProducts = async (req, res, next) => {
-  const productsModel = new ApiFeatures(Product.find({}), req.query)
+  const productsModel = new ApiFeatures(
+    Product.find({}).populate(["category", "subcategory"]),
+    req.query
+  )
     .limitFields()
     .paginate()
     .filter()

@@ -1,8 +1,22 @@
 import { useEffect } from "react";
 import toPersianDigits from "../../../helpers/toPersianDigits";
 import { Modal, Button, DynamicTable } from "../../base";
+import api from "../../../config/axiosInstance";
 
-export function OrdersModal({ closeModal }) {
+export function OrdersModal({ closeModal, selectedOrder }) {
+  const getOrderById = async () => {
+    // console.log(selectedOrder);
+    try {
+      const orders = await api.get(`/orders/${selectedOrder._id}`);
+      // console.log(orders);
+    } catch (error) {
+      // console.log(error);
+    }
+  };
+  useEffect(() => {
+    getOrderById();
+  }, [selectedOrder]);
+
   const tableData = {
     titles: ["کالا", "قیمت", "تعداد"],
     rows: [
