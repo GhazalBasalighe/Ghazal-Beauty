@@ -1,4 +1,3 @@
-// useModal.js
 import { useState, useEffect } from "react";
 
 export function useModal() {
@@ -17,7 +16,6 @@ export function useModal() {
   useEffect(() => {
     const handleEscKey = (event) => {
       if (event.key === "Escape") {
-        //close the currently open modal
         for (const modalName in modalStates) {
           if (modalStates[modalName]) {
             closeModal(modalName);

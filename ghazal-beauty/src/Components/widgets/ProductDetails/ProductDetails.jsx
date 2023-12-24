@@ -32,6 +32,7 @@ export function ProductDetails() {
     images: [],
     description: "",
     slugname: "",
+    rating: { rate: 0 },
   });
 
   const fetchData = async () => {
@@ -47,16 +48,15 @@ export function ProductDetails() {
     fetchData();
   }, [productId]);
 
-  const productQuantityMessage =
-    product.quantity < 10 ? (
-      <span className="text-gray-700 font-semibold text-sm">
-        فقط {product.quantity} عدد در انبار باقی مانده
-      </span>
-    ) : (
-      <span className="text-gray-700 font-semibold text-sm">
-        موجود در انبار
-      </span>
-    );
+  const productQuantityMessage = (
+    <span className="text-gray-700 font-semibold text-base">
+      {product.quantity === 0
+        ? "ناموجود"
+        : product.quantity < 10
+        ? `فقط ${product.quantity} عدد در انبار باقی مانده`
+        : "موجود در انبار"}
+    </span>
+  );
 
   return (
     <div className="flex flex-col gap-10 px-20 mt-3">
@@ -74,7 +74,7 @@ export function ProductDetails() {
           <div className="flex flex-col gap-5">
             <span className="font-semibold text-xl">{product.name}</span>
             <span className="text-gray-500 text-sm">
-              Neutrogena Sivilce Karciti Face Wash Gel 200 ml
+              {"star".repeat(product.rating.rate)}
             </span>
             <div className="vertical-flex gap-2">
               <span>{product.category.name}</span>
@@ -101,7 +101,10 @@ export function ProductDetails() {
         </div>
       </div>
       <div className="h-[1px] w-full bg-violet-600 self-center"></div>
-      <span className="leading-10">{product.description}</span>
+      <div
+        className="leading-10"
+        dangerouslySetInnerHTML={{ __html: product.description }}
+      />
     </div>
   );
 }

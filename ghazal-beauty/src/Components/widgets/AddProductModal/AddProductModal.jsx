@@ -1,92 +1,24 @@
+import { QuillEditor } from "./QuillEditor/QuillEditor";
 import { Modal, Button } from "../../base";
 import { FileInputField } from "./FileInputField";
-import { useEffect, useState, useRef } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 import api from "../../../config/axiosInstance";
 import { useFormik, Field, FormikProvider } from "formik";
 import { addProductValidationSchema } from "../../../utils";
-import EditorJS from "@editorjs/editorjs";
-import Header from "@editorjs/header";
-import List from "@editorjs/list";
-import Quote from "@editorjs/quote";
-import LinkTool from "@editorjs/link";
+import { setProductUpdateSignal } from "../../../store/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export function AddProductModal({ closeModal, productId }) {
   const isEditing = !!productId;
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
+  const [initialProductDescription, setInitialProductDescription] =
+    useState("");
 
-  const ejInstance = useRef();
-  const isReady = useRef(false);
-
-  // EDITOR JS INSTANCE
-  useEffect(() => {
-    if (!isReady.current) {
-      const editorConfig = {
-        holder: "textEditor",
-        placeholder: "توضیحات خود را بنویسید",
-        tools: {
-          header: {
-            class: Header,
-            config: {
-              levels: [1, 2, 3, 4, 5, 6],
-              defaultLevel: 2,
-            },
-          },
-          list: {
-            class: List,
-            inlineToolbar: true,
-          },
-          quote: {
-            class: Quote,
-            inlineToolbar: true,
-            shortcut: "CMD+SHIFT+O",
-            config: {
-              quotePlaceholder: "نقل و قول...",
-              captionPlaceholder: "از ...",
-            },
-          },
-          link: {
-            class: LinkTool,
-          },
-          onReady: {
-            class: function OnReadyTool() {
-              ejInstance.current = editor;
-              this.constructable = function () {
-                return {
-                  render: () => {
-                    // Your onReady logic here
-                    console.log("Editor is ready!");
-                  },
-                };
-              };
-            },
-          },
-        },
-
-        instanceReady: (editor) => {
-          ejInstance.current = editor;
-          isReady.current = true;
-        },
-        data: {},
-      };
-
-      const editor = new EditorJS(editorConfig);
-      isReady.current = true;
-    }
-  }, []);
-
-  //SAVE EDITOR JS OUTPUT
-  const handleSave = async () => {
-    try {
-      const outputData = await ejInstance.current.save();
-      const description = JSON.stringify(outputData.blocks);
-      console.log(description);
-      formik.setFieldValue("productDescription", description);
-    } catch (error) {
-      console.error("Error saving EditorJS output:", error);
-    }
-  };
+  const dispatch = useDispatch();
+  const productUpdateSignal = useSelector(
+    (state) => state.auth.productUpdateSignal
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -97,62 +29,64 @@ export function AddProductModal({ closeModal, productId }) {
       productQuantity: "",
       productPrice: "",
       productImg: [],
-      // productThumbnail: null,
+      productThumbnail: "",
+      productDescription: "",
     },
-    validationSchema: addProductValidationSchema,
+    validationSchema: addProductValidationSchema(isEditing),
     onSubmit: async (values) => {
-      await handleSave();
       try {
         const formData = new FormData();
         formData.append("name", values.productName);
         formData.append("brand", values.productBrand);
         formData.append("category", values.productCategory);
         formData.append("subcategory", values.productSubCategory);
-        formData.append("quantity", values.productQuantity);
-        formData.append("price", values.productPrice);
         formData.append("description", values.productDescription);
-        formData.append("images", values.productImg);
 
-        // formData.append("thumbnail", values.productThumbnail);
-
+        if (isEditing && values.productThumbnail) {
+          formData.append("thumbnail", values.productThumbnail);
+        } else if (!isEditing) {
+          for (let i = 0; i < values.productImg.length; i++) {
+            formData.append("images", values.productImg[i]);
+          }
+          formData.append("quantity", values.productQuantity);
+          formData.append("price", values.productPrice);
+        }
         console.log(formData);
-        const response = await api.post("/products", formData);
+        const endpoint = isEditing
+          ? `/products/${productId}`
+          : "/products";
+        if (isEditing) {
+          await api.patch(endpoint, formData);
+        } else {
+          await api.post(endpoint, formData);
+        }
 
-        console.log("Item added successfully:", response.data);
+        dispatch(setProductUpdateSignal(!productUpdateSignal));
 
-        // Close the modal or perform other actions as needed
-        // closeModal();
+        closeModal("add");
       } catch (error) {
-        console.error("Error adding item:", error);
+        console.error(error);
       }
     },
   });
-  console.log(formik.errors);
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const categoriesResponse = await axios.get(
-          "http://localhost:8000/api/categories"
-        );
+        const categoriesResponse = await api.get("/categories");
         setCategories(categoriesResponse.data.data.categories);
-        const subcategoriesResponse = await axios.get(
-          "http://localhost:8000/api/subcategories"
-        );
+        const subcategoriesResponse = await api.get("/subcategories");
         setSubCategories(subcategoriesResponse.data.data.subcategories);
         if (productId) {
           const productReq = await api.get(`/products/${productId}`);
-          const productData = productReq.data.data;
+          const productData = productReq.data.data.product;
           formik.setValues({
-            productName: productData.product.name,
-            productBrand: productData.product.brand,
-            productCategory: productData.product.category._id,
-            productSubCategory: productData.product.subcategory._id,
-            productQuantity: productData.product.quantity,
-            productPrice: productData.product.price,
-            productDescription: productData.product.description,
-            productImg: productData.product.images,
-            // productThumbnail: null,
+            productName: productData.name,
+            productBrand: productData.brand,
+            productCategory: productData.category._id,
+            productSubCategory: productData.subcategory._id,
+            productImg: productData.images,
           });
+          setInitialProductDescription(productData.description);
         }
       } catch (error) {
         console.error(
@@ -164,13 +98,17 @@ export function AddProductModal({ closeModal, productId }) {
 
     fetchCategories();
   }, [productId]);
-
   return (
     <FormikProvider value={formik}>
       <Modal
         title={isEditing ? "ویرایش کالا" : "افزودن کالا"}
         closeModal={closeModal}
       >
+        {isEditing && (
+          <span className="text-red-500">
+            برای ویرایش قیمت و موجودی به جدول مربوطه مراجعه شود
+          </span>
+        )}
         <form onSubmit={formik.handleSubmit}>
           <div className="flex flex-col gap-4 my-5">
             <div className="vertical-flex gap-4">
@@ -185,8 +123,16 @@ export function AddProductModal({ closeModal, productId }) {
                   className="add-product-modal-input"
                   value={formik.values.productName}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
+                {formik.touched.productName &&
+                  formik.errors.productName && (
+                    <div className="text-red-500 text-sm">
+                      {formik.errors.productName}
+                    </div>
+                  )}
               </div>
+
               {/* PRODUCT BRAND SECTION */}
               <div className="flex flex-col gap-2 w-1/4">
                 <label htmlFor="productBrand">نام برند:</label>
@@ -198,7 +144,14 @@ export function AddProductModal({ closeModal, productId }) {
                   className="add-product-modal-input"
                   value={formik.values.productBrand}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
+                {formik.touched.productBrand &&
+                  formik.errors.productBrand && (
+                    <div className="text-red-500 text-sm">
+                      {formik.errors.productBrand}
+                    </div>
+                  )}
               </div>
             </div>
             <div className="vertical-flex gap-8">
@@ -210,6 +163,8 @@ export function AddProductModal({ closeModal, productId }) {
                   name="productCategory"
                   id="productCategory"
                   className="add-product-modal-select"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 >
                   {categories.map((item) => (
                     <option
@@ -222,6 +177,12 @@ export function AddProductModal({ closeModal, productId }) {
                     </option>
                   ))}
                 </Field>
+                {formik.touched.productCategory &&
+                  formik.errors.productCategory && (
+                    <div className="text-red-500 text-sm">
+                      {formik.errors.productCategory}
+                    </div>
+                  )}
               </div>
 
               {/* PRODUCT SUBCATEGORY SELECT SECTION */}
@@ -236,6 +197,7 @@ export function AddProductModal({ closeModal, productId }) {
                   className="add-product-modal-select"
                   value={formik.values.productSubCategory}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 >
                   {subCategories.map((item) => (
                     <option
@@ -248,52 +210,90 @@ export function AddProductModal({ closeModal, productId }) {
                     </option>
                   ))}
                 </Field>
+                {formik.touched.productSubCategory &&
+                  formik.errors.productSubCategory && (
+                    <div className="text-red-500 text-sm">
+                      {formik.errors.productSubCategory}
+                    </div>
+                  )}
               </div>
             </div>
-            <div className="vertical-flex gap-4">
-              {/* PRODUCT QUANTITY SECTION */}
-              <div className="flex flex-col gap-2 w-1/2">
-                <label htmlFor="productQuantity">تعداد محصول:</label>
-                <input
-                  type="text"
-                  name="productQuantity"
-                  id="productQuantity"
-                  required
-                  className="add-product-modal-input"
-                  value={formik.values.productQuantity}
-                  onChange={formik.handleChange}
-                />
+            {!isEditing && (
+              <div className="vertical-flex gap-4">
+                {/* PRODUCT QUANTITY SECTION */}
+                <div className="flex flex-col gap-2 w-1/2">
+                  <label htmlFor="productQuantity">تعداد محصول:</label>
+                  <input
+                    type="text"
+                    name="productQuantity"
+                    id="productQuantity"
+                    required
+                    className="add-product-modal-input"
+                    value={formik.values.productQuantity}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.productQuantity &&
+                    formik.errors.productQuantity && (
+                      <div className="text-red-500 text-sm">
+                        {formik.errors.productQuantity}
+                      </div>
+                    )}
+                </div>
+                {/* PRODUCT PRICE SECTION */}
+                <div className="flex flex-col gap-2 w-1/2">
+                  <label htmlFor="productPrice">
+                    قیمت محصول : (بدون در نظر گرفتن سه صفر انتها)
+                  </label>
+                  <input
+                    type="text"
+                    name="productPrice"
+                    id="productPrice"
+                    required
+                    placeholder="قیمت به تومان "
+                    className="add-product-modal-input"
+                    value={formik.values.productPrice}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.productPrice &&
+                    formik.errors.productPrice && (
+                      <div className="text-red-500 text-sm">
+                        {formik.errors.productPrice}
+                      </div>
+                    )}
+                </div>
               </div>
-              {/* PRODUCT PRICE SECTION */}
-              <div className="flex flex-col gap-2 w-1/2">
-                <label htmlFor="productPrice">
-                  قیمت محصول : (بدون در نظر گرفتن سه صفر انتها)
-                </label>
-                <input
-                  type="text"
-                  name="productPrice"
-                  id="productPrice"
-                  required
-                  placeholder="قیمت به تومان "
-                  className="add-product-modal-input"
-                  value={formik.values.productPrice}
-                  onChange={formik.handleChange}
-                />
-              </div>
-            </div>
+            )}
+
             {/* PRODUCT DESCRIPTION */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="textEditor">توضیحات:</label>
-              <div
-                className="add-product-modal-textEditor"
-                id="textEditor"
-              ></div>
+              <label htmlFor="textEditor">
+                توضیحات: (پر کردن این فیلد الزامی می‌باشد)
+              </label>
+              <QuillEditor
+                value={
+                  formik.values.productDescription ||
+                  initialProductDescription
+                }
+                onChange={(value) =>
+                  formik.setFieldValue("productDescription", value)
+                }
+              />
             </div>
             {/* UPLOAD PRODUCT PIC SECTION */}
             <FileInputField
-              onChange={(event) =>
-                formik.setFieldValue("productImg", event.target.files[0])
-              }
+              onChange={(event) => {
+                if (isEditing) {
+                  formik.setFieldValue(
+                    "productThumbnail",
+                    event.target.files[0]
+                  );
+                } else {
+                  formik.setFieldValue("productImg", event.target.files);
+                }
+              }}
+              isEditing={isEditing}
             />
             <Button type="submit" classes=" self-center">
               {isEditing ? "ذخیره" : "افزودن"}

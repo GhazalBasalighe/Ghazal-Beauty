@@ -8,7 +8,7 @@ export function Modal({ children, title, closeModal }) {
         className="fixed w-full top-0 left-0 bg-[#04040468] h-screen z-10"
         onClick={closeModal}
       ></div>
-      <div className="fixed w-1/2 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl z-20 bg-white p-5 overflow-y-auto">
+      <div className="fixed w-1/2 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl z-20 bg-white p-5 overflow-y-auto max-h-[90vh]">
         {/* TITLE OF MODAL */}
         <div className="vertical-flex justify-between">
           <h1 className="text-2xl font-bold">{title}</h1>

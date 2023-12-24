@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import toPersianDigits from "../../../helpers/toPersianDigits";
 import { Modal, Button, DynamicTable } from "../../base";
-export function OrdersModal() {
+
+export function OrdersModal({ closeModal }) {
   const tableData = {
     titles: ["کالا", "قیمت", "تعداد"],
     rows: [
@@ -11,7 +13,7 @@ export function OrdersModal() {
   };
 
   return (
-    <Modal title={"نمایش سفارش"}>
+    <Modal title={"نمایش سفارش"} closeModal={closeModal}>
       <div className="flex flex-col gap-8">
         <div className="vertical-flex gap-7 mt-5">
           <div className="flex flex-col gap-5 font-semibold">
@@ -30,6 +32,7 @@ export function OrdersModal() {
           </div>
         </div>
         <DynamicTable titles={tableData.titles} rows={tableData.rows} />
+        <span className="self-center">مبلغ کل سفارش: 400 تومان</span>
         <Button classes=" self-center">تحویل داده شد</Button>
       </div>
     </Modal>
