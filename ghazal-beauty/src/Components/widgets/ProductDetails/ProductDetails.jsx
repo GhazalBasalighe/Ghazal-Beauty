@@ -32,6 +32,7 @@ export function ProductDetails() {
     images: [],
     description: "",
     slugname: "",
+    rating: { rate: 0 },
   });
 
   const fetchData = async () => {
@@ -73,7 +74,7 @@ export function ProductDetails() {
           <div className="flex flex-col gap-5">
             <span className="font-semibold text-xl">{product.name}</span>
             <span className="text-gray-500 text-sm">
-              Neutrogena Sivilce Karciti Face Wash Gel 200 ml
+              {"star".repeat(product.rating.rate)}
             </span>
             <div className="vertical-flex gap-2">
               <span>{product.category.name}</span>

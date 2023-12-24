@@ -1,11 +1,15 @@
 import toPersianDigits from "../../../helpers/toPersianDigits";
 import { DynamicTable, Pagination, EmptyTable } from "../../base";
+import { OrdersModal } from "../../widgets";
 import { Checkbox } from "./Checkbox";
 import { usePagination } from "../../../hooks/usePagination";
 import { SyncLoader } from "react-spinners";
 import { useSelector } from "react-redux";
+import { useModal } from "../../../hooks/useModal";
+import { createPortal } from "react-dom";
 
 export function OrdersManagement() {
+  const { isModalOpen, openModal, closeModal } = useModal();
   const formatRowsCallback = async (order, user) => {
     // format each property separately for better readability
     const date = toPersianDigits(
@@ -18,7 +22,10 @@ export function OrdersManagement() {
       </span>
     );
     const operations = (
-      <span className="underline cursor-pointer text-indigo-500">
+      <span
+        className="underline cursor-pointer text-indigo-500"
+        onClick={() => openModal("orders")}
+      >
         بررسی سفارش
       </span>
     );
@@ -64,6 +71,11 @@ export function OrdersManagement() {
           />
         </>
       )}
+      {isModalOpen("orders") &&
+        createPortal(
+          <OrdersModal closeModal={() => closeModal("orders")} />,
+          document.body
+        )}
     </div>
   );
 }
