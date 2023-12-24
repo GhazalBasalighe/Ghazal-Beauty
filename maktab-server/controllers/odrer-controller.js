@@ -11,7 +11,7 @@ const { ApiFeatures } = require("../utils/api-features");
 //? population option + api features
 const getAllOrders = async (req, res, next) => {
   const ordersModel = new ApiFeatures(
-    Order.find({}).populate("user"),
+    Order.find({}).populate("user products.product"),
     req.query
   )
     .limitFields()

@@ -1,29 +1,28 @@
-import { useEffect } from "react";
+import { getInfoById } from "../../../helpers/getInfoById";
 import toPersianDigits from "../../../helpers/toPersianDigits";
 import { Modal, Button, DynamicTable } from "../../base";
-import api from "../../../config/axiosInstance";
 
 export function OrdersModal({ closeModal, selectedOrder }) {
-  const getOrderById = async () => {
-    // console.log(selectedOrder);
-    try {
-      const orders = await api.get(`/orders/${selectedOrder._id}`);
-      // console.log(orders);
-    } catch (error) {
-      // console.log(error);
-    }
-  };
-  useEffect(() => {
-    getOrderById();
-  }, [selectedOrder]);
-
+  console.log(selectedOrder);
   const tableData = {
     titles: ["کالا", "قیمت", "تعداد"],
-    rows: [
-      ["شوینده صورت", toPersianDigits("200.000"), toPersianDigits("5")],
-      ["نمیدونم", toPersianDigits("100.000"), toPersianDigits("10")],
-      ["میدونم", toPersianDigits("800.000"), toPersianDigits("8")],
-    ],
+    rows: [].concat(
+      ...selectedOrder.products.map((product) => {
+        const name = product.product.name;
+        const price = toPersianDigits(product.product.price.toFixed(3));
+        const count = toPersianDigits(product.count.toString());
+        return [[name, price, count]];
+      })
+    ),
+  };
+  // FORMAT DATE TO LOCALE
+  const formatPersianDate = (date) => {
+    const formattedDate = new Date(date).toLocaleDateString("fa-IR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+    return formattedDate;
   };
 
   return (
@@ -34,20 +33,42 @@ export function OrdersModal({ closeModal, selectedOrder }) {
             <span>نام مشتری:</span>
             <span>آدرس:</span>
             <span>تلفن:</span>
-            <span>زمان تحویل:</span>
             <span>زمان سفارش:</span>
+            <span>زمان تحویل:</span>
           </div>
           <div className="flex flex-col gap-5 text-gray-800">
-            <span>اکبر زمانی</span>
-            <span>تهران خیابان شریعتی خیابان 2 پلاک 14 واحد 2</span>
-            <span>0912222222</span>
-            <span>1401/3/4</span>
-            <span>1401/3/2</span>
+            <span>
+              {[
+                selectedOrder.user.firstname,
+                selectedOrder.user.lastname,
+              ].join(" ")}
+            </span>
+            <span>{selectedOrder.user.address}</span>
+            <span>{toPersianDigits(selectedOrder.user.phoneNumber)}</span>
+            <span>{formatPersianDate(selectedOrder.createdAt)}</span>
+            <span>{formatPersianDate(selectedOrder.deliveryDate)}</span>
           </div>
         </div>
         <DynamicTable titles={tableData.titles} rows={tableData.rows} />
-        <span className="self-center">مبلغ کل سفارش: 400 تومان</span>
-        <Button classes=" self-center">تحویل داده شد</Button>
+        <span className="self-center">
+          مبلغ کل سفارش:{" "}
+          {toPersianDigits(selectedOrder.totalPrice.toFixed(3))} تومان
+        </span>
+        {selectedOrder.deliveryStatus === false && (
+          <Button classes=" self-center">تحویل داده شد</Button>
+        )}
+        {selectedOrder.deliveryStatus === true && (
+          <div className="flex flex-col items-center self-center">
+            <img
+              src="/src/assets/delivered.svg"
+              alt="delivered order"
+              width={140}
+            />
+            <span className=" text-violet-800 font-bold text-xl">
+              این سفارش تحویل داده شده است
+            </span>
+          </div>
+        )}
       </div>
     </Modal>
   );

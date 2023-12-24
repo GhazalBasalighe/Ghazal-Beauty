@@ -34,7 +34,7 @@ export function OrdersManagement() {
     const operations = (
       <span
         className="underline cursor-pointer text-indigo-500"
-        onClick={handleClick}
+        onClick={() => handleClick(order)}
       >
         بررسی سفارش
       </span>
