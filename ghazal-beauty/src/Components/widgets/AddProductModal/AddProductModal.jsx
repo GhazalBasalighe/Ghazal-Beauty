@@ -51,7 +51,6 @@ export function AddProductModal({ closeModal, productId }) {
           formData.append("quantity", values.productQuantity);
           formData.append("price", values.productPrice);
         }
-        console.log(formData);
         const endpoint = isEditing
           ? `/products/${productId}`
           : "/products";

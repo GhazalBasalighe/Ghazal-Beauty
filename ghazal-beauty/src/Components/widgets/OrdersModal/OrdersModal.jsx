@@ -1,9 +1,10 @@
-import { getInfoById } from "../../../helpers/getInfoById";
+import { useDispatch, useSelector } from "react-redux";
+import api from "../../../config/axiosInstance";
 import toPersianDigits from "../../../helpers/toPersianDigits";
 import { Modal, Button, DynamicTable } from "../../base";
+import { setProductUpdateSignal } from "../../../store/slices/authSlice";
 
 export function OrdersModal({ closeModal, selectedOrder }) {
-  console.log(selectedOrder);
   const tableData = {
     titles: ["کالا", "قیمت", "تعداد"],
     rows: [].concat(
@@ -24,6 +25,24 @@ export function OrdersModal({ closeModal, selectedOrder }) {
     });
     return formattedDate;
   };
+
+  //CONFIRM DELIVERY FUNCTION
+  const dispatch = useDispatch();
+  const productUpdateSignal = useSelector(
+    (state) => state.auth.productUpdateSignal
+  );
+  async function handleDelivery() {
+    try {
+      const updatedStatus = {
+        deliveryStatus: true,
+      };
+      await api.patch(`/orders/${selectedOrder._id}`, updatedStatus);
+      dispatch(setProductUpdateSignal(!productUpdateSignal));
+      closeModal("orders");
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 
   return (
     <Modal title={"نمایش سفارش"} closeModal={closeModal}>
@@ -55,7 +74,9 @@ export function OrdersModal({ closeModal, selectedOrder }) {
           {toPersianDigits(selectedOrder.totalPrice.toFixed(3))} تومان
         </span>
         {selectedOrder.deliveryStatus === false && (
-          <Button classes=" self-center">تحویل داده شد</Button>
+          <Button classes=" self-center" onClick={handleDelivery}>
+            تحویل داده شد
+          </Button>
         )}
         {selectedOrder.deliveryStatus === true && (
           <div className="flex flex-col items-center self-center">
