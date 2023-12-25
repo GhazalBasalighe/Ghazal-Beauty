@@ -1,9 +1,7 @@
-import { CustomerHeader } from "../Components";
 import { CheckFat } from "@phosphor-icons/react";
 function PaymentSuccess() {
   return (
     <>
-      <CustomerHeader />
       <div className="flex flex-col gap-5 items-center">
         <h1 className="text-3xl text-center vertical-flex gap-3">
           <CheckFat
