@@ -96,7 +96,9 @@ export function ProductDetails() {
           <Counter max={product.quantity} />
           <div className="flex flex-col gap-4">
             {productQuantityMessage}
-            <Button>افزودن به سبد خرید</Button>
+            <Button variant={product.quantity === 0 && "disabled"}>
+              افزودن به سبد خرید
+            </Button>
           </div>
         </div>
       </div>
