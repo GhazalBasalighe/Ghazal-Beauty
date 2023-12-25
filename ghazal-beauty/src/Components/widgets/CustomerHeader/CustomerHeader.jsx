@@ -1,4 +1,4 @@
-import { ShoppingCart, Fingerprint } from "@phosphor-icons/react";
+import { ShoppingCart, Fingerprint, User } from "@phosphor-icons/react";
 import { Header } from "../../base";
 import { NavLink } from "react-router-dom";
 export function CustomerHeader() {
@@ -11,6 +11,12 @@ export function CustomerHeader() {
         </div>
       </NavLink>
       <div className="vertical-flex gap-10">
+        <NavLink to="admin_login">
+          <span className="costumer-header-btn">
+            <User size={20} />
+            <span>ورود / ثبت نام</span>
+          </span>
+        </NavLink>
         <NavLink to="admin_login">
           <span className="costumer-header-btn">
             <Fingerprint size={20} />

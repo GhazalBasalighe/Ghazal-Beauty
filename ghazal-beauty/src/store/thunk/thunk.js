@@ -4,21 +4,25 @@ import api from "../../config/axiosInstance";
 // LOGIN USER THUNK
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
-  async (data) => {
+  async (data, { rejectWithValue }) => {
     try {
       const response = await api.post("/auth/login", data);
       if (response.status === 200) {
         const refreshToken = response.data.token.refreshToken;
-        // set refresh token in cookies (they're http-only by default)
         Cookies.set("refreshToken", refreshToken, {
           expires: 7,
           secure: true,
           sameSite: "None",
         });
+      } else {
+        return rejectWithValue({
+          status: "failure",
+          message: "Authentication failed",
+        });
       }
       return response.data;
     } catch (error) {
-      console.log(error);
+      return error.response.status;
     }
   }
 );

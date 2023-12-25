@@ -42,6 +42,7 @@ export function AdminLoginForm() {
         const response = await dispatch(
           loginUser({ username: userName, password })
         );
+        console.log(response.payload);
         if (response.payload.status === "success") {
           toast.success(`سلام ${userName} 👋`, {
             position: "top-left",
@@ -50,19 +51,29 @@ export function AdminLoginForm() {
               fontWeight: 700,
             },
           });
+          // Redirect or perform other actions as needed
+          setTimeout(() => {
+            navigate("/admin/stock_price_manage");
+          }, 1500);
+        } else if (response.payload === 401) {
+          toast.error("نام کاربری یا رمز عبور اشتباه است", {
+            position: "top-left",
+            style: {
+              padding: "10px",
+              fontWeight: 700,
+            },
+          });
+        } else {
+          toast.error("خطا در ورود به سیستم", {
+            position: "top-left",
+            style: {
+              padding: "10px",
+              fontWeight: 700,
+            },
+          });
         }
-        // Redirect or perform other actions as needed
-        setTimeout(() => {
-          navigate("/admin/stock_price_manage");
-        }, 1500);
       } catch (error) {
-        toast.error("نام کاربری یا رمز عبور اشتباه است", {
-          position: "top-left",
-          style: {
-            padding: "10px",
-            fontWeight: 700,
-          },
-        });
+        console.log(error);
       }
     },
   });
