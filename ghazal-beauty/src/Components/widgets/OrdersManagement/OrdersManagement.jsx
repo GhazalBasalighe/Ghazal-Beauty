@@ -7,11 +7,21 @@ import { SyncLoader } from "react-spinners";
 import { useSelector } from "react-redux";
 import { useModal } from "../../../hooks/useModal";
 import { createPortal } from "react-dom";
+import { useState } from "react";
 
 export function OrdersManagement() {
   const { isModalOpen, openModal, closeModal } = useModal();
-  const formatRowsCallback = async (order, user) => {
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
+  function handleClick(order) {
+    setSelectedOrder(order);
+    openModal("orders");
+  }
+
+  const formatRowsCallback = (order) => {
     // format each property separately for better readability
+    const user = [order.user.firstname, order.user.lastname].join(" ");
+
     const date = toPersianDigits(
       new Date(order.deliveryDate).toLocaleDateString("fa-IR").toString()
     );
@@ -24,12 +34,11 @@ export function OrdersManagement() {
     const operations = (
       <span
         className="underline cursor-pointer text-indigo-500"
-        onClick={() => openModal("orders")}
+        onClick={() => handleClick(order)}
       >
         بررسی سفارش
       </span>
     );
-
     return [user, price, date, deliveryStatus, operations];
   };
 
@@ -46,8 +55,8 @@ export function OrdersManagement() {
       "عملیات‌های مربوطه",
     ]
   );
-  const isLoading = useSelector((state) => state.auth.isLoading);
 
+  const isLoading = useSelector((state) => state.auth.isLoading);
   return (
     <div className="flex flex-col justify-center px-20 py-8 gap-8 mt-10">
       <div className="vertical-flex justify-between">
@@ -73,7 +82,10 @@ export function OrdersManagement() {
       )}
       {isModalOpen("orders") &&
         createPortal(
-          <OrdersModal closeModal={() => closeModal("orders")} />,
+          <OrdersModal
+            closeModal={() => closeModal("orders")}
+            selectedOrder={selectedOrder}
+          />,
           document.body
         )}
     </div>

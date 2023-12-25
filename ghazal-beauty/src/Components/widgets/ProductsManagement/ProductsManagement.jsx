@@ -19,8 +19,10 @@ export function ProductsManagement() {
     setSelectedProduct(product);
     openModal("delete");
   };
-  const formatRowsCallback = async (item, category, subCategory) => {
+  const formatRowsCallback = (item) => {
     // format each property separately for better readability
+    const category = item.category.name;
+    const subCategory = item.subcategory.name;
     const picture = (
       <img
         src={`http://localhost:8000/images/products/thumbnails/${item.thumbnail}`}
