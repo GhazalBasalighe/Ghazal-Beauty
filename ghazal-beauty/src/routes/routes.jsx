@@ -25,6 +25,7 @@ const PaymentSuccess = React.lazy(() => import("../pages/PaymentSuccess"));
 const PaymentFailure = React.lazy(() => import("../pages/PaymentFailure"));
 const Payment = React.lazy(() => import("../pages/Payment"));
 const CartPage = React.lazy(() => import("../pages/Cart"));
+const AddUserInfo = React.lazy(() => import("../pages/AddUserInfo"));
 
 // IMPORTING ADMIN SIDE PAGES
 const OrdersManagementPage = React.lazy(() =>
@@ -42,6 +43,7 @@ const ConfirmPurchase = React.lazy(() =>
 
 // IMPORTING LOGIN PAGES
 const AdminLogin = React.lazy(() => import("../pages/AdminLogin"));
+const UserLogin = React.lazy(() => import("../pages/CustomerLogin"));
 
 const router = createBrowserRouter([
   // CUSTOMER SIDE
@@ -83,6 +85,10 @@ const router = createBrowserRouter([
         path: "confirm_purchase",
         element: <ConfirmPurchase />,
       },
+      {
+        path: "add_user",
+        element: <AddUserInfo />,
+      },
     ],
   },
   //   ADMIN SIDE
@@ -109,6 +115,12 @@ const router = createBrowserRouter([
   {
     path: "admin_login",
     element: <AdminLogin />,
+    errorElement: <NotFound />,
+  },
+  //  CUSTOMER LOGIN
+  {
+    path: "user_login",
+    element: <UserLogin />,
     errorElement: <NotFound />,
   },
 ]);

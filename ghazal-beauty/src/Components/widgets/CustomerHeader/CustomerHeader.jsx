@@ -11,7 +11,7 @@ export function CustomerHeader() {
         </div>
       </NavLink>
       <div className="vertical-flex gap-10">
-        <NavLink to="admin_login">
+        <NavLink to="user_login">
           <span className="costumer-header-btn">
             <User size={20} />
             <span>ورود / ثبت نام</span>
