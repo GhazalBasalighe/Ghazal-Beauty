@@ -2,7 +2,8 @@ import { Plus, Minus, Trash } from "@phosphor-icons/react";
 import useCounter from "../../../hooks/useCounter";
 import toPersianDigits from "../../../helpers/toPersianDigits";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFromCart } from "../../../store/slices/cartSlice";
 export function Counter({ productId, initialVal, max, onQuantityChange }) {
   const items = useSelector((state) => state.cart.items);
   const [initialValue, setInitialValue] = useState(initialVal);
@@ -21,6 +22,7 @@ export function Counter({ productId, initialVal, max, onQuantityChange }) {
   } = useCounter(initialValue, max);
 
   // CHOOSE THE ICON TO DISPLAY BASED ON THE QUANTITY
+  const dispatch = useDispatch();
   const decrementIcon =
     quantity !== 1 ? (
       <Minus
@@ -38,6 +40,7 @@ export function Counter({ productId, initialVal, max, onQuantityChange }) {
         onClick={() => {
           decrement();
           onQuantityChange(0); // Notify parent component
+          dispatch(removeFromCart(productId));
         }}
         className="p-1 cursor-pointer"
         weight="bold"
