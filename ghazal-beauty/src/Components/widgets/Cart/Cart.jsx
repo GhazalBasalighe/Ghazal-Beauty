@@ -4,37 +4,23 @@ import { Button, Counter } from "../../base";
 import { Handbag } from "@phosphor-icons/react";
 import toPersianDigits from "../../../helpers/toPersianDigits";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, clearCart } from "../../../store/slices/cartSlice";
 
 export function Cart() {
-  const [orderProducts, setOrderProducts] = useState([]);
+  const orderProducts = useSelector((state) => state.cart.items);
   const [price, setPrice] = useState(0);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const discount = Math.random() * 20;
 
-  const getOrderById = async () => {
-    const orderRes = await api.get("/orders/6570a86edc8c9dac09604142");
-    console.log(orderRes);
-    const order = orderRes.data.data.order;
-    const price = order.totalPrice;
-    setPrice(price);
-    const orderProducts = order.products;
-    console.log(orderProducts);
-    setOrderProducts(orderProducts);
+  const handleQuantityChange = (productId, newQuantity) => {
+    dispatch(addToCart({ _id: productId, count: newQuantity }));
   };
 
-  useEffect(() => {
-    getOrderById();
-  }, []);
-
-  const handleQuantityChange = (productId, newQuantity) => {
-    setOrderProducts((prevOrderProducts) =>
-      prevOrderProducts.map((product) =>
-        product._id === productId
-          ? { ...product, count: newQuantity }
-          : product
-      )
-    );
+  const handleClearCart = () => {
+    dispatch(clearCart());
   };
   async function handleChanges() {
     try {
@@ -60,13 +46,13 @@ export function Cart() {
           >
             <div className="vertical-flex">
               <img
-                src={`http://localhost:8000/images/products/thumbnails/${product.product.thumbnail}`}
+                src={`http://localhost:8000/images/products/thumbnails/${product.thumbnail}`}
                 alt="face wash"
                 width={90}
               />
               <div className="flex flex-col gap-5">
                 <span className="font-semibold text-sm">
-                  {product.product.name}
+                  {product.name}
                 </span>
                 <span className=" font-light text-xs text-gray-500">
                   {product.count} عدد انتخاب شده
@@ -76,13 +62,14 @@ export function Cart() {
             <div className="flex flex-col gap-5">
               <Counter
                 initialVal={product.count}
-                max={product.product.quantity}
+                max={product.quantity}
                 onQuantityChange={(newQuantity) =>
                   handleQuantityChange(product._id, newQuantity)
                 }
+                productId={product._id}
               />
               <span>
-                {toPersianDigits(product.product.price.toFixed(3))} تومان
+                {toPersianDigits(product.price.toFixed(3))} تومان
               </span>
             </div>
           </div>
