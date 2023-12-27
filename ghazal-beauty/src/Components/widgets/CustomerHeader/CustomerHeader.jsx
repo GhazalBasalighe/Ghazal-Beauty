@@ -27,7 +27,9 @@ export function CustomerHeader() {
         </NavLink>
         <NavLink to="cart">
           <span className="costumer-header-btn">
-            <span className="cart-badge">{items.length}</span>
+            {items.length > 0 && (
+              <span className="cart-badge">{items.length}</span>
+            )}
             <ShoppingCart size={20} />
             <span>سبد خرید</span>
           </span>

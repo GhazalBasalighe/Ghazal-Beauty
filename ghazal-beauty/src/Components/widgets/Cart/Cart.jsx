@@ -3,16 +3,17 @@ import api from "../../../config/axiosInstance";
 import { Button, Counter } from "../../base";
 import { Handbag } from "@phosphor-icons/react";
 import toPersianDigits from "../../../helpers/toPersianDigits";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, clearCart } from "../../../store/slices/cartSlice";
+import {
+  addToCart,
+  clearCart,
+  setOrderId,
+} from "../../../store/slices/cartSlice";
 import { Trash } from "@phosphor-icons/react/dist/ssr";
 import getTotalPrice from "../../../helpers/getTotalPrice";
 
 export function Cart() {
   const orderProducts = useSelector((state) => state.cart.items);
-  const [price, setPrice] = useState(0);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const discount = Math.random() * 20;
@@ -25,16 +26,28 @@ export function Cart() {
     dispatch(clearCart());
   };
 
-  async function handleChanges() {
+  async function createOrder() {
+    const userId = "656f8da0c2c4ab0e72ee478a";
+
+    const formattedOrderProducts = orderProducts.map((product) => ({
+      product: product._id,
+      count: product.count,
+    }));
+
+    const orderData = {
+      user: userId,
+      products: formattedOrderProducts,
+    };
     try {
-      const response = await api.patch(
-        `/orders/6570a86edc8c9dac09604142`,
-        { products: orderProducts }
-      );
-      console.log("Order updated successfully!", response.data);
-      navigate("/mock_payment");
+      const res = await api.post("/orders", orderData);
+      if (res.data.status === "success") {
+        const orderId = res.data.data.order._id;
+        dispatch(setOrderId(orderId));
+        window.location.href = "/mock_payment";
+      }
     } catch (error) {
-      console.error("Error updating order:", error);
+      console.error("Error creating order:", error.message);
+      throw error;
     }
   }
 
@@ -46,7 +59,7 @@ export function Cart() {
           <img
             src="src/assets/emptyCart.svg"
             alt="empty cart"
-            width={400}
+            width={500}
           />
           <span className="text-2xl font-bold">سبد خرید شما خالی است</span>
         </div>
@@ -102,32 +115,45 @@ export function Cart() {
             <div className=" text-sm text-fadedBlack vertical-flex justify-between ">
               <span>قیمت</span>
               <span>
-                {toPersianDigits(getTotalPrice(orderProducts).toFixed(3))}{" "}
+                {orderProducts.length === 0
+                  ? toPersianDigits("0")
+                  : toPersianDigits(
+                      getTotalPrice(orderProducts).toFixed(3)
+                    )}{" "}
                 تومان
               </span>
             </div>
             <div className=" text-sm text-fadedBlack vertical-flex justify-between ">
               <span>تخفیف محصولات</span>
-              <span>{toPersianDigits(discount.toFixed(3))} تومان</span>
+              <span>
+                {orderProducts.length === 0
+                  ? toPersianDigits("0")
+                  : toPersianDigits(discount.toFixed(3))}{" "}
+                تومان
+              </span>
             </div>
             <div className=" text-sm text-fadedBlack vertical-flex justify-between ">
               <span>قابل پرداخت</span>
               <span>
-                {toPersianDigits(
-                  (getTotalPrice(orderProducts) - discount).toFixed(3)
-                )}{" "}
+                {orderProducts.length === 0
+                  ? toPersianDigits("0")
+                  : toPersianDigits(
+                      (getTotalPrice(orderProducts) - discount).toFixed(3)
+                    )}{" "}
                 تومان
               </span>
             </div>
-            <Button onClick={handleChanges}>ادامه فرایند خرید</Button>
+            <Button onClick={createOrder}>ادامه فرایند خرید</Button>
           </div>
-          <Button
-            onClick={handleClearCart}
-            classes=" vertical-flex gap-1 bg-violet-400 text-center hover:bg-violet-500"
-          >
-            <Trash size={20} />
-            <span>خالی کردن سبد </span>
-          </Button>
+          {orderProducts.length !== 0 && (
+            <Button
+              onClick={handleClearCart}
+              classes=" vertical-flex gap-1 bg-violet-400 text-center hover:bg-violet-500"
+            >
+              <Trash size={20} />
+              <span>خالی کردن سبد </span>
+            </Button>
+          )}
         </div>
       </div>
     </div>

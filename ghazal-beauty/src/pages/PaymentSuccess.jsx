@@ -1,4 +1,5 @@
 import { CheckFat } from "@phosphor-icons/react";
+import { BackButton } from "../Components/base";
 function PaymentSuccess() {
   return (
     <>
@@ -21,6 +22,7 @@ function PaymentSuccess() {
             className="w-1/2 h-auto"
           />
         </div>
+        <BackButton />
       </div>
     </>
   );
