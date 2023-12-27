@@ -2,8 +2,12 @@ import { ShoppingCart, Fingerprint, User } from "@phosphor-icons/react";
 import { Header } from "../../base";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 export function CustomerHeader() {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const userName = useSelector((state) => state.auth.userName);
   const items = useSelector((state) => state.cart.items);
+
   return (
     <Header>
       <NavLink to="/">
@@ -13,12 +17,19 @@ export function CustomerHeader() {
         </div>
       </NavLink>
       <div className="vertical-flex gap-10">
-        <NavLink to="user_login">
-          <span className="costumer-header-btn">
-            <User size={20} />
-            <span>ورود / ثبت نام</span>
+        {!isLoggedIn && (
+          <NavLink to="user_login">
+            <span className="costumer-header-btn">
+              <User size={20} />
+              <span>ورود / ثبت نام</span>
+            </span>
+          </NavLink>
+        )}
+        {isLoggedIn && (
+          <span className="vertical-flex gap-1 text-gray-700 text-lg">
+            <span>سلام {userName} 👋</span>{" "}
           </span>
-        </NavLink>
+        )}
         <NavLink to="admin_login">
           <span className="costumer-header-btn">
             <Fingerprint size={20} />

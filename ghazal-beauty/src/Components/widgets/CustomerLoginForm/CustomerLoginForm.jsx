@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../../store/thunk/thunk";
 import { useNavigate, Link } from "react-router-dom";
+import { setUserName } from "../../../store/slices/authSlice";
 
 export function CustomerLoginForm() {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export function CustomerLoginForm() {
         const response = await dispatch(
           loginUser({ username: userName, password })
         );
-        console.log(response.payload);
+        dispatch(setUserName(userName));
         if (response.payload.status === "success") {
           toast.success(`سلام ${userName} 👋`, {
             position: "top-left",
@@ -53,7 +54,7 @@ export function CustomerLoginForm() {
           });
           // Redirect or perform other actions as needed
           setTimeout(() => {
-            navigate("/admin/stock_price_manage");
+            navigate("/");
           }, 1500);
         } else if (response.payload === 401) {
           toast.error("نام کاربری یا رمز عبور اشتباه است", {

@@ -7,6 +7,7 @@ const initialState = {
   isLoggedIn: false,
   isLoading: false,
   productUpdateSignal: false,
+  userName: "",
 };
 
 export const authSlice = createSlice({
@@ -25,6 +26,9 @@ export const authSlice = createSlice({
     },
     setProductUpdateSignal: (state, action) => {
       state.productUpdateSignal = action.payload;
+    },
+    setUserName: (state, action) => {
+      state.userName = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -51,5 +55,6 @@ export const {
   setAccessToken,
   setIsLoading,
   setProductUpdateSignal,
+  setUserName,
 } = authSlice.actions;
 export default authSlice.reducer;

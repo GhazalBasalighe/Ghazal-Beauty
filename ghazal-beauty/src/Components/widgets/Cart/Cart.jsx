@@ -91,9 +91,10 @@ export function Cart() {
               <Counter
                 initialVal={product.count}
                 max={product.quantity}
-                onQuantityChange={(newQuantity) =>
-                  handleQuantityChange(product._id, newQuantity)
-                }
+                onQuantityChange={(newQuantity) => {
+                  if (newQuantity < product.quantity)
+                    handleQuantityChange(product._id, newQuantity);
+                }}
                 productId={product._id}
               />
               <span>
