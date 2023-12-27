@@ -6,6 +6,8 @@ import toPersianDigits from "../../../helpers/toPersianDigits";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, clearCart } from "../../../store/slices/cartSlice";
+import { Trash } from "@phosphor-icons/react/dist/ssr";
+import getTotalPrice from "../../../helpers/getTotalPrice";
 
 export function Cart() {
   const orderProducts = useSelector((state) => state.cart.items);
@@ -22,6 +24,7 @@ export function Cart() {
   const handleClearCart = () => {
     dispatch(clearCart());
   };
+
   async function handleChanges() {
     try {
       const response = await api.patch(
@@ -38,6 +41,16 @@ export function Cart() {
   return (
     <div className="vertical-flex justify-center gap-16 mt-10">
       {/* RIGHT SIDE , THE CART */}
+      {orderProducts.length === 0 && (
+        <div className="flex flex-col gap-10 items-center">
+          <img
+            src="src/assets/emptyCart.svg"
+            alt="empty cart"
+            width={400}
+          />
+          <span className="text-2xl font-bold">سبد خرید شما خالی است</span>
+        </div>
+      )}
       <div className="flex flex-col gap-8 mb-10">
         {orderProducts.map((product) => (
           <div
@@ -84,22 +97,37 @@ export function Cart() {
             <span>{orderProducts.length}</span>
           </span>
         </div>
-        <div className="flex flex-col gap-5 shadow-lg p-6 rounded-b-xl border border-solid border-violet-600 w-80">
-          <div className=" text-sm text-fadedBlack vertical-flex justify-between ">
-            <span>قیمت</span>
-            <span>{toPersianDigits(price.toFixed(3))} تومان</span>
+        <div className="flex flex-col gap-6 items-center">
+          <div className="flex flex-col gap-5 shadow-lg p-6 rounded-b-xl border border-solid border-violet-600 w-80">
+            <div className=" text-sm text-fadedBlack vertical-flex justify-between ">
+              <span>قیمت</span>
+              <span>
+                {toPersianDigits(getTotalPrice(orderProducts).toFixed(3))}{" "}
+                تومان
+              </span>
+            </div>
+            <div className=" text-sm text-fadedBlack vertical-flex justify-between ">
+              <span>تخفیف محصولات</span>
+              <span>{toPersianDigits(discount.toFixed(3))} تومان</span>
+            </div>
+            <div className=" text-sm text-fadedBlack vertical-flex justify-between ">
+              <span>قابل پرداخت</span>
+              <span>
+                {toPersianDigits(
+                  (getTotalPrice(orderProducts) - discount).toFixed(3)
+                )}{" "}
+                تومان
+              </span>
+            </div>
+            <Button onClick={handleChanges}>ادامه فرایند خرید</Button>
           </div>
-          <div className=" text-sm text-fadedBlack vertical-flex justify-between ">
-            <span>تخفیف محصولات</span>
-            <span>{toPersianDigits(discount.toFixed(3))} تومان</span>
-          </div>
-          <div className=" text-sm text-fadedBlack vertical-flex justify-between ">
-            <span>قابل پرداخت</span>
-            <span>
-              {toPersianDigits((price - discount).toFixed(3))} تومان
-            </span>
-          </div>
-          <Button onClick={handleChanges}>ادامه فرایند خرید</Button>
+          <Button
+            onClick={handleClearCart}
+            classes=" vertical-flex gap-1 bg-violet-400 text-center hover:bg-violet-500"
+          >
+            <Trash size={20} />
+            <span>خالی کردن سبد </span>
+          </Button>
         </div>
       </div>
     </div>

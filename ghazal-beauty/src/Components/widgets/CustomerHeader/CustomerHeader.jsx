@@ -1,7 +1,9 @@
 import { ShoppingCart, Fingerprint, User } from "@phosphor-icons/react";
 import { Header } from "../../base";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 export function CustomerHeader() {
+  const items = useSelector((state) => state.cart.items);
   return (
     <Header>
       <NavLink to="/">
@@ -25,6 +27,7 @@ export function CustomerHeader() {
         </NavLink>
         <NavLink to="cart">
           <span className="costumer-header-btn">
+            <span className="cart-badge">{items.length}</span>
             <ShoppingCart size={20} />
             <span>سبد خرید</span>
           </span>
