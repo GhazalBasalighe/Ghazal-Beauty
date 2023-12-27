@@ -14,6 +14,7 @@ export function Cart() {
 
   const getOrderById = async () => {
     const orderRes = await api.get("/orders/6570a86edc8c9dac09604142");
+    console.log(orderRes);
     const order = orderRes.data.data.order;
     const price = order.totalPrice;
     setPrice(price);
@@ -26,8 +27,26 @@ export function Cart() {
     getOrderById();
   }, []);
 
-  function handleChanges() {
-    navigate("/mock_payment");
+  const handleQuantityChange = (productId, newQuantity) => {
+    setOrderProducts((prevOrderProducts) =>
+      prevOrderProducts.map((product) =>
+        product._id === productId
+          ? { ...product, count: newQuantity }
+          : product
+      )
+    );
+  };
+  async function handleChanges() {
+    try {
+      const response = await api.patch(
+        `/orders/6570a86edc8c9dac09604142`,
+        { products: orderProducts }
+      );
+      console.log("Order updated successfully!", response.data);
+      navigate("/mock_payment");
+    } catch (error) {
+      console.error("Error updating order:", error);
+    }
   }
 
   return (
@@ -58,6 +77,9 @@ export function Cart() {
               <Counter
                 initialVal={product.count}
                 max={product.product.quantity}
+                onQuantityChange={(newQuantity) =>
+                  handleQuantityChange(product._id, newQuantity)
+                }
               />
               <span>
                 {toPersianDigits(product.product.price.toFixed(3))} تومان

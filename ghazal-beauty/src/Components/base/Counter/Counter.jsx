@@ -1,7 +1,7 @@
 import { Plus, Minus, Trash } from "@phosphor-icons/react";
 import useCounter from "../../../hooks/useCounter";
 import toPersianDigits from "../../../helpers/toPersianDigits";
-export function Counter({ initialVal, max }) {
+export function Counter({ initialVal, max, onQuantityChange }) {
   const {
     quantity,
     handleQuantityDecrement: decrement,
@@ -12,14 +12,20 @@ export function Counter({ initialVal, max }) {
     quantity !== 1 ? (
       <Minus
         size={30}
-        onClick={decrement}
+        onClick={() => {
+          decrement();
+          onQuantityChange(quantity - 1); // Notify parent component
+        }}
         className="p-1 cursor-pointer"
         weight="bold"
       />
     ) : (
       <Trash
         size={30}
-        onClick={decrement}
+        onClick={() => {
+          decrement();
+          onQuantityChange(0); // Notify parent component
+        }}
         className="p-1 cursor-pointer"
         weight="bold"
       />
@@ -35,11 +41,15 @@ export function Counter({ initialVal, max }) {
       />
     );
   }
+
   return (
     <div className="vertical-flex bg-violet-100 text-purple-800 rounded-md ">
       <Plus
         size={30}
-        onClick={increment}
+        onClick={() => {
+          increment();
+          onQuantityChange(1); // Notify parent component
+        }}
         className="p-1 cursor-pointer"
         weight="bold"
       />

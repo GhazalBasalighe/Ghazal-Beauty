@@ -21,6 +21,7 @@ const settings = {
 };
 
 export function ProductDetails() {
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
   const { productId } = useParams();
   const [product, setProduct] = useState({
     name: "",
@@ -34,6 +35,10 @@ export function ProductDetails() {
     slugname: "",
     rating: { rate: 0 },
   });
+
+  const handleQuantityChange = (newQuantity) => {
+    setSelectedQuantity(newQuantity);
+  };
 
   const fetchData = async () => {
     try {
@@ -93,7 +98,10 @@ export function ProductDetails() {
           <span className="font-semibold text-xl">
             {toPersianDigits(product.price.toFixed(3))} تومان
           </span>
-          <Counter max={product.quantity} />
+          <Counter
+            max={product.quantity}
+            onQuantityChange={handleQuantityChange}
+          />
           <div className="flex flex-col gap-4">
             {productQuantityMessage}
             <Button variant={product.quantity === 0 && "disabled"}>
