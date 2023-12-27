@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import api from "../../../config/axiosInstance";
 import { Button, Counter } from "../../base";
 import { Handbag } from "@phosphor-icons/react";
@@ -11,6 +10,7 @@ import {
 } from "../../../store/slices/cartSlice";
 import { Trash } from "@phosphor-icons/react/dist/ssr";
 import getTotalPrice from "../../../helpers/getTotalPrice";
+import { Link } from "react-router-dom";
 
 export function Cart() {
   const orderProducts = useSelector((state) => state.cart.items);
@@ -71,11 +71,13 @@ export function Cart() {
             key={product._id}
           >
             <div className="vertical-flex">
-              <img
-                src={`http://localhost:8000/images/products/thumbnails/${product.thumbnail}`}
-                alt="face wash"
-                width={90}
-              />
+              <Link to={`/products/details/${product._id}`}>
+                <img
+                  src={`http://localhost:8000/images/products/thumbnails/${product.thumbnail}`}
+                  alt="face wash"
+                  width={90}
+                />
+              </Link>
               <div className="flex flex-col gap-5">
                 <span className="font-semibold text-sm">
                   {product.name}
