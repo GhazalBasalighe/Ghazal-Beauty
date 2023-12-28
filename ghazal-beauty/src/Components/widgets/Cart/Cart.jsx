@@ -150,7 +150,12 @@ export function Cart() {
                 تومان
               </span>
             </div>
-            <Button onClick={createOrder}>ادامه فرایند خرید</Button>
+            <Button
+              onClick={createOrder}
+              variant={orderProducts.length === 0 && "disabled"}
+            >
+              ادامه فرایند خرید
+            </Button>
           </div>
           {orderProducts.length !== 0 && (
             <Button
