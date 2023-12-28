@@ -22,7 +22,7 @@ function PaymentSuccess() {
             className="w-1/2 h-auto"
           />
         </div>
-        <BackButton />
+        <BackButton shouldLogOut={false} />
       </div>
     </>
   );

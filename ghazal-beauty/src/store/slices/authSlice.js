@@ -8,6 +8,7 @@ const initialState = {
   isLoading: false,
   productUpdateSignal: false,
   userName: "",
+  userId: "",
 };
 
 export const authSlice = createSlice({
@@ -41,6 +42,7 @@ export const authSlice = createSlice({
       if (action.payload.status === "success")
         state.accessToken = action.payload.token.accessToken;
       state.isLoggedIn = true;
+      state.userId = action.payload.data.user._id;
     });
     builder.addCase(loginUser.rejected, (state) => {
       state.accessToken = "";

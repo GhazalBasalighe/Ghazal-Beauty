@@ -10,11 +10,14 @@ import {
 } from "../../../store/slices/cartSlice";
 import { Trash } from "@phosphor-icons/react/dist/ssr";
 import getTotalPrice from "../../../helpers/getTotalPrice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Cart() {
   const orderProducts = useSelector((state) => state.cart.items);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const userId = useSelector((state) => state.auth.userId);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const discount = Math.random() * 20;
 
@@ -27,13 +30,14 @@ export function Cart() {
   };
 
   async function createOrder() {
-    const userId = "656f8da0c2c4ab0e72ee478a";
-
     const formattedOrderProducts = orderProducts.map((product) => ({
       product: product._id,
       count: product.count,
     }));
-
+    if (!isLoggedIn) {
+      navigate("/user_login");
+      return;
+    }
     const orderData = {
       user: userId,
       products: formattedOrderProducts,
