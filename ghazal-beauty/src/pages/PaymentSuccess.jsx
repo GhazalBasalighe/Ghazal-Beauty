@@ -1,5 +1,6 @@
 import { CheckFat } from "@phosphor-icons/react";
 import { BackButton } from "../Components/base";
+import { PrivateRoute } from "../Components";
 function PaymentSuccess() {
   return (
     <>
@@ -28,4 +29,4 @@ function PaymentSuccess() {
   );
 }
 
-export default PaymentSuccess;
+export default PrivateRoute(PaymentSuccess);

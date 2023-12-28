@@ -1,4 +1,5 @@
 import { X } from "@phosphor-icons/react";
+import { PrivateRoute } from "../Components";
 
 function PaymentFailure() {
   return (
@@ -26,4 +27,4 @@ function PaymentFailure() {
   );
 }
 
-export default PaymentFailure;
+export default PrivateRoute(PaymentFailure);

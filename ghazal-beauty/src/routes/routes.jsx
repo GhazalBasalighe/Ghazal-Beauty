@@ -26,6 +26,7 @@ const PaymentFailure = React.lazy(() => import("../pages/PaymentFailure"));
 const Payment = React.lazy(() => import("../pages/Payment"));
 const CartPage = React.lazy(() => import("../pages/Cart"));
 const AddUserInfo = React.lazy(() => import("../pages/AddUserInfo"));
+const DatePicker = React.lazy(() => import("../pages/DatePickerPage"));
 
 // IMPORTING ADMIN SIDE PAGES
 const OrdersManagementPage = React.lazy(() =>
@@ -74,10 +75,6 @@ const router = createBrowserRouter([
         element: <PaymentFailure />,
       },
       {
-        path: "mock_payment",
-        element: <Payment />,
-      },
-      {
         path: "cart",
         element: <CartPage />,
       },
@@ -88,6 +85,10 @@ const router = createBrowserRouter([
       {
         path: "add_user",
         element: <AddUserInfo />,
+      },
+      {
+        path: "date_picker",
+        element: <DatePicker />,
       },
     ],
   },
@@ -121,6 +122,12 @@ const router = createBrowserRouter([
   {
     path: "user_login",
     element: <UserLogin />,
+    errorElement: <NotFound />,
+  },
+  //PAYMENT
+  {
+    path: "mock_payment",
+    element: <Payment />,
     errorElement: <NotFound />,
   },
 ]);
