@@ -53,7 +53,12 @@
 
   .costumer-header-btn
   {
-    @apply vertical-flex gap-1 text-gray-700 text-lg cursor-pointer hover:border-solid hover:border-b-2 hover:border-indigo-400
+    @apply vertical-flex gap-1 text-gray-700 text-lg cursor-pointer hover:border-solid hover:border-b-2 hover:border-indigo-400 relative
+  }
+
+  .cart-badge
+  {
+    @apply text-white text-sm align-middle text-center bg-purple-500 rounded-full w-4 h-4 absolute -top-2 -right-2
   }
 
   /* ADMIN PANEL */

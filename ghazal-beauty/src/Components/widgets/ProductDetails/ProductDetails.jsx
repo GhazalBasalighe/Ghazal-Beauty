@@ -10,6 +10,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { NextArrow, PrevArrow } from "../../../utils";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../store/slices/cartSlice";
+import toast, { Toaster } from "react-hot-toast";
 
 // SLIDER SETTINGS
 const settings = {
@@ -26,7 +27,6 @@ export function ProductDetails() {
   const [selectedQuantity, setSelectedQuantity] = useState(0);
   const dispatch = useDispatch();
   const items = useSelector((state) => state.cart.items);
-  console.log(items);
   const { productId } = useParams();
   const [product, setProduct] = useState({
     name: "",
@@ -43,12 +43,19 @@ export function ProductDetails() {
 
   const handleQuantityChange = (newQuantity) => {
     setSelectedQuantity(newQuantity);
-    console.log(newQuantity);
   };
 
   function handleAddToCart() {
     if (selectedQuantity === 0) {
       setSelectedQuantity(1);
+      toast.error("لطفا تعداد محصول را انتخاب کنید", {
+        position: "top-left",
+        style: {
+          padding: "10px",
+          fontWeight: 700,
+        },
+      });
+      return;
     }
     const newItem = {
       ...product,
@@ -56,6 +63,13 @@ export function ProductDetails() {
     };
 
     dispatch(addToCart(newItem));
+    toast.success("محصول با موفقیت به سبد خرید اضافه شد", {
+      position: "top-left",
+      style: {
+        padding: "10px",
+        fontWeight: 700,
+      },
+    });
   }
 
   const fetchData = async () => {
@@ -83,6 +97,7 @@ export function ProductDetails() {
 
   return (
     <div className="flex flex-col gap-10 px-20 mt-3">
+      <Toaster />
       <div className="vertical-flex justify-between ">
         <div className="vertical-flex justify-center gap-10">
           <Slider {...settings} rtl className="w-[300px]">

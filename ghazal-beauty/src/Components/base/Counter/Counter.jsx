@@ -29,7 +29,7 @@ export function Counter({ productId, initialVal, max, onQuantityChange }) {
         size={30}
         onClick={() => {
           decrement();
-          onQuantityChange(quantity - 1); // Notify parent component
+          onQuantityChange(quantity - 1);
         }}
         className="p-1 cursor-pointer"
         weight="bold"
@@ -39,7 +39,7 @@ export function Counter({ productId, initialVal, max, onQuantityChange }) {
         size={30}
         onClick={() => {
           decrement();
-          onQuantityChange(0); // Notify parent component
+          onQuantityChange(0);
           dispatch(removeFromCart(productId));
         }}
         className="p-1 cursor-pointer"
@@ -64,7 +64,7 @@ export function Counter({ productId, initialVal, max, onQuantityChange }) {
         size={30}
         onClick={() => {
           increment();
-          onQuantityChange(quantity + 1); // Notify parent component
+          onQuantityChange(quantity + 1);
         }}
         className="p-1 cursor-pointer"
         weight="bold"

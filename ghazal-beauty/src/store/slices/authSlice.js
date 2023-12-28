@@ -7,6 +7,8 @@ const initialState = {
   isLoggedIn: false,
   isLoading: false,
   productUpdateSignal: false,
+  userName: "",
+  userId: "",
 };
 
 export const authSlice = createSlice({
@@ -26,6 +28,9 @@ export const authSlice = createSlice({
     setProductUpdateSignal: (state, action) => {
       state.productUpdateSignal = action.payload;
     },
+    setUserName: (state, action) => {
+      state.userName = action.payload;
+    },
   },
   extraReducers: (builder) => {
     // BUILDERS FOR LOGGING THE USER IN WITH ACCESS TOKEN
@@ -37,6 +42,7 @@ export const authSlice = createSlice({
       if (action.payload.status === "success")
         state.accessToken = action.payload.token.accessToken;
       state.isLoggedIn = true;
+      state.userId = action.payload.data.user._id;
     });
     builder.addCase(loginUser.rejected, (state) => {
       state.accessToken = "";
@@ -51,5 +57,6 @@ export const {
   setAccessToken,
   setIsLoading,
   setProductUpdateSignal,
+  setUserName,
 } = authSlice.actions;
 export default authSlice.reducer;
