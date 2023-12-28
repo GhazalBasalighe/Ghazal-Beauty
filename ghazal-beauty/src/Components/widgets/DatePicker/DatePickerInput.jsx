@@ -5,12 +5,11 @@ import { Button } from "../../base";
 import { useDispatch, useSelector } from "react-redux";
 import { setDeliveryDate } from "../../../store/slices/cartSlice";
 import api from "../../../config/axiosInstance";
-import { CookingPot } from "@phosphor-icons/react";
 
 export function DatePickerInput() {
   const dispatch = useDispatch();
   const orderId = useSelector((state) => state.cart.orderId);
-  const deliveryDate = useSelector((state) => state.cart.deliveryDates);
+  const deliveryDate = useSelector((state) => state.cart.deliveryDate);
 
   const handleDateChange = (date) => {
     if (date) {
@@ -30,11 +29,10 @@ export function DatePickerInput() {
       const res = await api.patch(`/orders/${orderId}`, {
         deliveryDate,
       });
-      console.log(res);
     } catch (error) {
       console.log(error);
     }
-    // window.location.href = "/mock_payment";
+    window.location.href = "/mock_payment";
   };
 
   return (
