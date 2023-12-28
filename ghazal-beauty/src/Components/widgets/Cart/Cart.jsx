@@ -47,7 +47,7 @@ export function Cart() {
       if (res.data.status === "success") {
         const orderId = res.data.data.order._id;
         dispatch(setOrderId(orderId));
-        window.location.href = "/mock_payment";
+        navigate("/date_picker");
       }
     } catch (error) {
       console.error("Error creating order:", error.message);

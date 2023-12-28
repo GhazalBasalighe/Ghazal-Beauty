@@ -58,6 +58,7 @@ export function CustomerHeader() {
                 isHovered ? "flex" : "hidden"
               }`}
               onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
               onClick={onLogOut}
             >
               <span>خروج</span>

@@ -16,11 +16,9 @@ function Payment() {
   async function onCancel() {
     try {
       await api.delete(`/orders/${orderId}`);
-      dispatch(clearCart());
       navigate("/unsuccessful_payment");
     } catch (error) {
       console.error("Error cancelling order:", error.message);
-      // Handle the error, show a message, or navigate to an error page
     }
   }
   return (
