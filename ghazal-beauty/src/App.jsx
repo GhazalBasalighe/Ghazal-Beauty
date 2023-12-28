@@ -29,13 +29,16 @@ function App() {
   );
   api.interceptors.response.use(
     (response) => {
-      //just return the response for god's sake
       return response;
     },
     async (error) => {
       const originalRequest = error.config;
       const refreshToken = Cookies.get("refreshToken");
-      if (error.response.status === 401 && !originalRequest._retry) {
+      if (
+        refreshToken &&
+        error.response.status === 401 &&
+        !originalRequest._retry
+      ) {
         originalRequest._retry = true;
         try {
           const response = await api.post("/auth/token", { refreshToken });

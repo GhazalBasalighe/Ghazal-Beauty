@@ -1,10 +1,9 @@
-import { CustomerHeader } from "../Components";
 import { X } from "@phosphor-icons/react";
+import { PrivateRoute } from "../Components";
 
 function PaymentFailure() {
   return (
     <>
-      <CustomerHeader />
       <div className="flex flex-col gap-5 items-center">
         <h1 className="text-3xl text-center vertical-flex gap-3">
           <X
@@ -28,4 +27,4 @@ function PaymentFailure() {
   );
 }
 
-export default PaymentFailure;
+export default PrivateRoute(PaymentFailure);

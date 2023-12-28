@@ -8,3 +8,4 @@ export * from "./DynamicTable";
 export * from "./Pagination";
 export * from "./EmptyTable";
 export * from "./ProductCard";
+export * from "./LoginForm";

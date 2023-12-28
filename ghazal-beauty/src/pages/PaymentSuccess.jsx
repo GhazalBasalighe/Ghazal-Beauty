@@ -1,9 +1,9 @@
-import { CustomerHeader } from "../Components";
 import { CheckFat } from "@phosphor-icons/react";
+import { BackButton } from "../Components/base";
+import { PrivateRoute } from "../Components";
 function PaymentSuccess() {
   return (
     <>
-      <CustomerHeader />
       <div className="flex flex-col gap-5 items-center">
         <h1 className="text-3xl text-center vertical-flex gap-3">
           <CheckFat
@@ -23,9 +23,10 @@ function PaymentSuccess() {
             className="w-1/2 h-auto"
           />
         </div>
+        <BackButton shouldLogOut={false} />
       </div>
     </>
   );
 }
 
-export default PaymentSuccess;
+export default PrivateRoute(PaymentSuccess);
