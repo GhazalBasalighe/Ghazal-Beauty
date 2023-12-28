@@ -43,6 +43,7 @@ export const authSlice = createSlice({
         state.accessToken = action.payload.token.accessToken;
       state.isLoggedIn = true;
       state.userId = action.payload.data.user._id;
+      state.userName = action.payload.data.user.username;
     });
     builder.addCase(loginUser.rejected, (state) => {
       state.accessToken = "";

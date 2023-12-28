@@ -3,6 +3,10 @@ import { Button } from "../../base";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { userInfoFormSchema } from "../../../utils";
+import api from "../../../config/axiosInstance";
+import { loginUser } from "../../../store/thunk/thunk";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 export function UserInfoForm() {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
@@ -10,7 +14,6 @@ export function UserInfoForm() {
   function handlePasswordVisibility() {
     setIsPasswordHidden((isPasswordHidden) => !isPasswordHidden);
   }
-
   // RENDER APPROPRIATE SVG ACCORDING TO PASSWORD VISIBILITY
   const visibleIcon = (
     <div className="absolute left-2 bottom-[9px] cursor-pointer">
@@ -21,6 +24,23 @@ export function UserInfoForm() {
       )}
     </div>
   );
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  async function handleAddUser(formData) {
+    try {
+      await api.post("/users", formData);
+      await dispatch(
+        loginUser({
+          username: formData.username,
+          password: formData.password,
+        })
+      );
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div className="grid h-[88vh] place-items-center">
@@ -34,8 +54,17 @@ export function UserInfoForm() {
           customerAddress: "",
         }}
         validationSchema={userInfoFormSchema}
-        onSubmit={(values) => {
-          console.log("Form values submitted:", values);
+        onSubmit={async (values) => {
+          const formData = {
+            firstname: values.customerName,
+            lastname: values.customerLName,
+            username: values.customerUsername,
+            password: values.customerPassword,
+            phoneNumber: values.customerPhoneNum,
+            address: values.customerAddress,
+            role: "USER",
+          };
+          await handleAddUser(formData);
         }}
       >
         <Form className="w-3/4 grid grid-cols-2 gap-10">
@@ -164,7 +193,7 @@ export function UserInfoForm() {
           </div>
           <div className="col-span-2 flex justify-end mt-5">
             <Button type="submit" classes="w-1/4">
-              پرداخت
+              ثبت نام
             </Button>
           </div>
         </Form>
