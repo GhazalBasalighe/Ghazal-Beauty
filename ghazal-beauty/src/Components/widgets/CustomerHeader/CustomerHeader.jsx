@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SignOut } from "@phosphor-icons/react/dist/ssr";
 import { logout } from "../../../store/slices/authSlice";
 import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 export function CustomerHeader() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -15,11 +16,19 @@ export function CustomerHeader() {
   const [isHovered, setIsHovered] = useState(false);
 
   function onLogOut() {
+    toast.success("با موفقیت خارج شدید", {
+      position: "top-left",
+      style: {
+        padding: "10px",
+        fontWeight: 700,
+      },
+    });
     dispatch(logout());
   }
 
   return (
     <Header>
+      <Toaster />
       <NavLink to="/">
         <div className="vertical-flex gap-5">
           <img src="src/assets/Logo.png" width={45} />
