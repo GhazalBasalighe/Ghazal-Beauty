@@ -16,8 +16,9 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      (state.accessToken = ""), (state.isLoggedIn = false);
-      Cookies.remove("refreshToken");
+      (state.accessToken = ""),
+        (state.isLoggedIn = false),
+        Cookies.remove("refreshToken");
     },
     setAccessToken: (state, action) => {
       state.accessToken = action.payload;

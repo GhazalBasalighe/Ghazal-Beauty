@@ -5,19 +5,98 @@ import { useFormik } from "formik";
 import toast, { Toaster } from "react-hot-toast";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { setUserName } from "../../../store/slices/authSlice";
 import { validationSchema } from "../../../utils";
 import { loginUser } from "../../../store/thunk/thunk";
 
-export function LoginForm({ title, redirectTo, isUserForm }) {
+export function LoginForm({ title }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // TO RENDER THE CORRECT LOGIN FORM ACCORDING TO URL
+  const location = useLocation();
+  let isUserForm = true;
+  if (location.pathname.includes("admin")) {
+    isUserForm = false;
+  }
 
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
   function handlePasswordVisibility() {
     setIsPasswordHidden((isPasswordHidden) => !isPasswordHidden);
+  }
+
+  async function handleSubmit(values) {
+    try {
+      const { userName, password } = values;
+      const response = await dispatch(
+        loginUser({ username: userName, password })
+      );
+      const userRole = response.payload.data.user.role;
+      dispatch(setUserName(userName));
+
+      if (response.payload.status === "success") {
+        // AUTHORIZE USER AFTER AUTHENTICATION
+        if (
+          (userRole === "ADMIN" && !isUserForm) ||
+          (userRole === "USER" && isUserForm)
+        ) {
+          toast.success(`سلام ${userName} 👋`, {
+            position: "top-left",
+            style: {
+              padding: "10px",
+              fontWeight: 700,
+            },
+          });
+          setTimeout(() => {
+            if (userRole === "ADMIN")
+              navigate("/admin/stock_price_manage");
+            else navigate("/");
+          }, 500);
+        } else if (userRole === "ADMIN" && isUserForm) {
+          toast.error("لطفاً از پنل مربوط به مدیریت استفاده کنید", {
+            position: "top-left",
+            style: {
+              padding: "10px",
+              fontWeight: 700,
+            },
+          });
+          setTimeout(() => {
+            navigate("/admin_login");
+          }, 500);
+        } else {
+          toast.error("لطفاً از پنل مربوط به کاربران استفاده کنید", {
+            position: "top-left",
+            style: {
+              padding: "10px",
+              fontWeight: 700,
+            },
+          });
+          setTimeout(() => {
+            navigate("/user_login");
+          }, 500);
+        }
+      } else if (response.payload === 401) {
+        toast.error("نام کاربری یا رمز عبور اشتباه است", {
+          position: "top-left",
+          style: {
+            padding: "10px",
+            fontWeight: 700,
+          },
+        });
+      } else {
+        toast.error("خطا در ورود به سیستم", {
+          position: "top-left",
+          style: {
+            padding: "10px",
+            fontWeight: 700,
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   // RENDER APPROPRIATE SVG ACCORDING TO PASSWORD VISIBILITY
@@ -38,46 +117,7 @@ export function LoginForm({ title, redirectTo, isUserForm }) {
       password: "",
     },
     validationSchema,
-    onSubmit: async (values) => {
-      try {
-        const { userName, password } = values;
-        const response = await dispatch(
-          loginUser({ username: userName, password })
-        );
-        dispatch(setUserName(userName));
-        if (response.payload.status === "success") {
-          toast.success(`سلام ${userName} 👋`, {
-            position: "top-left",
-            style: {
-              padding: "10px",
-              fontWeight: 700,
-            },
-          });
-          // Redirect or perform other actions as needed
-          setTimeout(() => {
-            navigate(redirectTo);
-          }, 1500);
-        } else if (response.payload === 401) {
-          toast.error("نام کاربری یا رمز عبور اشتباه است", {
-            position: "top-left",
-            style: {
-              padding: "10px",
-              fontWeight: 700,
-            },
-          });
-        } else {
-          toast.error("خطا در ورود به سیستم", {
-            position: "top-left",
-            style: {
-              padding: "10px",
-              fontWeight: 700,
-            },
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
+    onSubmit: handleSubmit,
   });
 
   // REMOVE COOKIES WHEN LOGGING OUT
