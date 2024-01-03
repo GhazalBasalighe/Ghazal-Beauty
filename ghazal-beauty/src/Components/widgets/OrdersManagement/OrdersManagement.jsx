@@ -2,7 +2,7 @@ import toPersianDigits from "../../../helpers/toPersianDigits";
 import { DynamicTable, Pagination, EmptyTable } from "../../base";
 import { OrdersModal } from "../../widgets";
 import { Checkbox } from "./Checkbox";
-import { usePagination } from "../../../hooks/usePagination";
+import { useRequest } from "../../../hooks/useRequest";
 import { SyncLoader } from "react-spinners";
 import { useSelector } from "react-redux";
 import { useModal } from "../../../hooks/useModal";
@@ -42,7 +42,7 @@ export function OrdersManagement() {
     return [user, price, date, deliveryStatus, operations];
   };
 
-  const { tableData, pagination, handlePageChange } = usePagination(
+  const { tableData, pagination, handlePageChange } = useRequest(
     1,
     7,
     "/orders",

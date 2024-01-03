@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCheckboxContext } from "../context/checkboxContext";
 import { useDispatch, useSelector } from "react-redux";
 import api from "../config/axiosInstance";
 import { setIsLoading } from "../store/slices/authSlice";
-export function usePagination(
+export function useRequest(
   initialPage,
   limit,
   apiEndpoint,
@@ -29,6 +29,15 @@ export function usePagination(
     totalPages: 1,
   });
 
+  const [initialPageState, setInitialPageState] = useState(initialPage);
+
+  useEffect(() => {
+    setPagination({
+      currentPage: initialPageState,
+      totalPages: 1,
+    });
+  }, [state.allChecked, state.pendingChecked, state.deliveredChecked]);
+
   // REQUESTS FOR PRODUCTS AND ORDERS
   useEffect(() => {
     //GET DATA PAGE BY PAGE
@@ -38,6 +47,7 @@ export function usePagination(
         let response = await api.get(
           `${apiEndpoint}?page=${pagination.currentPage}&limit=${limit}`
         );
+
         let data;
         //-----------------REQUESTING FOR ORDERS--------------------
         if (location.pathname.includes("orders_manage")) {

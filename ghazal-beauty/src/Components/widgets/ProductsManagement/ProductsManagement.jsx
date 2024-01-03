@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { usePagination } from "../../../hooks/usePagination";
+import { useRequest } from "../../../hooks/useRequest";
 import { Pagination, Button, DynamicTable, EmptyTable } from "../../base";
 import { SyncLoader } from "react-spinners";
 import { useModal } from "../../../hooks/useModal";
@@ -55,7 +55,7 @@ export function ProductsManagement() {
     return [picture, item.name, groupings, operations];
   };
 
-  const { tableData, pagination, handlePageChange } = usePagination(
+  const { tableData, pagination, handlePageChange } = useRequest(
     1,
     4,
     "/products",

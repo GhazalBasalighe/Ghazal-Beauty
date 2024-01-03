@@ -7,6 +7,7 @@ import { useFormik, Field, FormikProvider } from "formik";
 import { addProductValidationSchema } from "../../../utils";
 import { setProductUpdateSignal } from "../../../store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import showToast from "../../../helpers/showToast";
 
 export function AddProductModal({ closeModal, productId }) {
   const isEditing = !!productId;
@@ -41,8 +42,10 @@ export function AddProductModal({ closeModal, productId }) {
       const endpoint = isEditing ? `/products/${productId}` : "/products";
       if (isEditing) {
         await api.patch(endpoint, formData);
+        showToast("محصول با موفقیت ویرایش شد");
       } else {
         await api.post(endpoint, formData);
+        showToast("محصول با موفقیت اضافه شد");
       }
 
       dispatch(setProductUpdateSignal(!productUpdateSignal));

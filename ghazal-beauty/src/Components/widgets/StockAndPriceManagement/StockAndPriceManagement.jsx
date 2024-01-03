@@ -1,4 +1,4 @@
-import { usePagination } from "../../../hooks/usePagination";
+import { useRequest } from "../../../hooks/useRequest";
 import { Pagination, DynamicTable, EmptyTable } from "../../base";
 import toPersianDigits from "../../../helpers/toPersianDigits";
 import { useSelector } from "react-redux";
@@ -28,7 +28,7 @@ export function StockAndPriceManagement() {
     />,
   ];
 
-  const { tableData, pagination, handlePageChange } = usePagination(
+  const { tableData, pagination, handlePageChange } = useRequest(
     1,
     7,
     "/products",
