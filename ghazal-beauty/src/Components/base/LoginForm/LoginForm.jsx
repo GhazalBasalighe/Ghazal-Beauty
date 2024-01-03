@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import { Button, BackButton } from "../../base";
 import { useFormik } from "formik";
-import toast, { Toaster } from "react-hot-toast";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link, useLocation } from "react-router-dom";
-import { setUserName } from "../../../store/slices/authSlice";
+import { logout, setUserName } from "../../../store/slices/authSlice";
 import { validationSchema } from "../../../utils";
 import { loginUser } from "../../../store/thunk/thunk";
+import showToast from "../../../helpers/showToast";
+import { Toaster } from "react-hot-toast";
 
 export function LoginForm({ title }) {
   const navigate = useNavigate();
@@ -42,57 +43,27 @@ export function LoginForm({ title }) {
           (userRole === "ADMIN" && !isUserForm) ||
           (userRole === "USER" && isUserForm)
         ) {
-          toast.success(`سلام ${userName} 👋`, {
-            position: "top-left",
-            style: {
-              padding: "10px",
-              fontWeight: 700,
-            },
-          });
+          showToast(`سلام ${userName} 👋`);
           setTimeout(() => {
             if (userRole === "ADMIN")
               navigate("/admin/stock_price_manage");
             else navigate("/");
           }, 500);
         } else if (userRole === "ADMIN" && isUserForm) {
-          toast.error("لطفاً از پنل مربوط به مدیریت استفاده کنید", {
-            position: "top-left",
-            style: {
-              padding: "10px",
-              fontWeight: 700,
-            },
-          });
+          showToast("لطفاً از پنل مربوط به مدیریت استفاده کنید", true);
           setTimeout(() => {
             navigate("/admin_login");
           }, 500);
         } else {
-          toast.error("لطفاً از پنل مربوط به کاربران استفاده کنید", {
-            position: "top-left",
-            style: {
-              padding: "10px",
-              fontWeight: 700,
-            },
-          });
+          showToast("لطفاً از پنل مربوط به کاربران استفاده کنید", true);
           setTimeout(() => {
             navigate("/user_login");
           }, 500);
         }
       } else if (response.payload === 401) {
-        toast.error("نام کاربری یا رمز عبور اشتباه است", {
-          position: "top-left",
-          style: {
-            padding: "10px",
-            fontWeight: 700,
-          },
-        });
+        showToast("نام کاربری یا رمز عبور اشتباه است", true);
       } else {
-        toast.error("خطا در ورود به سیستم", {
-          position: "top-left",
-          style: {
-            padding: "10px",
-            fontWeight: 700,
-          },
-        });
+        showToast("خطا در ورود به سیستم", true);
       }
     } catch (error) {
       console.log(error);
@@ -122,7 +93,7 @@ export function LoginForm({ title }) {
 
   // REMOVE COOKIES WHEN LOGGING OUT
   function handleBackBtnClick() {
-    Cookies.remove("refreshToken");
+    dispatch(logout());
   }
 
   return (

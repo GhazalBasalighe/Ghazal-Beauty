@@ -20,6 +20,39 @@ export function AddProductModal({ closeModal, productId }) {
     (state) => state.auth.productUpdateSignal
   );
 
+  const onSubmit = async (values) => {
+    try {
+      const formData = new FormData();
+      formData.append("name", values.productName);
+      formData.append("brand", values.productBrand);
+      formData.append("category", values.productCategory);
+      formData.append("subcategory", values.productSubCategory);
+      formData.append("description", values.productDescription);
+
+      if (isEditing && values.productThumbnail) {
+        formData.append("thumbnail", values.productThumbnail);
+      } else if (!isEditing) {
+        for (let i = 0; i < values.productImg.length; i++) {
+          formData.append("images", values.productImg[i]);
+        }
+        formData.append("quantity", values.productQuantity);
+        formData.append("price", values.productPrice);
+      }
+      const endpoint = isEditing ? `/products/${productId}` : "/products";
+      if (isEditing) {
+        await api.patch(endpoint, formData);
+      } else {
+        await api.post(endpoint, formData);
+      }
+
+      dispatch(setProductUpdateSignal(!productUpdateSignal));
+
+      closeModal("add");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       productName: "",
@@ -33,40 +66,7 @@ export function AddProductModal({ closeModal, productId }) {
       productDescription: "",
     },
     validationSchema: addProductValidationSchema(isEditing),
-    onSubmit: async (values) => {
-      try {
-        const formData = new FormData();
-        formData.append("name", values.productName);
-        formData.append("brand", values.productBrand);
-        formData.append("category", values.productCategory);
-        formData.append("subcategory", values.productSubCategory);
-        formData.append("description", values.productDescription);
-
-        if (isEditing && values.productThumbnail) {
-          formData.append("thumbnail", values.productThumbnail);
-        } else if (!isEditing) {
-          for (let i = 0; i < values.productImg.length; i++) {
-            formData.append("images", values.productImg[i]);
-          }
-          formData.append("quantity", values.productQuantity);
-          formData.append("price", values.productPrice);
-        }
-        const endpoint = isEditing
-          ? `/products/${productId}`
-          : "/products";
-        if (isEditing) {
-          await api.patch(endpoint, formData);
-        } else {
-          await api.post(endpoint, formData);
-        }
-
-        dispatch(setProductUpdateSignal(!productUpdateSignal));
-
-        closeModal("add");
-      } catch (error) {
-        console.error(error);
-      }
-    },
+    onSubmit: onSubmit,
   });
   useEffect(() => {
     const fetchCategories = async () => {

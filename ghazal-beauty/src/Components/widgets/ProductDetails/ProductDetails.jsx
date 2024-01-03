@@ -10,7 +10,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { NextArrow, PrevArrow } from "../../../utils";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../store/slices/cartSlice";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
+import showToast from "../../../helpers/showToast";
 
 // SLIDER SETTINGS
 const settings = {
@@ -48,13 +49,7 @@ export function ProductDetails() {
   function handleAddToCart() {
     if (selectedQuantity === 0) {
       setSelectedQuantity(1);
-      toast.error("لطفا تعداد محصول را انتخاب کنید", {
-        position: "top-left",
-        style: {
-          padding: "10px",
-          fontWeight: 700,
-        },
-      });
+      showToast("لطفا تعداد محصول را انتخاب کنید", true);
       return;
     }
     const newItem = {
@@ -63,13 +58,7 @@ export function ProductDetails() {
     };
 
     dispatch(addToCart(newItem));
-    toast.success("محصول با موفقیت به سبد خرید اضافه شد", {
-      position: "top-left",
-      style: {
-        padding: "10px",
-        fontWeight: 700,
-      },
-    });
+    showToast("محصول با موفقیت به سبد خرید اضافه شد");
   }
 
   const fetchData = async () => {

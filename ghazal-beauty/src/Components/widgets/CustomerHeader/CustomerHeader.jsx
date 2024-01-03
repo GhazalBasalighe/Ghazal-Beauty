@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { SignOut } from "@phosphor-icons/react/dist/ssr";
 import { logout } from "../../../store/slices/authSlice";
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
+import showToast from "../../../helpers/showToast";
 
 export function CustomerHeader() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -16,13 +17,7 @@ export function CustomerHeader() {
   const [isHovered, setIsHovered] = useState(false);
 
   function onLogOut() {
-    toast.success("با موفقیت خارج شدید", {
-      position: "top-left",
-      style: {
-        padding: "10px",
-        fontWeight: 700,
-      },
-    });
+    showToast("با موفقیت خارج شدید");
     dispatch(logout());
   }
 
