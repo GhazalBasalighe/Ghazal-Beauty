@@ -97,13 +97,15 @@ export function UserInfoForm() {
             >
               رمز عبور:
             </label>
-            <Field
-              type={isPasswordHidden ? "password" : "text"}
-              name="customerPassword"
-              id="customerPasswordId"
-              className="user-info-input"
-            />
-            {visibleIcon}
+            <div className="relative w-full">
+              <Field
+                type={isPasswordHidden ? "password" : "text"}
+                name="customerPassword"
+                id="customerPasswordId"
+                className="user-info-input"
+              />
+              {visibleIcon}
+            </div>
             <ErrorMessage
               name="customerPassword"
               component="div"
