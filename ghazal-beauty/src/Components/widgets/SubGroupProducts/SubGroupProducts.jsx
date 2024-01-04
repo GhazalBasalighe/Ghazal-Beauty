@@ -43,7 +43,7 @@ export function SubGroupProducts() {
               <Link to={`/products/details/${product._id}`}>
                 <img
                   src={`http://localhost:8000/images/products/thumbnails/${product.thumbnail}`}
-                  alt={product.slugname}
+                  alt={product._id}
                   width={200}
                 />
               </Link>

@@ -66,7 +66,7 @@ export function ProductGroupPreview() {
   return (
     <ProductContainer>
       {categories.map((category) => (
-        <div key={category.slugname} className="px-8 py-5">
+        <div key={category._id} className="px-8 py-5">
           {/* TITLE */}
           <div className="vertical-flex gap-3 font-bold text-xl border-b-2 border-solid border-violet-400 pb-2">
             <img
@@ -85,7 +85,7 @@ export function ProductGroupPreview() {
           <div>
             <Slider {...settings} className="my-2 text-right">
               {categoryProducts[category._id]?.map((product) => (
-                <ProductCard key={product.slugname} product={product} />
+                <ProductCard key={product._id} product={product} />
               ))}
             </Slider>
           </div>

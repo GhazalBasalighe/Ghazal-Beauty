@@ -38,7 +38,6 @@ export function ProductDetails() {
     images: [],
     description: "",
     slugname: "",
-    rating: { rate: 0 },
   });
 
   const handleQuantityChange = (newQuantity) => {
@@ -98,9 +97,6 @@ export function ProductDetails() {
           </Slider>
           <div className="flex flex-col gap-5">
             <span className="font-semibold text-xl">{product.name}</span>
-            <span className="text-gray-500 text-sm">
-              {"star".repeat(product.rating.rate)}
-            </span>
             <div className="vertical-flex gap-2">
               <span>{product.category.name}</span>
               <CaretLeft />
