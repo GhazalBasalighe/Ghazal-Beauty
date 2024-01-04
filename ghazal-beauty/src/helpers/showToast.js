@@ -1,4 +1,4 @@
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 function showToast(message, isError = false) {
   const toastConfig = {
@@ -15,4 +15,7 @@ function showToast(message, isError = false) {
   }
 }
 
+export function dismissToast() {
+  toast.dismiss();
+}
 export default showToast;

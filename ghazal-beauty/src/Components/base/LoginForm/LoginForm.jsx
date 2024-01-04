@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import { Button, BackButton } from "../../base";
 import { useFormik } from "formik";
-import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { logout, setUserName } from "../../../store/slices/authSlice";
 import { validationSchema } from "../../../utils";
 import { loginUser } from "../../../store/thunk/thunk";
-import showToast from "../../../helpers/showToast";
+import showToast, { dismissToast } from "../../../helpers/showToast";
 import { Toaster } from "react-hot-toast";
 
 export function LoginForm({ title }) {
@@ -53,11 +52,13 @@ export function LoginForm({ title }) {
           showToast("لطفاً از پنل مربوط به مدیریت استفاده کنید", true);
           setTimeout(() => {
             navigate("/admin_login");
+            dismissToast();
           }, 500);
         } else {
           showToast("لطفاً از پنل مربوط به کاربران استفاده کنید", true);
           setTimeout(() => {
             navigate("/user_login");
+            dismissToast();
           }, 500);
         }
       } else if (response.payload === 401) {
