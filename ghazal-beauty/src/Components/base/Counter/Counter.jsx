@@ -1,25 +1,14 @@
 import { Plus, Minus, Trash } from "@phosphor-icons/react";
 import useCounter from "../../../hooks/useCounter";
 import toPersianDigits from "../../../helpers/toPersianDigits";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { removeFromCart } from "../../../store/slices/cartSlice";
-export function Counter({ productId, initialVal, max, onQuantityChange }) {
-  const items = useSelector((state) => state.cart.items);
-  const [initialValue, setInitialValue] = useState(initialVal);
-  useEffect(() => {
-    if (productId) {
-      const item = items.find((item) => item._id === productId);
-      if (item) {
-        setInitialValue(item.count);
-      }
-    }
-  }, [productId]);
+export function Counter({ productId, max, onQuantityChange }) {
   const {
     quantity,
     handleQuantityDecrement: decrement,
     handleQuantityIncrement: increment,
-  } = useCounter(initialValue, max);
+  } = useCounter(productId, max, onQuantityChange);
 
   // CHOOSE THE ICON TO DISPLAY BASED ON THE QUANTITY
   const dispatch = useDispatch();
@@ -27,10 +16,7 @@ export function Counter({ productId, initialVal, max, onQuantityChange }) {
     quantity !== 1 ? (
       <Minus
         size={30}
-        onClick={() => {
-          decrement();
-          onQuantityChange(quantity - 1);
-        }}
+        onClick={() => decrement()}
         className="p-1 cursor-pointer"
         weight="bold"
       />
@@ -39,7 +25,6 @@ export function Counter({ productId, initialVal, max, onQuantityChange }) {
         size={30}
         onClick={() => {
           decrement();
-          onQuantityChange(0);
           dispatch(removeFromCart(productId));
         }}
         className="p-1 cursor-pointer"
@@ -51,7 +36,9 @@ export function Counter({ productId, initialVal, max, onQuantityChange }) {
     return (
       <Plus
         size={30}
-        onClick={increment}
+        onClick={() => {
+          increment();
+        }}
         className="p-1 cursor-pointer bg-violet-100 text-purple-800 rounded-full"
         weight="bold"
       />
@@ -64,7 +51,6 @@ export function Counter({ productId, initialVal, max, onQuantityChange }) {
         size={30}
         onClick={() => {
           increment();
-          onQuantityChange(quantity + 1);
         }}
         className="p-1 cursor-pointer"
         weight="bold"

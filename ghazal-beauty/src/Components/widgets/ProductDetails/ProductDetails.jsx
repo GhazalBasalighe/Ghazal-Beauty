@@ -8,7 +8,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { NextArrow, PrevArrow } from "../../../utils";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addToCart } from "../../../store/slices/cartSlice";
 import { Toaster } from "react-hot-toast";
 import showToast from "../../../helpers/showToast";
@@ -27,7 +27,6 @@ const settings = {
 export function ProductDetails() {
   const [selectedQuantity, setSelectedQuantity] = useState(0);
   const dispatch = useDispatch();
-  const items = useSelector((state) => state.cart.items);
   const { productId } = useParams();
   const [product, setProduct] = useState({
     name: "",
@@ -48,7 +47,6 @@ export function ProductDetails() {
 
   function handleAddToCart() {
     if (selectedQuantity === 0) {
-      setSelectedQuantity(1);
       showToast("لطفا تعداد محصول را انتخاب کنید", true);
       return;
     }

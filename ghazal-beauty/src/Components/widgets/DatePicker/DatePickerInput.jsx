@@ -15,22 +15,20 @@ export function DatePickerInput() {
     if (date) {
       const formattedDate = date.toDate().toISOString();
       dispatch(setDeliveryDate(formattedDate));
-      console.log("DATE WAS SELECTED", formattedDate);
     } else {
       const now = Date.now();
       const formattedDate = now.toISOString();
       dispatch(setDeliveryDate(formattedDate));
-      console.log("NO DATE SELECTED", formattedDate);
     }
   };
 
   const handleClick = async () => {
     try {
-      const res = await api.patch(`/orders/${orderId}`, {
+      await api.patch(`/orders/${orderId}`, {
         deliveryDate,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
     window.location.href = "/mock_payment";
   };

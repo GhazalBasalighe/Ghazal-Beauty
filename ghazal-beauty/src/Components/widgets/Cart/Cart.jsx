@@ -93,12 +93,10 @@ export function Cart() {
             </div>
             <div className="flex flex-col gap-5">
               <Counter
-                initialVal={product.count}
                 max={product.quantity}
-                onQuantityChange={(newQuantity) => {
-                  if (newQuantity < product.quantity)
-                    handleQuantityChange(product._id, newQuantity);
-                }}
+                onQuantityChange={(newQuantity) =>
+                  handleQuantityChange(product._id, newQuantity)
+                }
                 productId={product._id}
               />
               <span>

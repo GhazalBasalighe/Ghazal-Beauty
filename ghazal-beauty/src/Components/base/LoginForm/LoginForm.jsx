@@ -53,13 +53,13 @@ export function LoginForm({ title }) {
           setTimeout(() => {
             navigate("/admin_login");
             dismissToast();
-          }, 500);
+          }, 1000);
         } else {
           showToast("لطفاً از پنل مربوط به کاربران استفاده کنید", true);
           setTimeout(() => {
             navigate("/user_login");
             dismissToast();
-          }, 500);
+          }, 1000);
         }
       } else if (response.payload === 401) {
         showToast("نام کاربری یا رمز عبور اشتباه است", true);
@@ -67,7 +67,7 @@ export function LoginForm({ title }) {
         showToast("خطا در ورود به سیستم", true);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
