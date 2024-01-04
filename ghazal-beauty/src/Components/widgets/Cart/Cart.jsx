@@ -19,7 +19,7 @@ export function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const discount = Math.random() * 20;
+  const discount = 0.02; //5% discount on total purchase
 
   const handleQuantityChange = (productId, newQuantity) => {
     dispatch(addToCart({ _id: productId, count: newQuantity }));
@@ -133,7 +133,11 @@ export function Cart() {
               <span>
                 {orderProducts.length === 0
                   ? toPersianDigits("0")
-                  : toPersianDigits(discount.toFixed(3))}{" "}
+                  : toPersianDigits(
+                      (getTotalPrice(orderProducts) * discount)
+                        .toFixed(3)
+                        .toString()
+                    )}{" "}
                 تومان
               </span>
             </div>
@@ -143,7 +147,9 @@ export function Cart() {
                 {orderProducts.length === 0
                   ? toPersianDigits("0")
                   : toPersianDigits(
-                      (getTotalPrice(orderProducts) - discount).toFixed(3)
+                      (getTotalPrice(orderProducts) * (1 - discount))
+                        .toFixed(3)
+                        .toString()
                     )}{" "}
                 تومان
               </span>
