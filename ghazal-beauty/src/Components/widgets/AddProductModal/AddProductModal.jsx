@@ -65,8 +65,8 @@ export function AddProductModal({ closeModal, productId }) {
     initialValues: {
       productName: "",
       productBrand: "",
-      productCategory: "",
-      productSubCategory: "",
+      productCategory: "default",
+      productSubCategory: "default",
       productQuantity: "",
       productPrice: "",
       productImg: [],
@@ -176,7 +176,7 @@ export function AddProductModal({ closeModal, productId }) {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 >
-                  <option defaultValue="default" selected disabled>
+                  <option value="default" disabled selected>
                     انتخاب دسته بندی
                   </option>
                   {categories.map((item) => (
@@ -212,7 +212,7 @@ export function AddProductModal({ closeModal, productId }) {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 >
-                  <option defaultValue="default" selected disabled>
+                  <option value="default" disabled selected>
                     انتخاب زیر دسته بندی
                   </option>
                   {subCategories.map((item) => (
