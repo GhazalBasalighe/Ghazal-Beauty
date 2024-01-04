@@ -47,6 +47,7 @@ export function LoginForm({ title }) {
             if (userRole === "ADMIN")
               navigate("/admin/stock_price_manage");
             else navigate("/");
+            dismissToast();
           }, 500);
         } else if (userRole === "ADMIN" && isUserForm) {
           showToast("لطفاً از پنل مربوط به مدیریت استفاده کنید", true);
