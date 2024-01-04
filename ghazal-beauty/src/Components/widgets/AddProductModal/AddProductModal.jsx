@@ -8,6 +8,7 @@ import { addProductValidationSchema } from "../../../utils";
 import { setProductUpdateSignal } from "../../../store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import showToast from "../../../helpers/showToast";
+import { Toaster } from "react-hot-toast";
 
 export function AddProductModal({ closeModal, productId }) {
   const isEditing = !!productId;
@@ -52,7 +53,11 @@ export function AddProductModal({ closeModal, productId }) {
 
       closeModal("add");
     } catch (error) {
-      console.error(error);
+      if (error.response.status === 409) {
+        showToast("در انتخاب دسته بندی و زیر دسته بندی دقت کنید", true);
+      } else {
+        showToast("خطا در ارسال اطلاعات", true);
+      }
     }
   };
 
@@ -71,6 +76,7 @@ export function AddProductModal({ closeModal, productId }) {
     validationSchema: addProductValidationSchema(isEditing),
     onSubmit: onSubmit,
   });
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -102,6 +108,7 @@ export function AddProductModal({ closeModal, productId }) {
   }, [productId]);
   return (
     <FormikProvider value={formik}>
+      <Toaster />
       <Modal
         title={isEditing ? "ویرایش کالا" : "افزودن کالا"}
         closeModal={closeModal}
@@ -164,10 +171,14 @@ export function AddProductModal({ closeModal, productId }) {
                   as="select"
                   name="productCategory"
                   id="productCategory"
+                  value={formik.values.productCategory}
                   className="add-product-modal-select"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 >
+                  <option defaultValue="default" selected disabled>
+                    انتخاب دسته بندی
+                  </option>
                   {categories.map((item) => (
                     <option
                       key={item._id}
@@ -201,6 +212,9 @@ export function AddProductModal({ closeModal, productId }) {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 >
+                  <option defaultValue="default" selected disabled>
+                    انتخاب زیر دسته بندی
+                  </option>
                   {subCategories.map((item) => (
                     <option
                       key={item._id}

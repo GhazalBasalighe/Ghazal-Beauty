@@ -29,7 +29,7 @@ export function useRequest(
     totalPages: 1,
   });
 
-  const [initialPageState, setInitialPageState] = useState(initialPage);
+  const [initialPageState] = useState(initialPage);
 
   useEffect(() => {
     setPagination({
