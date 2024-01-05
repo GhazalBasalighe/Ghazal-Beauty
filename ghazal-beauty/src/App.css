@@ -93,7 +93,7 @@
 
   .product-card
   {
-    @apply flex flex-col gap-2 items-center max-w-xs py-[2vw] px-[1vw] cursor-pointer hover:shadow-xl duration-200
+    @apply flex flex-col gap-2 items-center max-w-xs py-[2vw] px-[1vw] cursor-pointer border border-solid border-x-slate-100 border-y-0 hover:shadow-2xl duration-200
   }
 
   /* ORDERS MANAGEMENT */
