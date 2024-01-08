@@ -1,6 +1,5 @@
 import { Plus, Minus, Trash } from "@phosphor-icons/react";
 import useCounter from "../../../hooks/useCounter";
-import toPersianDigits from "../../../helpers/toPersianDigits";
 import { useDispatch } from "react-redux";
 import { removeFromCart } from "../../../store/slices/cartSlice";
 export function Counter({ productId, max, onQuantityChange }) {
@@ -56,7 +55,7 @@ export function Counter({ productId, max, onQuantityChange }) {
         weight="bold"
       />
       <span className="p-3 font-bold">
-        {toPersianDigits(quantity.toString())}
+        {quantity.toLocaleString("fa-IR")}
       </span>
       {decrementIcon}
     </div>

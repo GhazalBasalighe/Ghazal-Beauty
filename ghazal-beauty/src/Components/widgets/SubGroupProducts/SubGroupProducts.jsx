@@ -1,4 +1,3 @@
-import toPersianDigits from "../../../helpers/toPersianDigits";
 import { NavBar } from "../NavBar";
 import { getInfoById } from "../../../helpers/getInfoById";
 import { useParams, Link } from "react-router-dom";
@@ -52,7 +51,7 @@ export function SubGroupProducts() {
                   {product.name}
                 </span>
                 <span className="text-lg self-end vertical-flex gap-2">
-                  {toPersianDigits(product.price.toFixed(3))}
+                  {product.price.toLocaleString("fa-IR")}
                   <span className="text-base text-gray-500">تومان</span>
                 </span>
               </div>

@@ -1,7 +1,6 @@
 import api from "../../../config/axiosInstance";
 import { Button, Counter } from "../../base";
 import { Handbag } from "@phosphor-icons/react";
-import toPersianDigits from "../../../helpers/toPersianDigits";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToCart,
@@ -99,9 +98,7 @@ export function Cart() {
                 }
                 productId={product._id}
               />
-              <span>
-                {toPersianDigits(product.price.toFixed(3))} تومان
-              </span>
+              <span>{product.price.toLocaleString("fa-IR")} تومان</span>
             </div>
           </div>
         ))}
@@ -112,7 +109,7 @@ export function Cart() {
           <span className="font-semibold">کالاهای موجود در سبد خرید</span>
           <span className="font-semibold text-violet-600 vertical-flex gap-2">
             <Handbag size={25} />
-            <span>{orderProducts.length}</span>
+            <span>{orderProducts.length.toLocaleString("fa-IR")}</span>
           </span>
         </div>
         <div className="flex flex-col gap-6 items-center">
@@ -121,9 +118,9 @@ export function Cart() {
               <span>قیمت</span>
               <span>
                 {orderProducts.length === 0
-                  ? toPersianDigits("0")
-                  : toPersianDigits(
-                      getTotalPrice(orderProducts).toFixed(3)
+                  ? "0".toLocaleString("fa-IR")
+                  : getTotalPrice(orderProducts).toLocaleString(
+                      "fa-IR"
                     )}{" "}
                 تومان
               </span>
@@ -132,12 +129,10 @@ export function Cart() {
               <span>تخفیف محصولات</span>
               <span>
                 {orderProducts.length === 0
-                  ? toPersianDigits("0")
-                  : toPersianDigits(
-                      (getTotalPrice(orderProducts) * discount)
-                        .toFixed(3)
-                        .toString()
-                    )}{" "}
+                  ? "0".toLocaleString("fa-IR")
+                  : (
+                      getTotalPrice(orderProducts) * discount
+                    ).toLocaleString("fa-IR")}{" "}
                 تومان
               </span>
             </div>
@@ -145,12 +140,11 @@ export function Cart() {
               <span>قابل پرداخت</span>
               <span>
                 {orderProducts.length === 0
-                  ? toPersianDigits("0")
-                  : toPersianDigits(
-                      (getTotalPrice(orderProducts) * (1 - discount))
-                        .toFixed(3)
-                        .toString()
-                    )}{" "}
+                  ? "0".toLocaleString("fa-IR")
+                  : (
+                      getTotalPrice(orderProducts) *
+                      (1 - discount)
+                    ).toLocaleString("fa-IR")}{" "}
                 تومان
               </span>
             </div>

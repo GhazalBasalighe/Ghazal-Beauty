@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import api from "../../../config/axiosInstance";
-import toPersianDigits from "../../../helpers/toPersianDigits";
 import { Modal, Button, DynamicTable } from "../../base";
 import { setProductUpdateSignal } from "../../../store/slices/authSlice";
 
@@ -10,8 +9,8 @@ export function OrdersModal({ closeModal, selectedOrder }) {
     rows: [].concat(
       ...selectedOrder.products.map((product) => {
         const name = product.product.name;
-        const price = toPersianDigits(product.product.price.toFixed(3));
-        const count = toPersianDigits(product.count.toString());
+        const price = product.product.price.toLocaleString("fa-IR");
+        const count = product.count.toLocaleString("fa-IR");
         return [[name, price, count]];
       })
     ),
@@ -63,15 +62,17 @@ export function OrdersModal({ closeModal, selectedOrder }) {
               ].join(" ")}
             </span>
             <span>{selectedOrder.user.address}</span>
-            <span>{toPersianDigits(selectedOrder.user.phoneNumber)}</span>
+            <span>
+              {selectedOrder.user.phoneNumber.toLocaleString("fa-IR")}
+            </span>
             <span>{formatPersianDate(selectedOrder.createdAt)}</span>
             <span>{formatPersianDate(selectedOrder.deliveryDate)}</span>
           </div>
         </div>
         <DynamicTable titles={tableData.titles} rows={tableData.rows} />
         <span className="self-center">
-          مبلغ کل سفارش:{" "}
-          {toPersianDigits(selectedOrder.totalPrice.toFixed(3))} تومان
+          مبلغ کل سفارش: {selectedOrder.totalPrice.toLocaleString("fa-IR")}{" "}
+          تومان
         </span>
         {selectedOrder.deliveryStatus === false && (
           <Button classes=" self-center" onClick={handleDelivery}>

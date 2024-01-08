@@ -1,6 +1,5 @@
 import { useRequest } from "../../../hooks/useRequest";
 import { Pagination, DynamicTable, EmptyTable } from "../../base";
-import toPersianDigits from "../../../helpers/toPersianDigits";
 import { useSelector } from "react-redux";
 import { SyncLoader } from "react-spinners";
 import { useModal } from "../../../hooks/useModal";
@@ -18,8 +17,8 @@ export function StockAndPriceManagement() {
   };
   const formatRowsCallback = (item) => [
     item.name,
-    <span>{toPersianDigits(item.price.toFixed(3))}</span>,
-    <span>{toPersianDigits(item.quantity.toFixed(0))}</span>,
+    <span>{item.price.toLocaleString("fa-IR")}</span>,
+    <span>{item.quantity.toLocaleString("fa-IR")}</span>,
     <NotePencil
       size={20}
       weight="bold"

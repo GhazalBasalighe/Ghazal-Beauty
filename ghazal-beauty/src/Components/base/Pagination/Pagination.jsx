@@ -2,7 +2,6 @@ import {
   CaretCircleDoubleLeft,
   CaretCircleDoubleRight,
 } from "@phosphor-icons/react";
-import toPersianDigits from "../../../helpers/toPersianDigits";
 
 export const Pagination = ({ pagination, onPageChange }) => {
   const handlePageChange = (newPage) => {
@@ -20,9 +19,9 @@ export const Pagination = ({ pagination, onPageChange }) => {
           weight="light"
         />
       </button>
-      <span>{`صفحه ${toPersianDigits(
-        pagination.currentPage.toString()
-      )} از ${toPersianDigits(pagination.totalPages.toString())}`}</span>
+      <span>{`صفحه ${pagination.currentPage.toLocaleString(
+        "fa-IR"
+      )} از ${pagination.totalPages.toLocaleString("fa-IR")}`}</span>
       <button onClick={() => handlePageChange(pagination.currentPage - 1)}>
         <CaretCircleDoubleLeft
           size={30}

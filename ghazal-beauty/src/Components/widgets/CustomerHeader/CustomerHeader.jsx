@@ -70,7 +70,9 @@ export function CustomerHeader() {
         <NavLink to="cart">
           <span className="costumer-header-btn">
             {items.length > 0 && (
-              <span className="cart-badge">{items.length}</span>
+              <span className="cart-badge">
+                {items.length.toLocaleString("fa-IR")}
+              </span>
             )}
             <ShoppingCart size={20} />
             <span>سبد خرید</span>

@@ -1,4 +1,3 @@
-import toPersianDigits from "../../../helpers/toPersianDigits";
 import { DynamicTable, Pagination, EmptyTable } from "../../base";
 import { OrdersModal } from "../../widgets";
 import { Checkbox } from "./Checkbox";
@@ -22,10 +21,12 @@ export function OrdersManagement() {
     // format each property separately for better readability
     const user = [order.user.firstname, order.user.lastname].join(" ");
 
-    const date = toPersianDigits(
-      new Date(order.deliveryDate).toLocaleDateString("fa-IR").toString()
-    );
-    const price = toPersianDigits(order.totalPrice.toFixed(3).toString());
+    const date = new Date(order.deliveryDate).toLocaleDateString("fa-IR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+    const price = order.totalPrice.toLocaleString("fa-IR");
     const deliveryStatus = (
       <span>
         {order.deliveryStatus ? "تحویل داده شده" : "در انتظار تحویل"}

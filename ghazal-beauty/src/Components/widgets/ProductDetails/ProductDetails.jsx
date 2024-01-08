@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import toPersianDigits from "../../../helpers/toPersianDigits";
 import { Button, Counter } from "../../base";
 import { getInfoById } from "../../../helpers/getInfoById";
 import { useState, useEffect } from "react";
@@ -112,7 +111,7 @@ export function ProductDetails() {
         </div>
         <div className="flex flex-col gap-10 shadow-lg p-10 rounded-xl border border-solid border-violet-600">
           <span className="font-semibold text-xl">
-            {toPersianDigits(product.price.toFixed(3))} تومان
+            {product.price.toLocaleString("fa-IR")} تومان
           </span>
           <Counter
             productId={product._id}
