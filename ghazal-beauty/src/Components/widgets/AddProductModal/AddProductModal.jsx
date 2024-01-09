@@ -1,111 +1,118 @@
 import { QuillEditor } from "./QuillEditor/QuillEditor";
 import { Modal, Button } from "../../base";
 import { FileInputField } from "./FileInputField";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import api from "../../../config/axiosInstance";
-import { useFormik, Field, FormikProvider } from "formik";
-import { addProductValidationSchema } from "../../../utils";
-import { setProductUpdateSignal } from "../../../store/slices/authSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import showToast from "../../../helpers/showToast";
 import { Toaster } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { Field, FormikProvider, useFormik } from "formik";
+import { addProductValidationSchema } from "../../../utils";
+import { SyncLoader } from "react-spinners";
 
 export function AddProductModal({ closeModal, productId }) {
   const isEditing = !!productId;
-  const [categories, setCategories] = useState([]);
-  const [subCategories, setSubCategories] = useState([]);
   const [initialProductDescription, setInitialProductDescription] =
     useState("");
 
-  const dispatch = useDispatch();
-  const productUpdateSignal = useSelector(
-    (state) => state.auth.productUpdateSignal
-  );
-
-  const onSubmit = async (values) => {
-    try {
-      const formData = new FormData();
-      formData.append("name", values.productName);
-      formData.append("brand", values.productBrand);
-      formData.append("category", values.productCategory);
-      formData.append("subcategory", values.productSubCategory);
-      formData.append("description", values.productDescription);
-
-      if (isEditing && values.productThumbnail) {
-        formData.append("thumbnail", values.productThumbnail);
-      } else if (!isEditing) {
-        for (let i = 0; i < values.productImg.length; i++) {
-          formData.append("images", values.productImg[i]);
-        }
-        formData.append("quantity", values.productQuantity);
-        formData.append("price", values.productPrice);
-      }
-      const endpoint = isEditing ? `/products/${productId}` : "/products";
-      if (isEditing) {
-        await api.patch(endpoint, formData);
-        showToast("محصول با موفقیت ویرایش شد");
-      } else {
-        await api.post(endpoint, formData);
-        showToast("محصول با موفقیت اضافه شد");
-      }
-
-      dispatch(setProductUpdateSignal(!productUpdateSignal));
-
-      closeModal("add");
-    } catch (error) {
-      if (error.response.status === 409) {
-        showToast("در انتخاب دسته بندی و زیر دسته بندی دقت کنید", true);
-      } else {
-        showToast("خطا در ارسال اطلاعات", true);
-      }
-    }
-  };
-
-  const formik = useFormik({
-    initialValues: {
-      productName: "",
-      productBrand: "",
-      productCategory: "default",
-      productSubCategory: "default",
-      productQuantity: "",
-      productPrice: "",
-      productImg: [],
-      productThumbnail: "",
-      productDescription: "",
+  const { data: categories, isLoading: categoriesLoading } = useQuery({
+    queryKey: "categories",
+    queryFn: async () => {
+      const response = await api.get("/categories");
+      return response.data.data.categories;
     },
-    validationSchema: addProductValidationSchema(isEditing),
-    onSubmit: onSubmit,
   });
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const categoriesResponse = await api.get("/categories");
-        setCategories(categoriesResponse.data.data.categories);
-        const subcategoriesResponse = await api.get("/subcategories");
-        setSubCategories(subcategoriesResponse.data.data.subcategories);
-        if (productId) {
-          const productReq = await api.get(`/products/${productId}`);
-          const productData = productReq.data.data.product;
-          formik.setValues({
-            productName: productData.name,
-            productBrand: productData.brand,
-            productCategory: productData.category._id,
-            productSubCategory: productData.subcategory._id,
-            productImg: productData.images,
-          });
-          setInitialProductDescription(productData.description);
-        }
-      } catch (error) {
-        console.error(
-          "Error fetching categories and subcategories:",
-          error
-        );
-      }
-    };
+  const { data: subCategories, isLoading: subCategoriesLoading } =
+    useQuery({
+      queryKey: "subcategories",
+      queryFn: async () => {
+        const response = await api.get("/subcategories");
+        return response.data.data.subcategories;
+      },
+    });
 
-    fetchCategories();
-  }, [productId]);
+  // const { data: productData, isLoading: productLoading } = useQuery(
+  //   ["product", productId],
+  //   async () => {
+  //     if (productId) {
+  //       const response = await api.get(`/products/${productId}`);
+  //       return response.data.data.product;
+  //     }
+  //     return null;
+  //   }
+  // );
+
+  //   const dispatch = useDispatch();
+  //   const productUpdateSignal = useSelector(
+  //     (state) => state.auth.productUpdateSignal
+  //   );
+
+  //   const mutation = useMutation(async (values) => {
+  //     const formData = new FormData();
+  //     formData.append("name", values.productName);
+  //     formData.append("brand", values.productBrand);
+  //     formData.append("category", values.productCategory);
+  //     formData.append("subcategory", values.productSubCategory);
+  //     formData.append("description", values.productDescription);
+
+  //     if (isEditing && values.productThumbnail) {
+  //       formData.append("thumbnail", values.productThumbnail);
+  //     } else if (!isEditing) {
+  //       for (let i = 0; i < values.productImg.length; i++) {
+  //         formData.append("images", values.productImg[i]);
+  //       }
+  //       formData.append("quantity", values.productQuantity);
+  //       formData.append("price", values.productPrice);
+  //     }
+
+  //     const endpoint = isEditing ? `/products/${productId}` : "/products";
+  //     if (isEditing) {
+  //       await api.patch(endpoint, formData);
+  //       showToast("محصول با موفقیت ویرایش شد");
+  //     } else {
+  //       await api.post(endpoint, formData);
+  //       showToast("محصول با موفقیت اضافه شد");
+  //     }
+
+  //     dispatch(setProductUpdateSignal(!productUpdateSignal));
+  //     closeModal("add");
+  //   });
+
+  const initialValues = {
+    productName: "",
+    productBrand: "",
+    productCategory: "default",
+    productSubCategory: "default",
+    productQuantity: "",
+    productPrice: "",
+    productImg: [],
+    productThumbnail: "",
+    productDescription: "",
+  };
+
+  //   if (productData) {
+  //     initialValues.productName = productData.name;
+  //     initialValues.productBrand = productData.brand;
+  //     initialValues.productCategory = productData.category._id;
+  //     initialValues.productSubCategory = productData.subcategory._id;
+  //     initialValues.productImg = productData.images;
+  //     setInitialProductDescription(productData.description);
+  //   }
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema: addProductValidationSchema(isEditing),
+    // onSubmit: (values) => mutation.mutate(values),
+  });
+
+  if (categoriesLoading || subCategoriesLoading) {
+    return (
+      <SyncLoader color="#a056b9" className="fixed top-1/2 left-1/2" />
+    );
+  }
+
   return (
     <FormikProvider value={formik}>
       <Toaster />
@@ -314,7 +321,7 @@ export function AddProductModal({ closeModal, productId }) {
             <Button type="submit" classes=" self-center">
               {isEditing ? "ذخیره" : "افزودن"}
             </Button>
-          </div>
+          </div>{" "}
         </form>
       </Modal>
     </FormikProvider>
