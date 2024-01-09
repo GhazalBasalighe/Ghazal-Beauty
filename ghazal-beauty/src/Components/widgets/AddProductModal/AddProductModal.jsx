@@ -47,6 +47,7 @@ export function AddProductModal({ closeModal, productId }) {
         return response.data.data.subcategories;
       },
     });
+
   //PRODUCT INFO IN EDIT MODE
   const { data: productData, isLoading: productLoading } = useQuery({
     queryKey: ["product"],
@@ -62,11 +63,16 @@ export function AddProductModal({ closeModal, productId }) {
   // FILL IN THE INPUTS WITH PRODUCT DATA
   useEffect(() => {
     if (productData) {
-      initialValues.productName = productData.name;
-      initialValues.productBrand = productData.brand;
-      initialValues.productCategory = productData.category._id;
-      initialValues.productSubCategory = productData.subcategory._id;
-      initialValues.productImg = productData.images;
+      formik.setValues({
+        ...formik.values,
+        productName: productData.name,
+        productBrand: productData.brand,
+        productCategory: productData.category._id,
+        productSubCategory: productData.subcategory._id,
+        productImg: productData.images,
+        productDescription: productData.description,
+      });
+
       setInitialProductDescription(productData.description);
     }
   }, [productData]);
