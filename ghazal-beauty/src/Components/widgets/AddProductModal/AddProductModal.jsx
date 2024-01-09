@@ -1,6 +1,4 @@
-import { QuillEditor } from "./QuillEditor/QuillEditor";
 import { Modal, Button } from "../../base";
-import { FileInputField } from "./FileInputField";
 import { useEffect, useState } from "react";
 import api from "../../../config/axiosInstance";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -11,6 +9,10 @@ import { Field, FormikProvider, useFormik } from "formik";
 import { addProductValidationSchema } from "../../../utils";
 import { SyncLoader } from "react-spinners";
 import { setProductUpdateSignal } from "../../../store/slices/authSlice";
+import { FormNameSection } from "./FormNameSection/FormNameSection";
+import { FormBrandSection } from "./FormBrandSection/FormBrandSection";
+import { FileInputField } from "./FileInputField";
+import { QuillEditor } from "./QuillEditor";
 
 export function AddProductModal({ closeModal, productId }) {
   const isEditing = !!productId;
@@ -72,51 +74,62 @@ export function AddProductModal({ closeModal, productId }) {
         productImg: productData.images,
         productDescription: productData.description,
       });
-
       setInitialProductDescription(productData.description);
+    } else {
+      formik.resetForm();
     }
-  }, [productData]);
+  }, [productData, isEditing]);
 
   const dispatch = useDispatch();
   const productUpdateSignal = useSelector(
     (state) => state.auth.productUpdateSignal
   );
 
-  const mutation = useMutation(async (values) => {
-    const formData = new FormData();
-    formData.append("name", values.productName);
-    formData.append("brand", values.productBrand);
-    formData.append("category", values.productCategory);
-    formData.append("subcategory", values.productSubCategory);
-    formData.append("description", values.productDescription);
+  const { mutate } = useMutation({
+    mutationFn: async (values) => {
+      const formData = new FormData();
+      formData.append("name", values.productName);
+      formData.append("brand", values.productBrand);
+      formData.append("category", values.productCategory);
+      formData.append("subcategory", values.productSubCategory);
+      formData.append("description", values.productDescription);
 
-    if (isEditing && values.productThumbnail) {
-      formData.append("thumbnail", values.productThumbnail);
-    } else if (!isEditing) {
-      for (let i = 0; i < values.productImg.length; i++) {
-        formData.append("images", values.productImg[i]);
+      if (isEditing && values.productThumbnail) {
+        formData.append("thumbnail", values.productThumbnail);
+      } else if (!isEditing) {
+        for (let i = 0; i < values.productImg.length; i++) {
+          formData.append("images", values.productImg[i]);
+        }
+        formData.append("quantity", values.productQuantity);
+        formData.append("price", values.productPrice);
       }
-      formData.append("quantity", values.productQuantity);
-      formData.append("price", values.productPrice);
-    }
-
-    const endpoint = isEditing ? `/products/${productId}` : "/products";
-    if (isEditing) {
-      await api.patch(endpoint, formData);
-      showToast("محصول با موفقیت ویرایش شد");
-    } else {
-      await api.post(endpoint, formData);
-      showToast("محصول با موفقیت اضافه شد");
-    }
-
-    dispatch(setProductUpdateSignal(!productUpdateSignal));
-    closeModal("add");
+      const endpoint = isEditing ? `/products/${productId}` : "/products";
+      if (isEditing) {
+        await api.patch(endpoint, formData);
+      } else {
+        await api.post(endpoint, formData);
+      }
+    },
   });
 
   const formik = useFormik({
     initialValues,
     validationSchema: addProductValidationSchema(isEditing),
-    onSubmit: (values) => mutation.mutate(values),
+    onSubmit: (values) =>
+      mutate(values, {
+        onSuccess: () => {
+          showToast(
+            isEditing
+              ? "محصول با موفقیت ویرایش شد"
+              : "محصول با موفقیت اضافه شد"
+          );
+          dispatch(setProductUpdateSignal(!productUpdateSignal));
+          closeModal("add");
+        },
+        onError: () => {
+          showToast("خطایی پیش آمده. دوباره امتحان کنید", true);
+        },
+      }),
   });
 
   if (categoriesLoading || subCategoriesLoading || productLoading) {
@@ -141,46 +154,33 @@ export function AddProductModal({ closeModal, productId }) {
           <div className="flex flex-col gap-4 my-5">
             <div className="vertical-flex gap-4">
               {/* PRODUCT NAME SECTION */}
-              <div className="flex flex-col gap-2 w-3/4">
-                <label htmlFor="productName">نام محصول:</label>
-                <input
-                  type="text"
-                  name="productName"
-                  id="productName"
-                  required
-                  className="add-product-modal-input"
-                  value={formik.values.productName}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.productName &&
+              <FormNameSection
+                value={formik.values.productName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                errorMessage={
+                  formik.touched.productName &&
                   formik.errors.productName && (
                     <div className="text-red-500 text-sm">
                       {formik.errors.productName}
                     </div>
-                  )}
-              </div>
-
+                  )
+                }
+              />
               {/* PRODUCT BRAND SECTION */}
-              <div className="flex flex-col gap-2 w-1/4">
-                <label htmlFor="productBrand">نام برند:</label>
-                <input
-                  type="text"
-                  name="productBrand"
-                  id="productBrand"
-                  required
-                  className="add-product-modal-input"
-                  value={formik.values.productBrand}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.productBrand &&
+              <FormBrandSection
+                value={formik.values.productBrand}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                errorMessage={
+                  formik.touched.productBrand &&
                   formik.errors.productBrand && (
                     <div className="text-red-500 text-sm">
                       {formik.errors.productBrand}
                     </div>
-                  )}
-              </div>
+                  )
+                }
+              />
             </div>
             <div className="vertical-flex gap-8">
               {/* PRODUCT CATEGORY SELECT SECTION */}
