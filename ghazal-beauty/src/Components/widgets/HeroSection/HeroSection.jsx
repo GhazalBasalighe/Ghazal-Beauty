@@ -10,12 +10,13 @@ const settings = {
   slidesToShow: 1,
   slidesToScroll: 1,
   cssEase: "linear",
+  adaptiveHeight: true,
 };
 
 export function HeroSection() {
   return (
     <div className="overflow-x-hidden">
-      <Slider {...settings} className="">
+      <Slider {...settings}>
         <img
           src="/HeroSectionPics/hero1.webp"
           alt=""

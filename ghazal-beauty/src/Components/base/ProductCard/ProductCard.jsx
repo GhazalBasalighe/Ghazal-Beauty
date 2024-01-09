@@ -11,7 +11,7 @@ export const ProductCard = ({ product }) => {
             width={250}
           />
         </Link>
-        <div className="flex flex-col gap-4 items-center">
+        <div className="flex flex-col gap-4 items-center px-4">
           <span className="text-base w-[200px] break-words line-clamp-2">
             {product.name}
           </span>
