@@ -2,7 +2,7 @@ import { Modal, Button } from "../../base";
 import { useEffect, useState } from "react";
 import api from "../../../config/axiosInstance";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import showToast from "../../../helpers/showToast";
+import showToast, { dismissToast } from "../../../helpers/showToast";
 import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Field, FormikProvider, useFormik } from "formik";
@@ -13,6 +13,10 @@ import { FormNameSection } from "./FormNameSection/FormNameSection";
 import { FormBrandSection } from "./FormBrandSection/FormBrandSection";
 import { FileInputField } from "./FileInputField";
 import { QuillEditor } from "./QuillEditor";
+import { FormCategorySection } from "./FormCategorySection/FormCategorySection";
+import { FormSubcategorySection } from "./FormSubcategorySection/FormSubcategorySection";
+import { FormQuantitySection } from "./FormQuantitySection/FormQuantitySection";
+import { FormPriceSection } from "./FormPriceSection/FormPriceSection";
 
 export function AddProductModal({ closeModal, productId }) {
   const isEditing = !!productId;
@@ -77,6 +81,7 @@ export function AddProductModal({ closeModal, productId }) {
       setInitialProductDescription(productData.description);
     } else {
       formik.resetForm();
+      setInitialProductDescription("");
     }
   }, [productData, isEditing]);
 
@@ -84,6 +89,30 @@ export function AddProductModal({ closeModal, productId }) {
   const productUpdateSignal = useSelector(
     (state) => state.auth.productUpdateSignal
   );
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema: addProductValidationSchema(isEditing),
+    onSubmit: (values) => {
+      mutate(values, {
+        onSuccess: async () => {
+          showToast(
+            isEditing
+              ? "محصول با موفقیت ویرایش شد"
+              : "محصول با موفقیت اضافه شد"
+          );
+          dispatch(setProductUpdateSignal(!productUpdateSignal));
+          setTimeout(() => {
+            closeModal("add");
+            dismissToast();
+          }, 600);
+        },
+        onError: () => {
+          showToast("خطایی پیش آمده. دوباره امتحان کنید", true);
+        },
+      });
+    },
+  });
 
   const { mutate } = useMutation({
     mutationFn: async (values) => {
@@ -110,26 +139,6 @@ export function AddProductModal({ closeModal, productId }) {
         await api.post(endpoint, formData);
       }
     },
-  });
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema: addProductValidationSchema(isEditing),
-    onSubmit: (values) =>
-      mutate(values, {
-        onSuccess: () => {
-          showToast(
-            isEditing
-              ? "محصول با موفقیت ویرایش شد"
-              : "محصول با موفقیت اضافه شد"
-          );
-          dispatch(setProductUpdateSignal(!productUpdateSignal));
-          closeModal("add");
-        },
-        onError: () => {
-          showToast("خطایی پیش آمده. دوباره امتحان کنید", true);
-        },
-      }),
   });
 
   if (categoriesLoading || subCategoriesLoading || productLoading) {
@@ -184,120 +193,66 @@ export function AddProductModal({ closeModal, productId }) {
             </div>
             <div className="vertical-flex gap-8">
               {/* PRODUCT CATEGORY SELECT SECTION */}
-              <div className="flex flex-col gap-2 w-1/2">
-                <label htmlFor="productCategory">دسته بندی کالا:</label>
-                <Field
-                  as="select"
-                  name="productCategory"
-                  id="productCategory"
-                  value={formik.values.productCategory}
-                  className="add-product-modal-select"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="default" disabled selected>
-                    انتخاب دسته بندی
-                  </option>
-                  {categories.map((item) => (
-                    <option
-                      key={item._id}
-                      value={item._id}
-                      style={{ fontFamily: "'Vazir', 'Poppins'" }}
-                      className=" bg-purple-100"
-                    >
-                      محصولات {item.name}
-                    </option>
-                  ))}
-                </Field>
-                {formik.touched.productCategory &&
+              <FormCategorySection
+                value={formik.values.productCategory}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                categories={categories}
+                errorMessage={
+                  formik.touched.productCategory &&
                   formik.errors.productCategory && (
                     <div className="text-red-500 text-sm">
                       {formik.errors.productCategory}
                     </div>
-                  )}
-              </div>
-
+                  )
+                }
+              />
               {/* PRODUCT SUBCATEGORY SELECT SECTION */}
-              <div className="flex flex-col gap-2 w-1/2">
-                <label htmlFor="productSubCategory">
-                  زیر دسته بندی کالا:
-                </label>
-                <Field
-                  as="select"
-                  name="productSubCategory"
-                  id="productSubCategory"
-                  className="add-product-modal-select"
-                  value={formik.values.productSubCategory}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="default" disabled selected>
-                    انتخاب زیر دسته بندی
-                  </option>
-                  {subCategories.map((item) => (
-                    <option
-                      key={item._id}
-                      value={item._id}
-                      style={{ fontFamily: "'Vazir', 'Poppins'" }}
-                      className=" bg-purple-100"
-                    >
-                      {item.name}
-                    </option>
-                  ))}
-                </Field>
-                {formik.touched.productSubCategory &&
+              <FormSubcategorySection
+                value={formik.values.productSubCategory}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                subCategories={subCategories}
+                errorMessage={
+                  formik.touched.productSubCategory &&
                   formik.errors.productSubCategory && (
                     <div className="text-red-500 text-sm">
                       {formik.errors.productSubCategory}
                     </div>
-                  )}
-              </div>
+                  )
+                }
+              />
             </div>
             {!isEditing && (
               <div className="vertical-flex gap-4">
                 {/* PRODUCT QUANTITY SECTION */}
-                <div className="flex flex-col gap-2 w-1/2">
-                  <label htmlFor="productQuantity">تعداد محصول:</label>
-                  <input
-                    type="text"
-                    name="productQuantity"
-                    id="productQuantity"
-                    required
-                    className="add-product-modal-input"
-                    value={formik.values.productQuantity}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {formik.touched.productQuantity &&
+                <FormQuantitySection
+                  value={formik.values.productQuantity}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  errorMessage={
+                    formik.touched.productQuantity &&
                     formik.errors.productQuantity && (
                       <div className="text-red-500 text-sm">
                         {formik.errors.productQuantity}
                       </div>
-                    )}
-                </div>
+                    )
+                  }
+                />
                 {/* PRODUCT PRICE SECTION */}
-                <div className="flex flex-col gap-2 w-1/2">
-                  <label htmlFor="productPrice">
-                    قیمت محصول : (بدون در نظر گرفتن سه صفر انتها)
-                  </label>
-                  <input
-                    type="text"
-                    name="productPrice"
-                    id="productPrice"
-                    required
-                    placeholder="قیمت به تومان "
-                    className="add-product-modal-input"
-                    value={formik.values.productPrice}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {formik.touched.productPrice &&
+                <FormPriceSection
+                  value={formik.values.productPrice}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  errorMessage={
+                    formik.touched.productPrice &&
                     formik.errors.productPrice && (
                       <div className="text-red-500 text-sm">
                         {formik.errors.productPrice}
                       </div>
-                    )}
-                </div>
+                    )
+                  }
+                />
               </div>
             )}
 
