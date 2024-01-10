@@ -1,5 +1,4 @@
 import { NavBar } from "../NavBar";
-import { getInfoById } from "../../../helpers/getInfoById";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import api from "../../../config/axiosConfig";
