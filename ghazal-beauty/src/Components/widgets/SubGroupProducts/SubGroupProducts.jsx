@@ -1,40 +1,59 @@
 import { NavBar } from "../NavBar";
-import { getInfoById } from "../../../helpers/getInfoById";
 import { useParams, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
 import api from "../../../config/axiosConfig";
+import { SyncLoader } from "react-spinners";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 export function SubGroupProducts() {
   const { subgroupId } = useParams();
-  const [currentSubGroup, setCurrentSubGroup] = useState("");
-  const [products, setProducts] = useState([]);
+
+  //GET SUBCATEGORIES
+  const {
+    data: currentSubCategory,
+    isLoading: currentSubCategoryLoading,
+    refetch: refetchSubCategory,
+  } = useQuery({
+    queryKey: ["currentSubCategory"],
+    queryFn: async () => {
+      const response = await api.get(`/subcategories/${subgroupId}`);
+      console.log(response);
+
+      return response.data.data.subcategory;
+    },
+  });
+
+  //GET PRODUCTS
+  const {
+    data: products,
+    isLoading: productsLoading,
+    refetch: refetchProducts,
+  } = useQuery({
+    queryKey: ["products"],
+    queryFn: async () => {
+      const response = await api.get(
+        `/products?fields=-rating,-createdAt,-updatedAt,-__v&sort=rate&subcategory=${subgroupId}`
+      );
+      return response.data.data.products;
+    },
+  });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const subCategoryRes = await getInfoById(
-          subgroupId,
-          "subcategories"
-        );
-        setCurrentSubGroup(subCategoryRes);
-        const productRes = await api.get(
-          `/products?fields=-rating,-createdAt,-updatedAt,-__v&sort=rate&subcategory=${subgroupId}`
-        );
-        const allProducts = productRes.data.data.products;
-        setProducts(allProducts);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+    refetchSubCategory();
+    refetchProducts();
+  }, [subgroupId, refetchSubCategory, refetchProducts]);
 
-    fetchData();
-  }, [subgroupId]);
+  if (currentSubCategoryLoading || productsLoading) {
+    return (
+      <SyncLoader color="#a056b9" className="fixed top-1/2 left-1/2" />
+    );
+  }
   return (
     <>
       <NavBar />
       <div className="m-10">
         <h1 className="inline-block text-3xl font-bold border-b-2 border-dashed border-indigo-500 pb-4">
-          کالاهایی با زیرگروه {currentSubGroup}
+          {currentSubCategory.name}
         </h1>
         <div className="grid grid-cols-5 p-12 gap-y-20">
           {products.map((product) => (
