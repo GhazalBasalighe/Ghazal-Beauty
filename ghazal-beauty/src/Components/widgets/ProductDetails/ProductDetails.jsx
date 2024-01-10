@@ -39,12 +39,13 @@ export function ProductDetails() {
     isLoading: productsLoading,
     refetch: refetchProducts,
   } = useQuery({
-    queryKey: ["products"],
+    queryKey: ["productId"],
     queryFn: async () => {
       const response = await api.get(`/products/${productId}`);
       return response.data.data.product;
     },
   });
+
   useEffect(() => {
     refetchProducts();
   }, [productId]);
@@ -77,7 +78,6 @@ export function ProductDetails() {
       <SyncLoader color="#a056b9" className="fixed top-1/2 left-1/2" />
     );
   }
-
   return (
     <div className="flex flex-col gap-10 px-20 mt-3">
       <Toaster />

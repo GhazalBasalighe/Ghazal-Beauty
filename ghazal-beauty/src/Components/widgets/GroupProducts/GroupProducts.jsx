@@ -74,37 +74,37 @@ export function GroupProducts() {
     return (
       <SyncLoader color="#a056b9" className="fixed top-1/2 left-1/2" />
     );
-  }
-
-  return (
-    <>
-      <NavBar />
-      <div className="m-10">
-        <h1 className="inline-block text-3xl font-bold border-b-2 border-dashed border-indigo-500 pb-4">
-          محصولات {currentCategoryData.name}
-        </h1>
-        <InfiniteScroll
-          dataLength={products.length}
-          next={handleFetchData}
-          hasMore={hasMore}
-          endMessage={
-            <div
-              className="vertical-flex gap-3 cursor-pointer font-bold text-3xl text-violet-500 absolute left-1/2 -translate-x-1/2 my-4"
-              onClick={scrollToTop}
-            >
-              <ArrowUp weight="bold" />
-              <span>برگشت به بالا </span>
-              <ArrowUp weight="bold" />
+  } else {
+    return (
+      <>
+        <NavBar />
+        <div className="m-10">
+          <h1 className="inline-block text-3xl font-bold border-b-2 border-dashed border-indigo-500 pb-4">
+            محصولات {currentCategoryData.name}
+          </h1>
+          <InfiniteScroll
+            dataLength={products.length}
+            next={handleFetchData}
+            hasMore={hasMore}
+            endMessage={
+              <div
+                className="vertical-flex gap-3 cursor-pointer font-bold text-3xl text-violet-500 absolute left-1/2 -translate-x-1/2 my-4"
+                onClick={scrollToTop}
+              >
+                <ArrowUp weight="bold" />
+                <span>برگشت به بالا </span>
+                <ArrowUp weight="bold" />
+              </div>
+            }
+          >
+            <div className="grid grid-cols-5 py-4 px-10 gap-y-4">
+              {products.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
             </div>
-          }
-        >
-          <div className="grid grid-cols-5 py-4 px-10 gap-y-4">
-            {products.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
-          </div>
-        </InfiniteScroll>
-      </div>
-    </>
-  );
+          </InfiniteScroll>
+        </div>
+      </>
+    );
+  }
 }

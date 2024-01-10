@@ -27,7 +27,7 @@ export function SubGroupProducts() {
     isLoading: productsLoading,
     refetch: refetchProducts,
   } = useQuery({
-    queryKey: ["products"],
+    queryKey: ["subgroupId"],
     queryFn: async () => {
       const response = await api.get(
         `/products?fields=-rating,-createdAt,-updatedAt,-__v&sort=rate&subcategory=${subgroupId}`
@@ -39,7 +39,7 @@ export function SubGroupProducts() {
   useEffect(() => {
     refetchSubCategory();
     refetchProducts();
-  }, [subgroupId, refetchSubCategory, refetchProducts]);
+  }, [subgroupId]);
 
   if (currentSubCategoryLoading || productsLoading) {
     return (

@@ -107,152 +107,152 @@ export function ProductModalForm({
     return (
       <SyncLoader color="#a056b9" className="fixed top-1/2 left-1/2" />
     );
-  }
-
-  return (
-    <FormikProvider value={formik}>
-      <Toaster />
-      <Modal
-        title={productId ? "ویرایش کالا" : "افزودن کالا"}
-        closeModal={closeModal}
-      >
-        <span className="text-red-500">
-          {productId
-            ? "برای ویرایش قیمت و موجودی به جدول مربوطه مراجعه شود"
-            : ""}
-        </span>
-        <form onSubmit={formik.handleSubmit}>
-          <div className="flex flex-col gap-4 my-5">
-            <div className="vertical-flex gap-4">
-              {/* PRODUCT NAME SECTION */}
-              <FormNameSection
-                value={formik.values.productName}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                errorMessage={
-                  formik.touched.productName &&
-                  formik.errors.productName && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.productName}
-                    </div>
-                  )
-                }
-              />
-              {/* PRODUCT BRAND SECTION */}
-              <FormBrandSection
-                value={formik.values.productBrand}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                errorMessage={
-                  formik.touched.productBrand &&
-                  formik.errors.productBrand && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.productBrand}
-                    </div>
-                  )
-                }
-              />
-            </div>
-            <div className="vertical-flex gap-8">
-              {/* PRODUCT CATEGORY SELECT SECTION */}
-              <FormCategorySection
-                value={formik.values.productCategory}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                categories={categories}
-                errorMessage={
-                  formik.touched.productCategory &&
-                  formik.errors.productCategory && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.productCategory}
-                    </div>
-                  )
-                }
-              />
-              {/* PRODUCT SUBCATEGORY SELECT SECTION */}
-              <FormSubcategorySection
-                value={formik.values.productSubCategory}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                subCategories={subCategories}
-                errorMessage={
-                  formik.touched.productSubCategory &&
-                  formik.errors.productSubCategory && (
-                    <div className="text-red-500 text-sm">
-                      {formik.errors.productSubCategory}
-                    </div>
-                  )
-                }
-              />
-            </div>
-            {!productId && (
+  } else {
+    return (
+      <FormikProvider value={formik}>
+        <Toaster />
+        <Modal
+          title={productId ? "ویرایش کالا" : "افزودن کالا"}
+          closeModal={closeModal}
+        >
+          <span className="text-red-500">
+            {productId
+              ? "برای ویرایش قیمت و موجودی به جدول مربوطه مراجعه شود"
+              : ""}
+          </span>
+          <form onSubmit={formik.handleSubmit}>
+            <div className="flex flex-col gap-4 my-5">
               <div className="vertical-flex gap-4">
-                {/* PRODUCT QUANTITY SECTION */}
-                <FormQuantitySection
-                  value={formik.values.productQuantity}
+                {/* PRODUCT NAME SECTION */}
+                <FormNameSection
+                  value={formik.values.productName}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   errorMessage={
-                    formik.touched.productQuantity &&
-                    formik.errors.productQuantity && (
+                    formik.touched.productName &&
+                    formik.errors.productName && (
                       <div className="text-red-500 text-sm">
-                        {formik.errors.productQuantity}
+                        {formik.errors.productName}
                       </div>
                     )
                   }
                 />
-                {/* PRODUCT PRICE SECTION */}
-                <FormPriceSection
-                  value={formik.values.productPrice}
+                {/* PRODUCT BRAND SECTION */}
+                <FormBrandSection
+                  value={formik.values.productBrand}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   errorMessage={
-                    formik.touched.productPrice &&
-                    formik.errors.productPrice && (
+                    formik.touched.productBrand &&
+                    formik.errors.productBrand && (
                       <div className="text-red-500 text-sm">
-                        {formik.errors.productPrice}
+                        {formik.errors.productBrand}
                       </div>
                     )
                   }
                 />
               </div>
-            )}
-            {/* PRODUCT DESCRIPTION */}
-            <div className="flex flex-col gap-2">
-              <label htmlFor="textEditor">
-                توضیحات: (پر کردن این فیلد الزامی می‌باشد)
-              </label>
-              <QuillEditor
-                value={
-                  formik.values.productDescription ||
-                  initialProductDescription
-                }
-                onChange={(value) =>
-                  formik.setFieldValue("productDescription", value)
-                }
+              <div className="vertical-flex gap-8">
+                {/* PRODUCT CATEGORY SELECT SECTION */}
+                <FormCategorySection
+                  value={formik.values.productCategory}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  categories={categories}
+                  errorMessage={
+                    formik.touched.productCategory &&
+                    formik.errors.productCategory && (
+                      <div className="text-red-500 text-sm">
+                        {formik.errors.productCategory}
+                      </div>
+                    )
+                  }
+                />
+                {/* PRODUCT SUBCATEGORY SELECT SECTION */}
+                <FormSubcategorySection
+                  value={formik.values.productSubCategory}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  subCategories={subCategories}
+                  errorMessage={
+                    formik.touched.productSubCategory &&
+                    formik.errors.productSubCategory && (
+                      <div className="text-red-500 text-sm">
+                        {formik.errors.productSubCategory}
+                      </div>
+                    )
+                  }
+                />
+              </div>
+              {!productId && (
+                <div className="vertical-flex gap-4">
+                  {/* PRODUCT QUANTITY SECTION */}
+                  <FormQuantitySection
+                    value={formik.values.productQuantity}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    errorMessage={
+                      formik.touched.productQuantity &&
+                      formik.errors.productQuantity && (
+                        <div className="text-red-500 text-sm">
+                          {formik.errors.productQuantity}
+                        </div>
+                      )
+                    }
+                  />
+                  {/* PRODUCT PRICE SECTION */}
+                  <FormPriceSection
+                    value={formik.values.productPrice}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    errorMessage={
+                      formik.touched.productPrice &&
+                      formik.errors.productPrice && (
+                        <div className="text-red-500 text-sm">
+                          {formik.errors.productPrice}
+                        </div>
+                      )
+                    }
+                  />
+                </div>
+              )}
+              {/* PRODUCT DESCRIPTION */}
+              <div className="flex flex-col gap-2">
+                <label htmlFor="textEditor">
+                  توضیحات: (پر کردن این فیلد الزامی می‌باشد)
+                </label>
+                <QuillEditor
+                  value={
+                    formik.values.productDescription ||
+                    initialProductDescription
+                  }
+                  onChange={(value) =>
+                    formik.setFieldValue("productDescription", value)
+                  }
+                />
+              </div>
+              {/* UPLOAD PRODUCT PIC SECTION */}
+              <FileInputField
+                onChange={(event) => {
+                  if (!!productId) {
+                    console.log("hi");
+                    formik.setFieldValue(
+                      "productThumbnail",
+                      event.target.files[0]
+                    );
+                  } else {
+                    formik.setFieldValue("productImg", event.target.files);
+                  }
+                }}
+                isEditing={!!productId}
               />
+              <Button type="submit" classes=" self-center">
+                {productId ? "ویرایش" : "افزودن"}
+              </Button>
             </div>
-            {/* UPLOAD PRODUCT PIC SECTION */}
-            <FileInputField
-              onChange={(event) => {
-                if (!!productId) {
-                  console.log("hi");
-                  formik.setFieldValue(
-                    "productThumbnail",
-                    event.target.files[0]
-                  );
-                } else {
-                  formik.setFieldValue("productImg", event.target.files);
-                }
-              }}
-              isEditing={!!productId}
-            />
-            <Button type="submit" classes=" self-center">
-              {productId ? "ویرایش" : "افزودن"}
-            </Button>
-          </div>
-        </form>
-      </Modal>
-    </FormikProvider>
-  );
+          </form>
+        </Modal>
+      </FormikProvider>
+    );
+  }
 }
