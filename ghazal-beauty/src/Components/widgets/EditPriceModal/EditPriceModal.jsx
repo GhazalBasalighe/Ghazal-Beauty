@@ -1,6 +1,6 @@
 import { CurrencyDollar, Package } from "@phosphor-icons/react";
 import { Modal, Button } from "../../base";
-import api from "../../../config/axiosInstance";
+import api from "../../../config/axiosConfig";
 import { useFormik } from "formik";
 import { priceValidationSchema } from "../../../utils";
 import { setProductUpdateSignal } from "../../../store/slices/authSlice";

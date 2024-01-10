@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { clearCart } from "../store/slices/cartSlice";
-import api from "../config/axiosInstance";
+import api from "../config/axiosConfig";
 import { PrivateRoute } from "../Components";
 
 function Payment() {

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
-import api from "../../config/axiosInstance";
+import api from "../../config/axiosConfig";
 // LOGIN USER THUNK
 export const loginUser = createAsyncThunk(
   "auth/loginUser",

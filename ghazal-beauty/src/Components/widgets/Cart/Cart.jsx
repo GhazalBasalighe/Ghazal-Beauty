@@ -1,4 +1,4 @@
-import api from "../../../config/axiosInstance";
+import api from "../../../config/axiosConfig";
 import { Button, Counter } from "../../base";
 import { Handbag } from "@phosphor-icons/react";
 import { useDispatch, useSelector } from "react-redux";

@@ -4,7 +4,7 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import { Button } from "../../base";
 import { useDispatch, useSelector } from "react-redux";
 import { setDeliveryDate } from "../../../store/slices/cartSlice";
-import api from "../../../config/axiosInstance";
+import api from "../../../config/axiosConfig";
 
 export function DatePickerInput() {
   const dispatch = useDispatch();

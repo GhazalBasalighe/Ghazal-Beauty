@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import api from "../../../config/axiosInstance";
+import api from "../../../config/axiosConfig";
 import { Modal } from "../../base";
 import { setProductUpdateSignal } from "../../../store/slices/authSlice";
 

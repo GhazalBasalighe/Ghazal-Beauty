@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { FormikProvider, useFormik } from "formik";
 import { SyncLoader } from "react-spinners";
 import { Toaster } from "react-hot-toast";
-import api from "../../../config/axiosInstance";
+import api from "../../../config/axiosConfig";
 import { addProductValidationSchema } from "../../../utils";
 import showToast, { dismissToast } from "../../../helpers/showToast";
 import { Modal, Button, QuillEditor, FileInputField } from "../../base";
@@ -25,7 +25,6 @@ export function ProductModalForm({
   onSubmitSuccessMessage,
   onSubmitErrorMessage,
   mutationFn,
-  fileOnChange,
 }) {
   const [initialProductDescription, setInitialProductDescription] =
     useState("");
@@ -68,7 +67,7 @@ export function ProductModalForm({
 
   const formik = useFormik({
     initialValues,
-    validationSchema: addProductValidationSchema(!productId),
+    validationSchema: addProductValidationSchema(productId ? true : false),
     onSubmit: (values) => {
       mutate(values, {
         onSuccess: async () => {
@@ -85,7 +84,6 @@ export function ProductModalForm({
       });
     },
   });
-
   const { mutate } = mutationFn(productId);
 
   useEffect(() => {
@@ -96,7 +94,6 @@ export function ProductModalForm({
         productBrand: productData.brand,
         productCategory: productData.category._id,
         productSubCategory: productData.subcategory._id,
-        productImg: productData.images,
         productDescription: productData.description,
       });
       setInitialProductDescription(productData.description);
@@ -237,7 +234,17 @@ export function ProductModalForm({
             </div>
             {/* UPLOAD PRODUCT PIC SECTION */}
             <FileInputField
-              onChange={fileOnChange}
+              onChange={(event) => {
+                if (!!productId) {
+                  console.log("hi");
+                  formik.setFieldValue(
+                    "productThumbnail",
+                    event.target.files[0]
+                  );
+                } else {
+                  formik.setFieldValue("productImg", event.target.files);
+                }
+              }}
               isEditing={!!productId}
             />
             <Button type="submit" classes=" self-center">

@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-export const addProductValidationSchema = (isEditing = false) => {
+export const addProductValidationSchema = (isEditing) => {
   let schema = Yup.object().shape({
     productName: Yup.string().required("نام محصول نمی‌تواند خالی باشد"),
     productBrand: Yup.string().required("برند نمی‌تواند خالی باشد"),

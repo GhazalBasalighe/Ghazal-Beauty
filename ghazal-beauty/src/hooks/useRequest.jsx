@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCheckboxContext } from "../context/checkboxContext";
 import { useDispatch, useSelector } from "react-redux";
-import api from "../config/axiosInstance";
+import api from "../config/axiosConfig";
 import { setIsLoading } from "../store/slices/authSlice";
 export function useRequest(
   initialPage,

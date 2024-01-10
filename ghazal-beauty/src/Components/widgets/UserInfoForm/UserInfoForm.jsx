@@ -3,7 +3,7 @@ import { Button } from "../../base";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { userInfoFormSchema } from "../../../utils";
-import api from "../../../config/axiosInstance";
+import api from "../../../config/axiosConfig";
 import { loginUser } from "../../../store/thunk/thunk";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";

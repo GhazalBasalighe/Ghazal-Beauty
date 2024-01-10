@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import api from "../../../config/axiosInstance";
+import api from "../../../config/axiosConfig";
 import { ProductModalForm } from "../ProductModalForm/ProductModalForm";
 
 export function EditProductModal({ closeModal, productId }) {
@@ -41,9 +41,6 @@ export function EditProductModal({ closeModal, productId }) {
       onSubmitSuccessMessage="محصول با موفقیت ویرایش شد"
       onSubmitErrorMessage="خطایی پیش آمده. دوباره امتحان کنید"
       mutationFn={mutationFn}
-      fileOnChange={(event) => {
-        formik.setFieldValue("productThumbnail", event.target.files[0]);
-      }}
     />
   );
 }

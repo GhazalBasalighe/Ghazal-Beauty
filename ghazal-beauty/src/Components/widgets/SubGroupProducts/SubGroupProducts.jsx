@@ -2,7 +2,7 @@ import { NavBar } from "../NavBar";
 import { getInfoById } from "../../../helpers/getInfoById";
 import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import api from "../../../config/axiosInstance";
+import api from "../../../config/axiosConfig";
 
 export function SubGroupProducts() {
   const { subgroupId } = useParams();

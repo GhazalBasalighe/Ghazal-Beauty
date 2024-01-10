@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { ProductCard, ProductContainer } from "../../base";
 import { NextArrow, PrevArrow } from "../../../utils";
 import { useState, useEffect } from "react";
-import api from "../../../config/axiosInstance";
+import api from "../../../config/axiosConfig";
 import { Link } from "react-router-dom";
 
 export function ProductGroupPreview() {
