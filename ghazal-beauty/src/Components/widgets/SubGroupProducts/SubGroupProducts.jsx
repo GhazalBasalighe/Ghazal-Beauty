@@ -17,8 +17,6 @@ export function SubGroupProducts() {
     queryKey: ["currentSubCategory"],
     queryFn: async () => {
       const response = await api.get(`/subcategories/${subgroupId}`);
-      console.log(response);
-
       return response.data.data.subcategory;
     },
   });
