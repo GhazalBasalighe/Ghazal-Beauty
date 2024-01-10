@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { SyncLoader } from "react-spinners";
 import { useModal } from "../../../hooks/useModal";
 import { NotePencil } from "@phosphor-icons/react";
-import { EditProductModal } from "../EditProductModal";
+import { EditPriceModal } from "../EditPriceModal";
 import { createPortal } from "react-dom";
 import { useState } from "react";
 
@@ -56,7 +56,7 @@ export function StockAndPriceManagement() {
       )}
       {isModalOpen("editPrice") &&
         createPortal(
-          <EditProductModal
+          <EditPriceModal
             productInfo={selectedProduct}
             closeModal={() => closeModal("editPrice")}
           />,

@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { useModal } from "../../../hooks/useModal";
 import { createPortal } from "react-dom";
 import { useState } from "react";
+import { Check } from "@phosphor-icons/react/dist/ssr";
+import { X } from "@phosphor-icons/react";
 
 export function OrdersManagement() {
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -27,10 +29,16 @@ export function OrdersManagement() {
       day: "2-digit",
     });
     const price = order.totalPrice.toLocaleString("fa-IR");
-    const deliveryStatus = (
-      <span>
-        {order.deliveryStatus ? "تحویل داده شده" : "در انتظار تحویل"}
-      </span>
+    const deliveryStatus = order.deliveryStatus ? (
+      <div className="vertical-flex gap-2 text-green-500">
+        <Check />
+        <span>تحویل داده شده</span>
+      </div>
+    ) : (
+      <div className="vertical-flex gap-2 text-red-500">
+        <X />
+        <span>در انتظار تحویل</span>
+      </div>
     );
     const operations = (
       <span

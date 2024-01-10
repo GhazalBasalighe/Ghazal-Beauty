@@ -16,6 +16,7 @@ export * from "./HeroSection";
 export * from "./SubGroupProducts";
 export * from "./PrivateRoute";
 export * from "./DeleteProductModal";
+export * from "./EditPriceModal";
 export * from "./EditProductModal";
 export * from "./GroupProducts";
 export * from "./CustomerLoginForm";

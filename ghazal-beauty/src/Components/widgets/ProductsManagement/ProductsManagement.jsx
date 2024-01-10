@@ -7,6 +7,7 @@ import { createPortal } from "react-dom";
 import { AddProductModal } from "../AddProductModal";
 import { DeleteProductModal } from "../DeleteProductModal";
 import { useState } from "react";
+import { EditProductModal } from "../EditProductModal/EditProductModal";
 export function ProductsManagement() {
   const { isModalOpen, openModal, closeModal } = useModal();
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -105,7 +106,7 @@ export function ProductsManagement() {
       {/* EDIT MODAL PRODUCT */}
       {isModalOpen("edit") &&
         createPortal(
-          <AddProductModal
+          <EditProductModal
             closeModal={() => closeModal("edit")}
             productId={selectedProduct}
           />,
