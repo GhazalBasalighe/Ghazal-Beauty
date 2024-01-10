@@ -6,12 +6,14 @@ import { Toaster } from "react-hot-toast";
 import api from "../../../config/axiosInstance";
 import { addProductValidationSchema } from "../../../utils";
 import showToast, { dismissToast } from "../../../helpers/showToast";
-import { Modal, Button, QuillEditor } from "../../base";
+import { Modal, Button, QuillEditor, FileInputField } from "../../base";
 import {
   FormBrandSection,
   FormCategorySection,
   FormSubcategorySection,
   FormNameSection,
+  FormQuantitySection,
+  FormPriceSection,
 } from "../../base";
 import { useDispatch, useSelector } from "react-redux";
 import { setProductUpdateSignal } from "../../../store/slices/authSlice";
@@ -23,7 +25,7 @@ export function ProductModalForm({
   onSubmitSuccessMessage,
   onSubmitErrorMessage,
   mutationFn,
-  additionalFormFields,
+  fileOnChange,
 }) {
   const [initialProductDescription, setInitialProductDescription] =
     useState("");
@@ -186,6 +188,38 @@ export function ProductModalForm({
                 }
               />
             </div>
+            {!productId && (
+              <div className="vertical-flex gap-4">
+                {/* PRODUCT QUANTITY SECTION */}
+                <FormQuantitySection
+                  value={formik.values.productQuantity}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  errorMessage={
+                    formik.touched.productQuantity &&
+                    formik.errors.productQuantity && (
+                      <div className="text-red-500 text-sm">
+                        {formik.errors.productQuantity}
+                      </div>
+                    )
+                  }
+                />
+                {/* PRODUCT PRICE SECTION */}
+                <FormPriceSection
+                  value={formik.values.productPrice}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  errorMessage={
+                    formik.touched.productPrice &&
+                    formik.errors.productPrice && (
+                      <div className="text-red-500 text-sm">
+                        {formik.errors.productPrice}
+                      </div>
+                    )
+                  }
+                />
+              </div>
+            )}
             {/* PRODUCT DESCRIPTION */}
             <div className="flex flex-col gap-2">
               <label htmlFor="textEditor">
@@ -202,7 +236,10 @@ export function ProductModalForm({
               />
             </div>
             {/* UPLOAD PRODUCT PIC SECTION */}
-            {additionalFormFields && additionalFormFields()}
+            <FileInputField
+              onChange={fileOnChange}
+              isEditing={!!productId}
+            />
             <Button type="submit" classes=" self-center">
               {productId ? "ویرایش" : "افزودن"}
             </Button>

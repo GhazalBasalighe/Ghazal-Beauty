@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import api from "../../../config/axiosInstance";
 import { ProductModalForm } from "../ProductModalForm/ProductModalForm";
-import { FileInputField } from "../../base";
 
 export function EditProductModal({ closeModal, productId }) {
   const initialValues = {
@@ -42,17 +41,9 @@ export function EditProductModal({ closeModal, productId }) {
       onSubmitSuccessMessage="محصول با موفقیت ویرایش شد"
       onSubmitErrorMessage="خطایی پیش آمده. دوباره امتحان کنید"
       mutationFn={mutationFn}
-      additionalFormFields={() => (
-        <FileInputField
-          onChange={(event) => {
-            formik.setFieldValue(
-              "productThumbnail",
-              event.target.files[0]
-            );
-          }}
-          isEditing={true}
-        />
-      )}
+      fileOnChange={(event) => {
+        formik.setFieldValue("productThumbnail", event.target.files[0]);
+      }}
     />
   );
 }
