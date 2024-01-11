@@ -67,26 +67,26 @@ Ghazal Beauty is an e-commerce platform for cosmetics and skincare, developed us
 
 ### Cart Page
 
-![Cart Page] (https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/cefba4c2-5217-4ecc-8073-f7280b62aca6)
+![Cart Page](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/903b1448-5e2d-4fb1-900a-a8a12de1e3fb)
 
-![Empty Cart Page] (https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/2cba4e7a-ca1b-4982-8872-f800067df53c)
+![Empty Cart Page](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/1700f42c-97b4-4cd9-9447-d464c34ab1f0)
 
 ### DatePicker Page
 
-![Persian DatePicker] (https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/07981495-a7a0-4844-a1f4-45aef575e030)
+![Persian DatePicker](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/07981495-a7a0-4844-a1f4-45aef575e030)
 
 ### Payment Result Page
 
-![Payment Result Page] (https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/471c0e7c-fd77-4ece-9e30-f9761f2b8656)
-![Payment Result Page] (https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/b5e5cd7b-201c-4427-9e4e-dac968da5b7b)
+![Payment Result Page](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/471c0e7c-fd77-4ece-9e30-f9761f2b8656)
+![Payment Result Page](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/b5e5cd7b-201c-4427-9e4e-dac968da5b7b)
 
 ### Admin/User Login/Sign up Page
 
-![Login Page] (https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/ed1f9c28-a2dd-4c05-ae7e-5cb907b8e39a)
+![Login Page](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/ed1f9c28-a2dd-4c05-ae7e-5cb907b8e39a)
 
 ![Login Page](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/0047bb34-615d-4deb-83ea-f86006e4fdd6)
 
-![Sign Up Page] (https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/8c1df572-ae13-44d7-93de-ff3b03055323)
+![Sign Up Page](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/8c1df572-ae13-44d7-93de-ff3b03055323)
 
 ### Admin Dashboard Page
 
