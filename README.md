@@ -5,17 +5,17 @@ Ghazal Beauty is an e-commerce platform for cosmetics and skin care. This projec
 ## Features
 
 - ✨ E-commerce platform for cosmetics and skin care
-- 🖥 Written in React.js with Vite and utilizes Tailwind CSS for styling
-- 🌐 Uses React Router for navigation
-- 🔒 User/admin authentication handled through React Redux, async thunk, and axios interceptors
-- 💾 Persistence of access and refresh tokens using Redux Persist
+- 🖥 Written in **React.js** with **Vite** and utilizes **Tailwind CSS** for styling
+- 🌐 Uses **React Router** for navigation
+- 🔒 User/admin authentication handled through **React Redux**, **async thunk**, and axios **interceptors**
+- 💾 Persistence of access and refresh tokens using **Redux Persist**
 - 🔄 Infinite scrolling for loading data from the backend server page by page
-- 🚨 Error and submission notifications using React Hot Toast
-- ⏳ Loading spinners using React Spinners
-- 🌈 Product carousel on the main page and image slider in product details using React Slick
-- ✅ User input validation using Yup and Formik
+- 🚨 Error and submission notifications using **React Hot Toast**
+- ⏳ Loading spinners using **React Spinners**
+- 🌈 Product carousel on the main page and image slider in product details using **React Slick**
+- ✅ User input validation using **Yup** and **Formik**
 
-### Admin Dashboard
+### Admin Dashboards
 
 - Access to three different tables for managing orders, products, and product details
 - Manage orders, edit and delete products, and edit product details
@@ -23,7 +23,7 @@ Ghazal Beauty is an e-commerce platform for cosmetics and skin care. This projec
 
 ### User/Customer Pages
 
-- User authentication
+- User authentication/login/sign up
 - Explore and add products to the cart
 - Persian date picker for choosing the delivery date
 - Mock payment page with different messages based on the payment result
@@ -48,7 +48,5 @@ Ghazal Beauty is an e-commerce platform for cosmetics and skin care. This projec
 ## How to Run
 
 1. Clone this repository
-2. Install the dependencies using npm install
-3. Run the development server using npm run dev
-
-Feel free to explore the code and contribute to make Ghazal Beauty even better! 🌟
+2. Install the dependencies using yarn
+3. Run the development server using yarn dev
