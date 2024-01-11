@@ -90,7 +90,15 @@ Ghazal Beauty is an e-commerce platform for cosmetics and skincare, developed us
 
 ### Admin Dashboard Page
 
-![Admin Dashboard Page](path/to/admin_dashboard_page_screenshot.png)
+![Screenshot 2024-01-11 181136](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/4bcff3cd-13ea-41a2-9b5f-3eb30afdaa1a)
+![Screenshot 2024-01-11 181036](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/4a0f59e1-febc-4b01-858d-28c81f301f95)
+![Screenshot 2024-01-11 181205](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/1dad1081-1132-4323-9a5b-fe79380f495c)
+![Screenshot 2024-01-11 181058](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/7e7a250d-c6a3-4763-b33b-6c88d162fabe)
+![Screenshot 2024-01-11 181222](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/e0d72b08-061a-4ab4-abaf-452e491ab485)
+![Screenshot 2024-01-11 181046](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/a9fd5be7-51e0-4700-b6c6-fbd57286fdc7)
+![Screenshot 2024-01-11 181110](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/9591adec-0d56-4cd4-b2ac-f8fe0af3a281)
+![Screenshot 2024-01-11 181122](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/0c03b029-70a2-4d5a-a098-f9c66472a212)
+![Screenshot 2024-01-11 181153](https://github.com/GhazalBasalighe/maktab99-project-Ghazal-Basalighe/assets/127536254/4bd79743-3ad2-42d8-aeb4-04342c459ac7)
 
 ## How to Run
 
