@@ -17,7 +17,7 @@ export function GroupProducts() {
   //GET CATEGORIES
   const { data: currentCategoryData, isLoading: currentCategoryLoading } =
     useQuery({
-      queryKey: ["currentCategory"],
+      queryKey: ["groupId"],
       queryFn: async () => {
         const response = await api.get(`/categories/${groupId}`);
         return response.data.data.category;

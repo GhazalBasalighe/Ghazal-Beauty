@@ -55,7 +55,7 @@ export function ProductModalForm({
 
   //GET PRODUCT INFO IN EDIT MODE
   const { data: productData, isLoading: productLoading } = useQuery({
-    queryKey: ["product"],
+    queryKey: ["productId"],
     queryFn: async () => {
       if (productId) {
         const response = await api.get(`/products/${productId}`);
